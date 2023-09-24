@@ -4,15 +4,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import "./App.css";
 import Grimoire from "./components/Grimoire";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "@emotion/styled";
 import Sizzle from "sizzle";
 import { useEffect } from "react";
 import WillpowerTracker from "./components/WillpowerTracker";
 import { saveLocalStorage } from "./components/utility";
+import { ApplicationContext } from "./context/ApplicationContext";
 
 export default function App() {
-  const [inEditMode, setEditMode] = useState(false);
+  const { inEditMode, setEditMode } = useContext(ApplicationContext);
+  //console.log(inEditMode);
+
+  // const [inEditMode, setEditMode] = useState(false);
   const [spellList, setSpellList] = useState([]);
   const [baseWillpower, setBaseWillpower] = useState(0);
   const [currentWillpower, setCurrentWillpower] = useState(0);
@@ -37,7 +41,7 @@ export default function App() {
     loadLocalStorage();
   }, [setBaseWillpower, setCurrentWillpower, setSpellList]);
 
-  function onClickHander() {
+  function toggleEditMode() {
     if (inEditMode) {
       const selectedSpells = Sizzle("[data-testid=CheckBoxIcon]").map(
         (e, i) => e.parentElement.firstChild.defaultValue
@@ -81,7 +85,12 @@ export default function App() {
         setCurrentWillpower={setCurrentWillpower}
       ></WillpowerTracker>
 
-      <Grimoire currentWillpower={currentWillpower} setCurrentWillpower={setCurrentWillpower} inEditMode={inEditMode} spellList={spellList}></Grimoire>
+      <Grimoire
+        currentWillpower={currentWillpower}
+        setCurrentWillpower={setCurrentWillpower}
+        inEditMode={inEditMode}
+        spellList={spellList}
+      ></Grimoire>
 
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
@@ -95,7 +104,7 @@ export default function App() {
             left: "auto",
             position: "fixed",
           }}
-          onClick={onClickHander}
+          onClick={toggleEditMode}
         >
           {!inEditMode && <EditIcon />}
           {inEditMode && <CloseIcon />}
