@@ -178,7 +178,7 @@ function SpellProperties(props) {
 }
 
 function SpellConfirmation(props) {
-  const { currentWP, setCurrentWP, currentHP, setCurrentHP } =
+  const { currentWP, setCurrentWP, currentHP, setCurrentHP, setUndoAction } =
     useContext(ApplicationContext);
   const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
   const [wpCost, setWpCost] = useState(0);
@@ -209,6 +209,15 @@ function SpellConfirmation(props) {
     }
     setCurrentWP(newCurrentWP);
     saveLocalStorage("currentWP", newCurrentWP);
+
+    const undoAction = {
+      isAbility: isAbility,
+      actionName: spellName,
+      wpSpent: hasEnoughWP ? actionCost : currentWP,
+      hpSpent: hpCost,
+    };
+    setUndoAction(undoAction);
+    saveLocalStorage("undoAction", undoAction);
     toggleDialog();
   }
 

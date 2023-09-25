@@ -20,6 +20,7 @@ const useApplicationContextStore = () => {
   const [currentWP, setCurrentWP] = useState(0);
   const [baseHP, setBaseHP] = useState(10);
   const [currentHP, setCurrentHP] = useState(0);
+  const [undoAction, setUndoAction] = useState(null);
 
   return {
     inEditMode,
@@ -36,6 +37,8 @@ const useApplicationContextStore = () => {
     setBaseHP,
     currentHP,
     setCurrentHP,
+    undoAction,
+    setUndoAction,
   };
 };
 

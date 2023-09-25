@@ -32,8 +32,23 @@ export default function WillpowerTracker(props) {
     setCurrentWP,
     setCurrentHP,
     inEditMode,
+    undoAction,
+    setUndoAction,
   } = useContext(ApplicationContext);
-  const isUndoDisabled = true;
+  const [openUndoDialog, setOpenUndoDialog] = useState(false);
+  const isUndoDisabled = undoAction === null;
+
+  function toggleUndoDialog() {
+    setOpenUndoDialog(!openUndoDialog);
+  }
+
+  function toggleUndoDialogAccept() {
+    setCurrentWP(currentWP + undoAction.wpSpent);
+    setCurrentHP(currentHP + undoAction.hpSpent);
+    localStorage.removeItem("undoAction");
+    setUndoAction(null);
+    toggleUndoDialog();
+  }
 
   return (
     <div>
@@ -56,7 +71,11 @@ export default function WillpowerTracker(props) {
             ></AttributeManager>
           </AreaContainer>
           <AreaContainer>
-            <IconButton size="small" disabled={isUndoDisabled}>
+            <IconButton
+              size="small"
+              disabled={isUndoDisabled}
+              onClick={() => setOpenUndoDialog(true)}
+            >
               <UndoIcon color={isUndoDisabled ? "disabled" : "primary"} />
             </IconButton>
           </AreaContainer>
@@ -78,6 +97,32 @@ export default function WillpowerTracker(props) {
           </AreaContainer>
         </FlexContainer>
       )}
+
+      <Dialog open={openUndoDialog}>
+        <DialogTitle>Undo Action?</DialogTitle>
+        <DialogContent>
+          <div>
+            Do you wish to undo{" "}
+            {undoAction?.isAbility ? "activating" : "casting"}{" "}
+            <strong>{undoAction?.actionName}</strong>?
+          </div>
+          <div>
+            You will regain {undoAction?.wpSpent} WP
+            {undoAction?.hpSpent > 0 && (
+              <span> and {undoAction?.hpSpent} HP</span>
+            )}
+            .
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <IconButton onClick={toggleUndoDialog} size="small">
+            <CancelIcon color="error" />
+          </IconButton>
+          <IconButton onClick={toggleUndoDialogAccept} size="small">
+            <CheckCircleIcon color="success" />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

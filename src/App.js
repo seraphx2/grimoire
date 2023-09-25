@@ -21,6 +21,7 @@ export default function App() {
     setCurrentWP,
     setBaseHP,
     setCurrentHP,
+    setUndoAction,
   } = useContext(ApplicationContext);
 
   useEffect(() => {
@@ -50,6 +51,9 @@ export default function App() {
         parseInt(localStorage.getItem("currentHP")) || 0
       );
       setCurrentHP(currentHP);
+
+      const undoAction = JSON.parse(localStorage.getItem("undoAction") || null);
+      setUndoAction(undoAction);
     };
     runEffect();
   }, [
@@ -59,6 +63,7 @@ export default function App() {
     setCurrentWP,
     setBaseHP,
     setCurrentHP,
+    setUndoAction,
   ]);
 
   function toggleEditMode() {
