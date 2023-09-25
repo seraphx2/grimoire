@@ -9,25 +9,22 @@ import {
   DialogTitle,
   FormControlLabel,
   IconButton,
+  Typography,
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useEffect, useState } from "react";
-import { saveLocalStorage } from "./utility";
+import { useContext, useEffect, useState } from "react";
+import { FlexContainer, saveLocalStorage } from "./utility";
+import { ApplicationContext } from "../ApplicationContext";
+import ValueEditor from "./ValueEditor";
 
 export default function SpellFormatter(props) {
-  const {
-    currentWillpower,
-    setCurrentWillpower,
-    inEditMode,
-    isChecked,
-    spell,
-    willpowerType,
-  } = props;
+  const { inEditMode } = useContext(ApplicationContext);
+  const { isSpellChecked, spell, type } = props;
 
-  const isAbility = willpowerType === "ability";
-  const isTrick = willpowerType === "trick";
-  const isSpell = willpowerType === "spell";
+  const isAbility = type === "ability";
+  const isTrick = type === "trick";
+  const isSpell = type === "spell";
 
   return (
     <div
@@ -37,16 +34,13 @@ export default function SpellFormatter(props) {
       }}
     >
       <SpellHeader
-        currentWillpower={currentWillpower}
-        setCurrentWillpower={setCurrentWillpower}
         isAbility={isAbility}
         isTrick={isTrick}
         isSpell={isSpell}
-        isChecked={isChecked}
-        inEditMode={inEditMode}
+        isSpellChecked={isSpellChecked}
         spell={spell}
       ></SpellHeader>
-      {!isTrick && !inEditMode && (
+      {!isAbility && !isTrick && !inEditMode && (
         <SpellProperties spell={spell}></SpellProperties>
       )}
       {!inEditMode && <div>{spell.description}</div>}
@@ -55,17 +49,11 @@ export default function SpellFormatter(props) {
 }
 
 function SpellHeader(props) {
-  const {
-    currentWillpower,
-    setCurrentWillpower,
-    inEditMode,
-    isAbility,
-    isTrick,
-    isSpell,
-    isChecked,
-    spell,
-  } = props;
+  const { inEditMode, preparedSpells } = useContext(ApplicationContext);
+  const { isAbility, isTrick, isSpell, isSpellChecked, spell } = props;
   const [openModal, setOpenModal] = useState(false);
+  const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
+  const isPrepared = preparedSpells.includes(spell.name);
 
   function toggleDialog() {
     setOpenModal(!openModal);
@@ -86,16 +74,33 @@ function SpellHeader(props) {
             control={
               <Checkbox
                 name="spell"
-                defaultChecked={isChecked}
+                defaultChecked={isSpellSelected}
                 value={spell.name}
                 size="small"
               />
             }
             label={spell.name}
             labelPlacement="end"
+            onChange={() => setSpellSelected(!isSpellSelected)}
           />
         </div>
-        <div>{spell.prerequisite}</div>
+        {isSpell && isSpellSelected && (
+          <div>
+            <FormControlLabel
+              value="bottom"
+              control={
+                <Checkbox
+                  name="prepared"
+                  defaultChecked={preparedSpells.includes(spell.name)}
+                  value={spell.name}
+                  size="small"
+                />
+              }
+              label="Prepare?"
+              labelPlacement="start"
+            />
+          </div>
+        )}
       </div>
     );
 
@@ -107,14 +112,24 @@ function SpellHeader(props) {
         justifyContent: "space-between",
       }}
     >
-      <div
+      <FlexContainer
         style={{
           fontWeight: "bold",
           fontSize: "12pt",
         }}
       >
         {spell.name}
-      </div>
+        {isSpell && (
+          <Typography
+            variant="body2"
+            fontWeight={700}
+            color={isPrepared ? "success.main" : "warning.main"}
+            style={{ marginLeft: 8 }}
+          >
+            {isPrepared ? " PREPARED" : "UNPREPARED"}
+          </Typography>
+        )}
+      </FlexContainer>
       <div>
         <Button onClick={toggleDialog} size="small">
           {isAbility ? "Activate" : "Cast"}
@@ -123,8 +138,6 @@ function SpellHeader(props) {
 
       <Dialog open={openModal}>
         <SpellConfirmation
-          currentWillpower={currentWillpower}
-          setCurrentWillpower={setCurrentWillpower}
           isAbility={isAbility}
           isTrick={isTrick}
           isSpell={isSpell}
@@ -140,7 +153,14 @@ function SpellProperties(props) {
   const { spell } = props;
 
   return (
-    <div style={{borderLeft: "2px solid gray", paddingLeft: 4, borderTopLeftRadius: 5, borderBottomLeftRadius: 5}}>
+    <div
+      style={{
+        borderLeft: "2px solid gray",
+        paddingLeft: 4,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -158,18 +178,16 @@ function SpellProperties(props) {
 }
 
 function SpellConfirmation(props) {
+  const { currentWP, setCurrentWP, currentHP, setCurrentHP } =
+    useContext(ApplicationContext);
+  const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
   const [wpCost, setWpCost] = useState(0);
+  const [hpCost, setHpCost] = useState(0);
   const [isInside, setInside] = useState(false);
 
-  const {
-    currentWillpower,
-    setCurrentWillpower,
-    isAbility,
-    isTrick,
-    isSpell,
-    spellName,
-    toggleDialog,
-  } = props;
+  const actionType = isAbility ? "activate" : "cast";
+  const actionCost = wpCost * (isInside ? 2 : 1);
+  const hasEnoughWP = currentWP - wpCost * (isInside ? 2 : 1) >= 0;
 
   useEffect(() => {
     const setBaseWp = async () => {
@@ -181,9 +199,16 @@ function SpellConfirmation(props) {
   }, [setWpCost, isAbility, isTrick, isSpell]);
 
   function toggleDialogAccept() {
-    let newCurrentWillpower = currentWillpower - (wpCost * (isInside ? 2 : 1));
-    setCurrentWillpower(newCurrentWillpower);
-    saveLocalStorage("currentWillpower", newCurrentWillpower);
+    let newCurrentWP = 0;
+    if (hasEnoughWP) {
+      newCurrentWP = currentWP - actionCost;
+    } else {
+      let newCurrentHP = currentHP - hpCost;
+      setCurrentHP(newCurrentHP);
+      saveLocalStorage("currentHP", newCurrentHP);
+    }
+    setCurrentWP(newCurrentWP);
+    saveLocalStorage("currentWP", newCurrentWP);
     toggleDialog();
   }
 
@@ -201,14 +226,17 @@ function SpellConfirmation(props) {
       </DialogTitle>
       <DialogContent>
         <div>
-          You currently have <strong>{currentWillpower} WP</strong>.
-        </div>
-        <div>
-          Are you sure you want to {isAbility ? "activate" : "cast"}{" "}
-          <strong>{spellName}</strong> for <strong>{wpCost * (isInside ? 2 : 1)} WP</strong>?
+          You currently have <strong>{currentWP} WP</strong>
+          {!hasEnoughWP && !isAbility && (
+            <span>
+              {" "}
+              and <strong>{currentHP} HP</strong>
+            </span>
+          )}
+          .
         </div>
         {isSpell && (
-          <div style={{ marginTop: 8 }}>
+          <div style={{ marginTop: 8, marginBottom: 8 }}>
             Power Level{" "}
             <ButtonGroup size="small">
               <Button
@@ -233,26 +261,55 @@ function SpellConfirmation(props) {
           </div>
         )}
         {isLightningSpell && (
-          <div style={{ marginTop: 8 }}>
-            <Checkbox onClick={() => setInside(!isInside)} name="spell" defaultChecked={false} size="small" /> Casting Inside?
-            {/* <FormControlLabel
-              onClick={() => setInside(!isInside)}
+          <div style={{ marginTop: 8, marginBottom: 8 }}>
+            <FormControlLabel
               value="bottom"
               control={
-                <Checkbox onClick={() => setInside(!isInside)} name="spell" defaultChecked={false} size="small" />
+                <Checkbox name="spell" defaultChecked={false} size="small" />
               }
               label="Casting Inside?"
               labelPlacement="end"
-            /> */}
+              onChange={() => setInside(!isInside)}
+            />
           </div>
         )}
+        {!hasEnoughWP && !isAbility && (
+          <div>
+            <Typography variant="body2" color="warning.main">
+              You need <strong>{actionCost} WP</strong> to cast this spell. Do
+              you want to use <strong>Life</strong> to help fuel the spell?
+            </Typography>
+            <ValueEditor
+              defaultValue={0}
+              callback={setHpCost}
+              min={0}
+              max={currentHP}
+            ></ValueEditor>
+          </div>
+        )}
+        <div>
+          Are you sure you want to {actionType} <strong>{spellName}</strong> for{" "}
+          {(hasEnoughWP || isAbility) && <strong>{actionCost} WP</strong>}
+          {!hasEnoughWP && !isAbility && (
+            <span>
+              <strong>{currentWP} WP</strong> and <strong>{hpCost} HP</strong>
+            </span>
+          )}
+          ?
+        </div>
       </DialogContent>
       <DialogActions>
         <IconButton onClick={toggleDialog} size="small">
           <CancelIcon color="error" />
         </IconButton>
-        <IconButton disabled={currentWillpower - (wpCost * (isInside ? 2 : 1)) < 0} onClick={toggleDialogAccept} size="small">
-          <CheckCircleIcon color={currentWillpower - (wpCost * (isInside ? 2 : 1)) < 0 ? "disabled" : "success"} />
+        <IconButton
+          disabled={!(hpCost + currentWP >= actionCost)}
+          onClick={toggleDialogAccept}
+          size="small"
+        >
+          <CheckCircleIcon
+            color={hpCost + currentWP >= actionCost ? "success" : "disabled"}
+          />
         </IconButton>
       </DialogActions>
     </Box>

@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { ApplicationContextProvider } from "./context/ApplicationContext";
+import { ApplicationContextProvider } from "./ApplicationContext";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -20,3 +20,5 @@ root.render(
     </ApplicationContextProvider>
   </React.StrictMode>
 );
+
+//serviceWorker.register()

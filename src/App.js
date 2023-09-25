@@ -1,57 +1,87 @@
+import { useContext, useEffect } from "react";
 import { Box, IconButton, Fab } from "@mui/material";
+import styled from "@emotion/styled";
+import Sizzle from "sizzle";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import "./App.css";
 import Grimoire from "./components/Grimoire";
-import { useContext, useState } from "react";
-import styled from "@emotion/styled";
-import Sizzle from "sizzle";
-import { useEffect } from "react";
 import WillpowerTracker from "./components/WillpowerTracker";
 import { saveLocalStorage } from "./components/utility";
-import { ApplicationContext } from "./context/ApplicationContext";
+import { ApplicationContext } from "./ApplicationContext";
 
 export default function App() {
-  const { inEditMode, setEditMode } = useContext(ApplicationContext);
-  //console.log(inEditMode);
-
-  // const [inEditMode, setEditMode] = useState(false);
-  const [spellList, setSpellList] = useState([]);
-  const [baseWillpower, setBaseWillpower] = useState(0);
-  const [currentWillpower, setCurrentWillpower] = useState(0);
+  const {
+    inEditMode,
+    setEditMode,
+    setSelectedSpells,
+    setPreparedSpells,
+    setBaseWP,
+    setCurrentWP,
+    setBaseHP,
+    setCurrentHP,
+  } = useContext(ApplicationContext);
 
   useEffect(() => {
-    const loadLocalStorage = async () => {
-      const spellList = JSON.parse(
-        localStorage.getItem("spellList") || JSON.stringify([])
+    const runEffect = async () => {
+      const selectedSpells = JSON.parse(
+        localStorage.getItem("selectedSpells") || JSON.stringify([])
       );
-      setSpellList(spellList);
+      setSelectedSpells(selectedSpells);
 
-      const baseWillpower = JSON.parse(
-        localStorage.getItem("baseWillpower") || 0
+      const preparedSpells = JSON.parse(
+        localStorage.getItem("preparedSpells") || JSON.stringify([])
       );
-      setBaseWillpower(baseWillpower);
+      setPreparedSpells(preparedSpells);
 
-      const currentWillpower = JSON.parse(
-        localStorage.getItem("currentWillpower") || 0
+      const baseWP = JSON.parse(parseInt(localStorage.getItem("baseWP")) || 0);
+      setBaseWP(baseWP);
+
+      const currentWP = JSON.parse(
+        parseInt(localStorage.getItem("currentWP")) || 0
       );
-      setCurrentWillpower(currentWillpower);
+      setCurrentWP(currentWP);
+
+      const baseHP = JSON.parse(parseInt(localStorage.getItem("baseHP")) || 0);
+      setBaseHP(baseHP);
+
+      const currentHP = JSON.parse(
+        parseInt(localStorage.getItem("currentHP")) || 0
+      );
+      setCurrentHP(currentHP);
     };
-    loadLocalStorage();
-  }, [setBaseWillpower, setCurrentWillpower, setSpellList]);
+    runEffect();
+  }, [
+    setSelectedSpells,
+    setPreparedSpells,
+    setBaseWP,
+    setCurrentWP,
+    setBaseHP,
+    setCurrentHP,
+  ]);
 
   function toggleEditMode() {
     if (inEditMode) {
-      const selectedSpells = Sizzle("[data-testid=CheckBoxIcon]").map(
-        (e, i) => e.parentElement.firstChild.defaultValue
+      const selectedSpells = Sizzle("[name=spell]:checked").map(
+        (e, i) => e.value
       );
-      setSpellList(selectedSpells);
-      saveLocalStorage("spellList", selectedSpells);
+      setSelectedSpells(selectedSpells);
+      saveLocalStorage("selectedSpells", selectedSpells);
 
-      const baseWillpower = Sizzle("#baseWillpower")[0].value;
-      setBaseWillpower(baseWillpower);
-      saveLocalStorage("baseWillpower", baseWillpower);
+      const preparedSpells = Sizzle("[name=prepared]:checked").map(
+        (e, i) => e.value
+      );
+      setPreparedSpells(preparedSpells);
+      saveLocalStorage("preparedSpells", preparedSpells);
+
+      const baseWP = Sizzle("#baseWP-editor")[0].textContent;
+      setBaseWP(parseInt(baseWP));
+      saveLocalStorage("baseWP", baseWP);
+
+      const baseHP = Sizzle("#baseHP-editor")[0].textContent;
+      setBaseHP(parseInt(baseHP));
+      saveLocalStorage("baseHP", baseHP);
     }
     setEditMode(!inEditMode);
   }
@@ -77,20 +107,8 @@ export default function App() {
         </div>
       </HeaderContainer>
 
-      <WillpowerTracker
-        baseWillpower={baseWillpower}
-        currentWillpower={currentWillpower}
-        inEditMode={inEditMode}
-        setBaseWillpower={setBaseWillpower}
-        setCurrentWillpower={setCurrentWillpower}
-      ></WillpowerTracker>
-
-      <Grimoire
-        currentWillpower={currentWillpower}
-        setCurrentWillpower={setCurrentWillpower}
-        inEditMode={inEditMode}
-        spellList={spellList}
-      ></Grimoire>
+      <WillpowerTracker></WillpowerTracker>
+      <Grimoire></Grimoire>
 
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab

@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ApplicationContext } from "../ApplicationContext";
 import SpellFormatter from "./SpellFormatter";
 import styled from "@emotion/styled";
 
@@ -27,71 +29,67 @@ const TrickContainer = styled.div`
 const SpellContainer = styled.div``;
 
 export default function School(props) {
-  const {
-    currentWillpower,
-    setCurrentWillpower,
-    inEditMode,
-    school,
-    spellList,
-  } = props;
+  const { inEditMode, selectedSpells } = useContext(ApplicationContext);
+  const { school } = props;
 
   const abilities =
     school.abilities?.filter(
-      (ability) => spellList.includes(ability.name) || inEditMode
+      (ability) => selectedSpells.includes(ability.name) || inEditMode
     ) ?? [];
 
   const tricks = school.tricks.filter(
-    (spell) => spellList.includes(spell.name) || inEditMode
+    (spell) => selectedSpells.includes(spell.name) || inEditMode
   );
 
   const spells = school.spells.filter(
-    (spell) => spellList.includes(spell.name) || inEditMode
+    (spell) => selectedSpells.includes(spell.name) || inEditMode
   );
+
+  const hasAbilities = abilities.length > 0;
+  const hasTricks = tricks.length > 0;
+  const hasSpells = spells.length > 0;
 
   return (
     <div>
-      {(abilities.length > 0 || tricks.length > 0 || spells.length > 0) && (
+      {(hasAbilities || hasTricks || hasSpells) && (
         <SchoolContainer>
           <SchoolHeader>{school.school}</SchoolHeader>
-          <AbilityContainer>
-            {abilities.map((t, i) => (
-              <SpellFormatter
-                key={t.name}
-                currentWillpower={currentWillpower}
-                setCurrentWillpower={setCurrentWillpower}
-                isChecked={spellList.includes(t.name)}
-                inEditMode={inEditMode}
-                spell={t}
-                willpowerType="ability"
-              ></SpellFormatter>
-            ))}
-          </AbilityContainer>
-          <TrickContainer>
-            {tricks.map((t, i) => (
-              <SpellFormatter
-                key={t.name}
-                currentWillpower={currentWillpower}
-                setCurrentWillpower={setCurrentWillpower}
-                isChecked={spellList.includes(t.name)}
-                inEditMode={inEditMode}
-                spell={t}
-                willpowerType="trick"
-              ></SpellFormatter>
-            ))}
-          </TrickContainer>
-          <SpellContainer>
-            {spells.map((s, i) => (
-              <SpellFormatter
-                key={s.name}
-                currentWillpower={currentWillpower}
-                setCurrentWillpower={setCurrentWillpower}
-                isChecked={spellList.includes(s.name)}
-                inEditMode={inEditMode}
-                spell={s}
-                willpowerType="spell"
-              ></SpellFormatter>
-            ))}
-          </SpellContainer>
+          {hasAbilities && (
+            <AbilityContainer>
+              {abilities.map((x, i) => (
+                <SpellFormatter
+                  key={`${i}-${x.name}`}
+                  isSpellChecked={selectedSpells.includes(x.name)}
+                  spell={x}
+                  type="ability"
+                ></SpellFormatter>
+              ))}
+            </AbilityContainer>
+          )}
+          {hasTricks && (
+            <TrickContainer>
+              {tricks.map((x, i) => (
+                <SpellFormatter
+                  key={`${i}-${x.name}`}
+                  isSpellChecked={selectedSpells.includes(x.name)}
+                  spell={x}
+                  type="trick"
+                ></SpellFormatter>
+              ))}
+            </TrickContainer>
+          )}
+          {hasSpells && (
+            <SpellContainer>
+              {spells.map((x, i) => (
+                <SpellFormatter
+                  key={`${i}-${x.name}`}
+                  isSpellChecked={selectedSpells.includes(x.name)}
+                  spell={x}
+                  type="spell"
+                ></SpellFormatter>
+              ))}
+            </SpellContainer>
+          )}
         </SchoolContainer>
       )}
     </div>
