@@ -12,28 +12,72 @@ import {
   TableRow,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useState } from "react";
 
 export default function SupplementalInfo() {
+  const [selectedAccordion, setSelectedAccordion] = useState(null);
+
+  function resetAccordion(id) {
+    if (id === selectedAccordion) setSelectedAccordion(null);
+    else setSelectedAccordion(id);
+  }
+
   return (
     <div>
-      <PreparedSpells />
-      <PowerLevel />
-      <MagicAndMetal />
-      <Requirements />
-      <CastingTime />
-      <Range />
-      <Duration />
-      <DragonsAndDemons />
-      <LearningMagic />
+      <PreparedSpells
+        id="PreparedSpells"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <PowerLevel
+        id="PowerLevel"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <MagicAndMetal
+        id="MagicAndMetal"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <Requirements
+        id="Requirements"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <CastingTime
+        id="CastingTime"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <Range id="Range" selected={selectedAccordion} reset={resetAccordion} />
+      <Duration
+        id="Duration"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <DragonsAndDemons
+        id="DragonsAndDemons"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <LearningMagic
+        id="LearningMagic"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
     </div>
   );
 }
 
 function Section(props) {
-  const { header, children } = props;
+  const { id, selected, reset, header, children } = props;
+
+  function toggle() {
+    reset(id);
+  }
 
   return (
-    <Accordion>
+    <Accordion expanded={id === selected} onChange={toggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <strong>{header}</strong>
       </AccordionSummary>
@@ -42,9 +86,11 @@ function Section(props) {
   );
 }
 
-function PreparedSpells() {
+function PreparedSpells(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="PREPARED SPELLS">
+    <Section id={id} selected={selected} reset={reset} header="PREPARED SPELLS">
       <p>
         Spells are complicated, and the maximum number of spells you can hold
         prepared in your memory at the same time is equal to your base chance
@@ -71,9 +117,11 @@ function PreparedSpells() {
   );
 }
 
-function PowerLevel() {
+function PowerLevel(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="POWER LEVEL">
+    <Section id={id} selected={selected} reset={reset} header="POWER LEVEL">
       <p>
         The power level of a spell indicates how much power you charge it with.
         The power level ranges from 1 to 3. Casting a spell costs 2 WP per power
@@ -94,9 +142,11 @@ function PowerLevel() {
   );
 }
 
-function MagicAndMetal() {
+function MagicAndMetal(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="MAGIC AND METAL">
+    <Section id={id} selected={selected} reset={reset} header="MAGIC AND METAL">
       <p>
         Metal has an anti-magical effect, which means that you cannot use magic
         if you are wearing metal armor or have a metal weapon at hand. This
@@ -108,9 +158,11 @@ function MagicAndMetal() {
   );
 }
 
-function Requirements() {
+function Requirements(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="REQUIREMENTS">
+    <Section id={id} selected={selected} reset={reset} header="REQUIREMENTS">
       <p>
         To cast a spell, you must fulfill one or more requirements which are
         specified in the description of each spell.
@@ -139,9 +191,11 @@ function Requirements() {
   );
 }
 
-function CastingTime() {
+function CastingTime(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="CASTING TIME">
+    <Section id={id} selected={selected} reset={reset} header="CASTING TIME">
       <p>
         Unless otherwise stated, casting a spell always counts as an action in
         combat. However, there are reaction spells which are performed outside
@@ -161,9 +215,11 @@ function CastingTime() {
   );
 }
 
-function Range() {
+function Range(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="RANGE">
+    <Section id={id} selected={selected} reset={reset} header="RANGE">
       <p>
         Each spell has a maximum range. Unlike ranged weapons, spells cannot be
         used on targets outside their specified range. Personal range means that
@@ -191,9 +247,11 @@ function Range() {
   );
 }
 
-function Duration() {
+function Duration(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="DURATION">
+    <Section id={id} selected={selected} reset={reset} header="DURATION">
       <p>Each spell specifies the duration of its effect.</p>
       <p>
         <strong>Instant</strong>: The effect occurs instantly and has no lasting
@@ -220,9 +278,16 @@ function Duration() {
   );
 }
 
-function DragonsAndDemons() {
+function DragonsAndDemons(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="FAILURE, DRAGONS, AND DEMONS">
+    <Section
+      id={id}
+      selected={selected}
+      reset={reset}
+      header="FAILURE, DRAGONS, AND DEMONS"
+    >
       <p>
         If the roll for casting a spell fails, the spell has no effect, but you
         still spend your WP. You are free to describe how the failure manifests
@@ -232,122 +297,123 @@ function DragonsAndDemons() {
         <strong>Rolling a Dragon</strong>: Rolling a Dragon when you cast a
         spell means that your target must roll a dragon to resist, parry, or
         dodge the spell, and that you may choose one of the following effects:
-        <List>
-          <ListItem>
-            <ListItemText>
-              The damage or range of the spell is doubled.
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>The spell does not cost any WP.</ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>
-              You can immediately cast another spell, but get a bane on the
-              roll.
-            </ListItemText>
-          </ListItem>
-        </List>
       </p>
+      <List>
+        <ListItem>
+          <ListItemText>
+            The damage or range of the spell is doubled.
+          </ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>The spell does not cost any WP.</ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemText>
+            You can immediately cast another spell, but get a bane on the roll.
+          </ListItemText>
+        </ListItem>
+      </List>
       <p>
         <strong>Rolling a Demon</strong>: If you roll a Demon, you cannot push
         the roll. There is also a risk of something going terribly wrong – see
         the optional rule for magical mishaps below.
-        <Table>
-          <TableHead>
-            <QuickTableRow column1="D20" column2="Magical Mishap" />
-          </TableHead>
-          <TableBody>
-            <QuickTableRow
-              column1="1"
-              column2="The magical powers leave you Dazed."
-            />
-            <QuickTableRow
-              column1="2"
-              column2="The spellcasting suddenly makes you Exhausted."
-            />
-            <QuickTableRow
-              column1="3"
-              column2="The energies take a toll on your body and make you Sickly."
-            />
-            <QuickTableRow
-              column1="4"
-              column2="You lose control of the spell, which makes you very Angry."
-            />
-            <QuickTableRow
-              column1="5"
-              column2="The spell subjects you to demonic visions that leave you Scared."
-            />
-            <QuickTableRow
-              column1="6"
-              column2="You see the world beyond the veil and realize your own insignificance. You feel Disheartened."
-            />
-            <QuickTableRow
-              column1="7"
-              column2="The magic ravages your body, inflicting D6 damage per power level."
-            />
-            <QuickTableRow
-              column1="8"
-              column2="The spell drains your willpower and you lose D6 WP per power level."
-            />
-            <QuickTableRow
-              column1="9"
-              column2="The spell gives rise to a magical disease with virulence 3D6. You and everyone you come into contact with during the next shift are exposed to the disease."
-            />
-            <QuickTableRow
-              column1="10"
-              column2="Another random spell of yours is activated instead of the one you cast, with the same target and power level."
-            />
-            <QuickTableRow
-              column1="11"
-              column2="You vomit a frog the moment you tell a lie. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
-            />
-            <QuickTableRow
-              column1="12"
-              column2="Any gold or silver you touch withers into dust. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
-            />
-            <QuickTableRow
-              column1="13"
-              column2="The spell blinds you, and you act as if in total darkness (page 52). Roll D4 every morning. On a 1, you recover. The effect can also be lifted with DISPEL."
-            />
-            <QuickTableRow
-              column1="14"
-              column2="You are struck by amnesia and forget who you and the other player characters are. The effect must be roleplayed. Roll D4 every morning. On a 1, your memory returns"
-            />
-            <QuickTableRow
-              column1="15"
-              column2="The spell also affects a friend or other unintended victim. A healing or helping spell affects an enemy."
-            />
-            <QuickTableRow
-              column1="16"
-              column2="The spell backfires. An offensive spell affects you instead of the intended target. A protecting or healing spell inflicts damage instead."
-            />
-            <QuickTableRow
-              column1="17"
-              column2="You turn into an animal. Roll D6. 1: cat, 2: fox, 3: goat, 4: wolf, 5: deer, 6: bear. You get stats according to the table on page 99 and cannot speak, but you retain your mental acuity. Roll a D4 every morning. On a 1, you revert back to your original form."
-            />
-            <QuickTableRow
-              column1="18"
-              column2="You become one category younger, for example from adult to young. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already young, you turn into a child with −2 STR and CON, to a minimum of 3. The effect is permanent and you age normally from your new age."
-            />
-            <QuickTableRow
-              column1="19"
-              column2="You become one category older, for example from adult to old. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already old, you become very frail and get −2 STR and CON. The effect is permanent and you age normally from your new age."
-            />
-            <QuickTableRow
-              column1="20"
-              column2="Your magic attracts a demon (page 85) from another dimension. The demon shows up within the next shift and attacks or causes some kind of trouble. The details are up to the GM."
-            />
-          </TableBody>
-        </Table>
       </p>
+      <Table>
+        <TableHead>
+          <QuickTableRow column1="D20" column2="Magical Mishap" />
+        </TableHead>
+        <TableBody>
+          <QuickTableRow
+            column1="1"
+            column2="The magical powers leave you Dazed."
+          />
+          <QuickTableRow
+            column1="2"
+            column2="The spellcasting suddenly makes you Exhausted."
+          />
+          <QuickTableRow
+            column1="3"
+            column2="The energies take a toll on your body and make you Sickly."
+          />
+          <QuickTableRow
+            column1="4"
+            column2="You lose control of the spell, which makes you very Angry."
+          />
+          <QuickTableRow
+            column1="5"
+            column2="The spell subjects you to demonic visions that leave you Scared."
+          />
+          <QuickTableRow
+            column1="6"
+            column2="You see the world beyond the veil and realize your own insignificance. You feel Disheartened."
+          />
+          <QuickTableRow
+            column1="7"
+            column2="The magic ravages your body, inflicting D6 damage per power level."
+          />
+          <QuickTableRow
+            column1="8"
+            column2="The spell drains your willpower and you lose D6 WP per power level."
+          />
+          <QuickTableRow
+            column1="9"
+            column2="The spell gives rise to a magical disease with virulence 3D6. You and everyone you come into contact with during the next shift are exposed to the disease."
+          />
+          <QuickTableRow
+            column1="10"
+            column2="Another random spell of yours is activated instead of the one you cast, with the same target and power level."
+          />
+          <QuickTableRow
+            column1="11"
+            column2="You vomit a frog the moment you tell a lie. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
+          />
+          <QuickTableRow
+            column1="12"
+            column2="Any gold or silver you touch withers into dust. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
+          />
+          <QuickTableRow
+            column1="13"
+            column2="The spell blinds you, and you act as if in total darkness (page 52). Roll D4 every morning. On a 1, you recover. The effect can also be lifted with DISPEL."
+          />
+          <QuickTableRow
+            column1="14"
+            column2="You are struck by amnesia and forget who you and the other player characters are. The effect must be roleplayed. Roll D4 every morning. On a 1, your memory returns"
+          />
+          <QuickTableRow
+            column1="15"
+            column2="The spell also affects a friend or other unintended victim. A healing or helping spell affects an enemy."
+          />
+          <QuickTableRow
+            column1="16"
+            column2="The spell backfires. An offensive spell affects you instead of the intended target. A protecting or healing spell inflicts damage instead."
+          />
+          <QuickTableRow
+            column1="17"
+            column2="You turn into an animal. Roll D6. 1: cat, 2: fox, 3: goat, 4: wolf, 5: deer, 6: bear. You get stats according to the table on page 99 and cannot speak, but you retain your mental acuity. Roll a D4 every morning. On a 1, you revert back to your original form."
+          />
+          <QuickTableRow
+            column1="18"
+            column2="You become one category younger, for example from adult to young. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already young, you turn into a child with −2 STR and CON, to a minimum of 3. The effect is permanent and you age normally from your new age."
+          />
+          <QuickTableRow
+            column1="19"
+            column2="You become one category older, for example from adult to old. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already old, you become very frail and get −2 STR and CON. The effect is permanent and you age normally from your new age."
+          />
+          <QuickTableRow
+            column1="20"
+            column2="Your magic attracts a demon (page 85) from another dimension. The demon shows up within the next shift and attacks or causes some kind of trouble. The details are up to the GM."
+          />
+        </TableBody>
+      </Table>
     </Section>
   );
 }
 
-function LearningMagic() {
+function LearningMagic(props) {
+  const { id, selected, reset } = props;
+
   return (
-    <Section header="LEARNING MAGIC">
+    <Section id={id} selected={selected} reset={reset} header="LEARNING MAGIC">
       <p>
         You can learn new spells from a teacher or grimoire. You must have a
         skill level in the relevant school of magic, or any school of magic for
