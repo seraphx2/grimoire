@@ -14,7 +14,7 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useContext, useEffect, useState } from "react";
-import { FlexContainer, saveLocalStorage } from "./utility";
+import { DarkTheme, FlexContainer, saveLocalStorage } from "./utility";
 import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
 import SupplementalSpellInfo from "./SupplementalSpellInfo";
@@ -40,14 +40,12 @@ export default function SpellFormatter(props) {
         isSpell={isSpell}
         isSpellChecked={isSpellChecked}
         spell={spell}
-      ></SpellHeader>
+      />
       {!isAbility && !isTrick && !inEditMode && (
-        <SpellProperties spell={spell}></SpellProperties>
+        <SpellProperties spell={spell} />
       )}
       {!inEditMode && <div>{spell.description}</div>}
-      {!inEditMode && (
-        <SupplementalSpellInfo spellName={spell.name}></SupplementalSpellInfo>
-      )}
+      {!inEditMode && <SupplementalSpellInfo spellName={spell.name} />}
     </div>
   );
 }

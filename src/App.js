@@ -4,27 +4,26 @@ import {
   IconButton,
   Fab,
   Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Divider,
+  Typography,
 } from "@mui/material";
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import Sizzle from "sizzle";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/Inbox";
-
 import "./App.css";
 import Grimoire from "./components/Grimoire";
 import WillpowerTracker from "./components/WillpowerTracker";
-import { saveLocalStorage } from "./components/utility";
+import {
+  DarkTheme,
+  FlexContainer,
+  saveLocalStorage,
+} from "./components/utility";
 import { ApplicationContext } from "./ApplicationContext";
+import SupplementalInfo from "./components/SupplementalInfo";
 
 export default function App() {
   const {
@@ -83,6 +82,8 @@ export default function App() {
   ]);
 
   function toggleEditMode() {
+    window.scrollTo(0, 0);
+
     if (inEditMode) {
       const selectedSpells = Sizzle("[name=spell]:checked").map(
         (e, i) => e.value
@@ -122,46 +123,39 @@ export default function App() {
       <HeaderContainer>
         <div>Grimoire</div>
         <div>
-          <IconButton size="small">
+          <IconButton size="small" onClick={() => setOpenDrawer(true)}>
             <InfoIcon color="info" />
           </IconButton>
 
-          <Drawer anchor="right" open={openDrawer}>
-            <Box>
-              <List>
-                {["Inbox", "Starred", "Send email", "Draftss ssssssssss ssssssss sss kljdas klasdjf ka fjd fksd skjds ks "].map(
-                  (text, index) => (
-                    <ListItem key={text} disablePadding>
-                      <ListItemButton>
-                        <ListItemIcon>
-                          {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                      </ListItemButton>
-                    </ListItem>
-                  )
-                )}
-              </List>
+          <DarkTheme>
+            <Drawer
+              anchor="right"
+              open={openDrawer}
+              className={css`
+                font-size: 0.9rem;
+              `}
+            >
+              <FlexContainer>
+                <Typography variant="h5" style={{ padding: 8 }}>
+                  Supplemental Info
+                </Typography>
+                <IconButton
+                  size="small"
+                  style={{ marginRight: 10 }}
+                  onClick={() => setOpenDrawer(false)}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </FlexContainer>
               <Divider />
-              <List>
-                {["All mail", "Trash", "Spam"].map((text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </Drawer>
+              <SupplementalInfo />
+            </Drawer>
+          </DarkTheme>
         </div>
       </HeaderContainer>
 
-      <WillpowerTracker></WillpowerTracker>
-      <Grimoire></Grimoire>
+      <WillpowerTracker />
+      <Grimoire />
 
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab

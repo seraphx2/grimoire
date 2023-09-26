@@ -426,7 +426,7 @@
         "description": "The spell summons an earth elemental. The gnome takes the form of a humanoid of gray-brown sand or clay, and counts as a monster in combat (page 84). It follows its creator's commands (free action) and acts independently with its own initiative, but must stay within sight of the mage."
       },
       {
-        "name": "Salamandar",
+        "name": "Salamander",
         "rank": 3,
         "prerequisite": "FIRE BLAST",
         "requirement": "Word, gesture, ingredient (open fire)",
