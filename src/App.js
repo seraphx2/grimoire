@@ -1,10 +1,25 @@
-import { useContext, useEffect } from "react";
-import { Box, IconButton, Fab } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import {
+  Box,
+  IconButton,
+  Fab,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import styled from "@emotion/styled";
 import Sizzle from "sizzle";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+
+import MailIcon from "@mui/icons-material/Mail";
+import InboxIcon from "@mui/icons-material/Inbox";
+
 import "./App.css";
 import Grimoire from "./components/Grimoire";
 import WillpowerTracker from "./components/WillpowerTracker";
@@ -23,6 +38,7 @@ export default function App() {
     setCurrentHP,
     setUndoAction,
   } = useContext(ApplicationContext);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
     const runEffect = async () => {
@@ -106,9 +122,41 @@ export default function App() {
       <HeaderContainer>
         <div>Grimoire</div>
         <div>
-          <IconButton size="small">
+          <IconButton size="small" onClick={() => setOpenDrawer(true)}>
             <InfoIcon color="info" />
           </IconButton>
+
+          <Drawer anchor="right" open={openDrawer}>
+            <Box>
+              <List>
+                {["Inbox", "Starred", "Send email", "Draftss ssssssssss ssssssss sss kljdas klasdjf ka fjd fksd skjds ks "].map(
+                  (text, index) => (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    </ListItem>
+                  )
+                )}
+              </List>
+              <Divider />
+              <List>
+                {["All mail", "Trash", "Spam"].map((text, index) => (
+                  <ListItem key={text} disablePadding>
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Drawer>
         </div>
       </HeaderContainer>
 

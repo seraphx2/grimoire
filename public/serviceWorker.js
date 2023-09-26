@@ -1,15 +1,14 @@
-let CACHE_NAME = "my-site-cache-v1";
-const urlsToCache = ["/", "/index.html"];
+let CACHE_NAME = "my-site-cache-v2";
+//const urlsToCache = ["/", "/index.html"];
+const urlsToCache = [];
 
 self.addEventListener("install", function (event) {
   // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      console.log("Opened cache");
       return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("fetch", function (event) {

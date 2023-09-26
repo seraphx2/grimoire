@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import { FlexContainer, saveLocalStorage } from "./utility";
 import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
+import SupplementalSpellInfo from "./SupplementalSpellInfo";
 
 export default function SpellFormatter(props) {
   const { inEditMode } = useContext(ApplicationContext);
@@ -44,6 +45,9 @@ export default function SpellFormatter(props) {
         <SpellProperties spell={spell}></SpellProperties>
       )}
       {!inEditMode && <div>{spell.description}</div>}
+      {!inEditMode && (
+        <SupplementalSpellInfo spellName={spell.name}></SupplementalSpellInfo>
+      )}
     </div>
   );
 }
