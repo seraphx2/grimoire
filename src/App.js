@@ -122,7 +122,7 @@ export default function App() {
       <HeaderContainer>
         <div>Grimoire</div>
         <div>
-          <IconButton size="small" onClick={() => setOpenDrawer(true)}>
+          <IconButton size="small">
             <InfoIcon color="info" />
           </IconButton>
 

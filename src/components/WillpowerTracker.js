@@ -45,6 +45,8 @@ export default function WillpowerTracker(props) {
   function toggleUndoDialogAccept() {
     setCurrentWP(currentWP + undoAction.wpSpent);
     setCurrentHP(currentHP + undoAction.hpSpent);
+    saveLocalStorage("currentWP", currentWP + undoAction.wpSpent)
+    saveLocalStorage("currentHP", currentHP + undoAction.hpSpent)
     localStorage.removeItem("undoAction");
     setUndoAction(null);
     toggleUndoDialog();
