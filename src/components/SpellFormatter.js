@@ -14,7 +14,7 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useContext, useEffect, useState } from "react";
-import { DarkTheme, FlexContainer, saveLocalStorage } from "./utility";
+import { FlexContainer, saveLocalStorage } from "./utility";
 import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
 import SupplementalSpellInfo from "./SupplementalSpellInfo";

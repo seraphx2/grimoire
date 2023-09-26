@@ -213,7 +213,7 @@ function Duration() {
       <p>
         <strong>Concentration</strong>: The effect ceases if you perform another
         action, take damage, or fail a WIL roll for resisting fear. If you are
-        interrupted by a sudden distur- bance, such as a sound, you must make a
+        interrupted by a sudden disturbance, such as a sound, you must make a
         WIL roll (not an action) to maintain your concentration.
       </p>
     </Section>
