@@ -1,11 +1,12 @@
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
-import { IconButton } from "@mui/material";
-import { SquishedFlexContainer } from "./utility";
 import { useLayoutEffect, useState } from "react";
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
+import { SquishedFlexContainer } from "./utility";
 
 export default function ValueEditor(props) {
-  const { id, defaultValue, min, max, callback } = props;
+  const { callback, defaultValue, id, min, max } = props;
   const [newValue, setNewValue] = useState(0);
   const [hasMinedOut, setMinedOut] = useState(min === defaultValue);
   const [hasMaxedOut, setMaxedOut] = useState(max === defaultValue);
@@ -45,10 +46,10 @@ export default function ValueEditor(props) {
   return (
     <SquishedFlexContainer>
       <IconButton
-        disabled={hasMinedOut}
         color={hasMinedOut ? "disabled" : "primary"}
-        size="small"
+        disabled={hasMinedOut}
         onClick={subtractValueAndRunCallback}
+        size="small"
       >
         <RemoveIcon />
       </IconButton>
@@ -56,10 +57,10 @@ export default function ValueEditor(props) {
         {newValue}
       </span>
       <IconButton
-        disabled={hasMaxedOut}
         color={hasMaxedOut ? "disabled" : "primary"}
-        size="small"
+        disabled={hasMaxedOut}
         onClick={addValueAndRunCallback}
+        size="small"
       >
         <AddIcon />
       </IconButton>

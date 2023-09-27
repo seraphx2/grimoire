@@ -2,22 +2,22 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styled from "@emotion/styled";
 
 export const FlexContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: space-between;
 `;
 
 export const SquishedFlexContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
 `;
 
 export const AreaContainer = styled.div`
-  margin-bottom: 8px;
   background-color: rgba(255, 255, 255, 0.5);
-  padding: 8px;
   border-radius: 8px;
+  margin-bottom: 8px;
+  padding: 8px;
 `;
 
 export const normalize = (value, min, max) =>

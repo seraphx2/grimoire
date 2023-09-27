@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -12,7 +13,6 @@ import {
   TableRow,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState } from "react";
 
 export default function SupplementalInfo() {
   const [selectedAccordion, setSelectedAccordion] = useState(null);

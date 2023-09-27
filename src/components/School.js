@@ -1,32 +1,8 @@
 import { useContext } from "react";
+
 import { ApplicationContext } from "../ApplicationContext";
 import SpellFormatter from "./SpellFormatter";
-import styled from "@emotion/styled";
-
-const SchoolContainer = styled.div`
-  margin-bottom: 8px;
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 8px;
-  border-radius: 8px;
-`;
-
-const SchoolHeader = styled.div`
-  font-weight: bold;
-  font-size: 16pt;
-  color: green;
-  border: red;
-  -webkit-text-stroke: 1px black;
-`;
-
-const AbilityContainer = styled.div`
-  margin-bottom: 32px;
-`;
-
-const TrickContainer = styled.div`
-  margin-bottom: 32px;
-`;
-
-const SpellContainer = styled.div``;
+import { AreaContainer } from "./utility";
 
 export default function School(props) {
   const { inEditMode, selectedSpells } = useContext(ApplicationContext);
@@ -52,10 +28,19 @@ export default function School(props) {
   return (
     <div>
       {(hasAbilities || hasTricks || hasSpells) && (
-        <SchoolContainer>
-          <SchoolHeader>{school.school}</SchoolHeader>
+        <AreaContainer>
+          <div
+            style={{
+              color: "green",
+              fontWeight: "bold",
+              fontSize: "16pt",
+              "-webkit-text-stroke": "1px black",
+            }}
+          >
+            {school.school}
+          </div>
           {hasAbilities && (
-            <AbilityContainer>
+            <div style={{ marginBottom: 32 }}>
               {abilities.map((x, i) => (
                 <SpellFormatter
                   key={`${i}-${x.name}`}
@@ -64,10 +49,10 @@ export default function School(props) {
                   type="ability"
                 ></SpellFormatter>
               ))}
-            </AbilityContainer>
+            </div>
           )}
           {hasTricks && (
-            <TrickContainer>
+            <div style={{ marginBottom: 32 }}>
               {tricks.map((x, i) => (
                 <SpellFormatter
                   key={`${i}-${x.name}`}
@@ -76,10 +61,10 @@ export default function School(props) {
                   type="trick"
                 ></SpellFormatter>
               ))}
-            </TrickContainer>
+            </div>
           )}
           {hasSpells && (
-            <SpellContainer>
+            <div>
               {spells.map((x, i) => (
                 <SpellFormatter
                   key={`${i}-${x.name}`}
@@ -88,9 +73,9 @@ export default function School(props) {
                   type="spell"
                 ></SpellFormatter>
               ))}
-            </SpellContainer>
+            </div>
           )}
-        </SchoolContainer>
+        </AreaContainer>
       )}
     </div>
   );

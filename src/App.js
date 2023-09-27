@@ -7,23 +7,22 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
-import Sizzle from "sizzle";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
-
+import Sizzle from "sizzle";
 import "./App.css";
+
+import { ApplicationContext } from "./ApplicationContext";
 import Grimoire from "./components/Grimoire";
+import SupplementalInfo from "./components/SupplementalInfo";
 import WillpowerTracker from "./components/WillpowerTracker";
 import {
+  AreaContainer,
   DarkTheme,
   FlexContainer,
   saveLocalStorage,
 } from "./components/utility";
-import { ApplicationContext } from "./ApplicationContext";
-import SupplementalInfo from "./components/SupplementalInfo";
 
 export default function App() {
   const {
@@ -108,59 +107,50 @@ export default function App() {
     setEditMode(!inEditMode);
   }
 
-  const HeaderContainer = styled.div`
-    margin-bottom: 8px;
-    background-color: rgba(255, 255, 255, 0.5);
-    padding: 8px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  `;
-
   return (
     <div className="App">
-      <HeaderContainer>
-        <div>Grimoire</div>
-        <div>
-          <IconButton size="small" onClick={() => setOpenDrawer(true)}>
-            <InfoIcon color="info" />
-          </IconButton>
+      <AreaContainer>
+        <FlexContainer>
+          <div>Grimoire</div>
+          <div>
+            <IconButton size="small" onClick={() => setOpenDrawer(true)}>
+              <InfoIcon color="info" />
+            </IconButton>
 
-          <DarkTheme>
-            <Drawer
-              anchor="right"
-              open={openDrawer}
-              className={css`
-                font-size: 0.9rem;
-              `}
-            >
-              <FlexContainer>
-                <Typography variant="h5" style={{ padding: 8 }}>
-                  Supplemental Info
-                </Typography>
-                <IconButton
-                  size="small"
-                  style={{ marginRight: 10 }}
-                  onClick={() => setOpenDrawer(false)}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </FlexContainer>
-              <Divider />
-              <SupplementalInfo />
-            </Drawer>
-          </DarkTheme>
-        </div>
-      </HeaderContainer>
+            <DarkTheme>
+              <Drawer
+                anchor="right"
+                open={openDrawer}
+                style={{ fontSize: "0.9rem" }}
+              >
+                <FlexContainer>
+                  <Typography variant="h5" style={{ padding: 8 }}>
+                    Supplemental Info
+                  </Typography>
+                  <IconButton
+                    onClick={() => setOpenDrawer(false)}
+                    size="small"
+                    style={{ marginRight: 10 }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </FlexContainer>
+                <Divider />
+                <SupplementalInfo />
+              </Drawer>
+            </DarkTheme>
+          </div>
+        </FlexContainer>
+      </AreaContainer>
 
       <WillpowerTracker />
       <Grimoire />
 
       <Box sx={{ "& > :not(style)": { m: 1 } }}>
         <Fab
-          size="small"
           color="primary"
+          onClick={toggleEditMode}
+          size="small"
           style={{
             margin: 0,
             top: "auto",
@@ -169,7 +159,6 @@ export default function App() {
             left: "auto",
             position: "fixed",
           }}
-          onClick={toggleEditMode}
         >
           {!inEditMode && <EditIcon />}
           {inEditMode && <CloseIcon />}

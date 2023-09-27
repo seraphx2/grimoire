@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -13,11 +14,11 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useContext, useEffect, useState } from "react";
-import { FlexContainer, saveLocalStorage } from "./utility";
+
 import { ApplicationContext } from "../ApplicationContext";
-import ValueEditor from "./ValueEditor";
 import SupplementalSpellInfo from "./SupplementalSpellInfo";
+import ValueEditor from "./ValueEditor";
+import { FlexContainer, saveLocalStorage } from "./utility";
 
 export default function SpellFormatter(props) {
   const { inEditMode } = useContext(ApplicationContext);
@@ -65,41 +66,41 @@ function SpellHeader(props) {
     return (
       <div
         style={{
-          display: "flex",
           alignItems: "center",
+          display: "flex",
           justifyContent: "space-between",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ alignItems: "center", display: "flex" }}>
           <FormControlLabel
-            value="bottom"
             control={
               <Checkbox
-                name="spell"
                 defaultChecked={isSpellSelected}
-                value={spell.name}
+                name="spell"
                 size="small"
+                value={spell.name}
               />
             }
             label={spell.name}
             labelPlacement="end"
             onChange={() => setSpellSelected(!isSpellSelected)}
+            value="bottom"
           />
         </div>
         {isSpell && isSpellSelected && (
           <div>
             <FormControlLabel
-              value="bottom"
               control={
                 <Checkbox
-                  name="prepared"
                   defaultChecked={preparedSpells.includes(spell.name)}
-                  value={spell.name}
+                  name="prepared"
                   size="small"
+                  value={spell.name}
                 />
               }
               label="Prepare?"
               labelPlacement="start"
+              value="bottom"
             />
           </div>
         )}
@@ -116,17 +117,17 @@ function SpellHeader(props) {
     >
       <FlexContainer
         style={{
-          fontWeight: "bold",
           fontSize: "12pt",
+          fontWeight: "bold",
         }}
       >
         {spell.name}
         {isSpell && (
           <Typography
-            variant="body2"
-            fontWeight={700}
             color={isPrepared ? "success.main" : "warning.main"}
+            fontWeight={700}
             style={{ marginLeft: 8 }}
+            variant="body2"
           >
             {isPrepared ? " PREPARED" : "UNPREPARED"}
           </Typography>
@@ -157,16 +158,16 @@ function SpellProperties(props) {
   return (
     <div
       style={{
-        borderLeft: "2px solid gray",
-        paddingLeft: 4,
-        borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
+        borderLeft: "2px solid gray",
+        borderTopLeftRadius: 5,
+        paddingLeft: 4,
       }}
     >
       <div
         style={{
-          display: "flex",
           alignItems: "center",
+          display: "flex",
           justifyContent: "space-between",
         }}
       >
@@ -180,9 +181,9 @@ function SpellProperties(props) {
 }
 
 function SpellConfirmation(props) {
+  const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
   const { currentWP, setCurrentWP, currentHP, setCurrentHP, setUndoAction } =
     useContext(ApplicationContext);
-  const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
   const [wpCost, setWpCost] = useState(0);
   const [hpCost, setHpCost] = useState(0);
   const [isInside, setInside] = useState(false);
@@ -247,7 +248,7 @@ function SpellConfirmation(props) {
           .
         </div>
         {isSpell && (
-          <div style={{ marginTop: 8, marginBottom: 8 }}>
+          <div style={{ marginBottom: 8, marginTop: 8 }}>
             Power Level{" "}
             <ButtonGroup size="small">
               <Button
@@ -272,7 +273,7 @@ function SpellConfirmation(props) {
           </div>
         )}
         {isLightningSpell && (
-          <div style={{ marginTop: 8, marginBottom: 8 }}>
+          <div style={{ marginBottom: 8, marginTop: 8 }}>
             <FormControlLabel
               value="bottom"
               control={
@@ -291,8 +292,8 @@ function SpellConfirmation(props) {
               you want to use <strong>Life</strong> to help fuel the spell?
             </Typography>
             <ValueEditor
-              defaultValue={0}
               callback={setHpCost}
+              defaultValue={0}
               min={0}
               max={currentHP}
             ></ValueEditor>

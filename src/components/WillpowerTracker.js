@@ -1,17 +1,4 @@
-import IsoIcon from "@mui/icons-material/Iso";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import UndoIcon from "@mui/icons-material/Undo";
-import {
-  AreaContainer,
-  FlexContainer,
-  normalize,
-  saveLocalStorage,
-} from "./utility";
-import { ApplicationContext } from "../ApplicationContext";
 import { useContext, useState } from "react";
-import Sizzle from "sizzle";
-import ValueEditor from "./ValueEditor";
-
 import {
   Dialog,
   DialogActions,
@@ -22,8 +9,21 @@ import {
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import IsoIcon from "@mui/icons-material/Iso";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import UndoIcon from "@mui/icons-material/Undo";
+import Sizzle from "sizzle";
 
-export default function WillpowerTracker(props) {
+import { ApplicationContext } from "../ApplicationContext";
+import ValueEditor from "./ValueEditor";
+import {
+  AreaContainer,
+  FlexContainer,
+  normalize,
+  saveLocalStorage,
+} from "./utility";
+
+export default function WillpowerTracker() {
   const {
     baseWP,
     currentWP,
@@ -74,9 +74,9 @@ export default function WillpowerTracker(props) {
           </AreaContainer>
           <AreaContainer>
             <IconButton
-              size="small"
               disabled={isUndoDisabled}
               onClick={() => setOpenUndoDialog(true)}
+              size="small"
             >
               <UndoIcon color={isUndoDisabled ? "disabled" : "primary"} />
             </IconButton>
@@ -177,9 +177,9 @@ function AttributeManager(props) {
       </FlexContainer>
       <FlexContainer>
         <LinearProgress
-          variant="determinate"
-          value={normalize(current, 0, base)}
           style={{ width: "80%" }}
+          value={normalize(current, 0, base)}
+          variant="determinate"
         />
         <span style={{ fontSize: 12 }}>{base}</span>
       </FlexContainer>
@@ -188,8 +188,8 @@ function AttributeManager(props) {
         <DialogTitle>Modify {attribute}?</DialogTitle>
         <DialogContent>
           <ValueEditor
-            id={`modify${attribute}-editor`}
             defaultValue={0}
+            id={`modify${attribute}-editor`}
           ></ValueEditor>
         </DialogContent>
         <DialogActions>
@@ -228,8 +228,8 @@ function EditBaseAttribute(props) {
     <FlexContainer>
       <div style={{ marginRight: 8 }}>Base {attribute}</div>
       <ValueEditor
-        id={`base${attribute}-editor`}
         defaultValue={defaultValue}
+        id={`base${attribute}-editor`}
       ></ValueEditor>
     </FlexContainer>
   );
