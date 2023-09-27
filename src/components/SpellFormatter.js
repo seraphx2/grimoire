@@ -196,12 +196,14 @@ function SpellConfirmation(props) {
     const setBaseWp = async () => {
       if (isAbility) setWpCost(3);
       if (isTrick) setWpCost(1);
-      if (isSpell) setWpCost(2);
+      if (isSpell) setWpCost(spellName === "Charge" ? 1 : 2);
     };
     setBaseWp();
-  }, [setWpCost, isAbility, isTrick, isSpell]);
+  }, [setWpCost, isAbility, isTrick, isSpell, spellName]);
 
   function toggleDialogAccept() {
+    toggleDialog();
+
     let newCurrentWP = 0;
     if (hasEnoughWP) {
       newCurrentWP = currentWP - actionCost;
@@ -221,13 +223,15 @@ function SpellConfirmation(props) {
     };
     setUndoAction(undoAction);
     saveLocalStorage("undoAction", undoAction);
-    toggleDialog();
   }
 
-  const isLightningSpell =
-    spellName === "Lightning Flash" ||
-    spellName === "Lightning Bolt" ||
-    spellName === "Thunderbolt";
+  const hasPowerLevel = !["Animal Whisperer", "Charge"].includes(spellName);
+
+  const isLightningSpell = [
+    "Lightning Flash",
+    "Lightning Bolt",
+    "Thunderbolt",
+  ].includes(spellName);
 
   return (
     <Box sx={{}}>
@@ -247,7 +251,17 @@ function SpellConfirmation(props) {
           )}
           .
         </div>
-        {isSpell && (
+        {spellName === "Charge" && (
+          <div>
+            <ValueEditor
+              callback={setWpCost}
+              defaultValue={1}
+              min={1}
+              max={10}
+            />
+          </div>
+        )}
+        {isSpell && hasPowerLevel && (
           <div style={{ marginBottom: 8, marginTop: 8 }}>
             Power Level{" "}
             <ButtonGroup size="small">
@@ -296,7 +310,7 @@ function SpellConfirmation(props) {
               defaultValue={0}
               min={0}
               max={currentHP}
-            ></ValueEditor>
+            />
           </div>
         )}
         <div>
