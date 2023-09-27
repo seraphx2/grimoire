@@ -270,7 +270,7 @@ function CastingTime(props) {
       <p>
         Unless otherwise stated, casting a spell always counts as an action in
         combat. However, there are reaction spells which are performed outside
-        your own turn. Unlike other reac- tions in combat, such as parrying and
+        your own turn. Unlike other reactions in combat, such as parrying and
         dodging, reaction spells do not replace your regular action in the
         round. This means that you can cast as many of them as you want, if you
         have enough WP. There are also rituals, which take a stretch of time or
