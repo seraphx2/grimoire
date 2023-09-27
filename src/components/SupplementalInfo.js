@@ -12,7 +12,15 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoIcon from "@mui/icons-material/Info";
+import IsoIcon from "@mui/icons-material/Iso";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import UndoIcon from "@mui/icons-material/Undo";
+
+import { FlexContainer } from "./utility";
 
 export default function SupplementalInfo() {
   const [selectedAccordion, setSelectedAccordion] = useState(null);
@@ -24,6 +32,7 @@ export default function SupplementalInfo() {
 
   return (
     <div>
+      <About id="About" selected={selectedAccordion} reset={resetAccordion} />
       <PreparedSpells
         id="PreparedSpells"
         selected={selectedAccordion}
@@ -79,10 +88,72 @@ function Section(props) {
   return (
     <Accordion expanded={id === selected} onChange={toggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <strong>{header}</strong>
+        {id === "About" && (
+          <FlexContainer>
+            <InfoIcon color="info" style={{ marginRight: 8 }} />
+            <strong>{header}</strong>
+          </FlexContainer>
+        )}
+        {!(id === "About") && <strong>{header}</strong>}
       </AccordionSummary>
       <AccordionDetails>{children}</AccordionDetails>
     </Accordion>
+  );
+}
+
+function About(props) {
+  const { id, selected, reset } = props;
+
+  return (
+    <Section id={id} selected={selected} reset={reset} header="ABOUT THIS APP">
+      <p>
+        This app is designed to be a WP/HP Tracker and Spell Manager for
+        wizards. At first glance the app is bare, but tapping{" "}
+        <EditIcon color="primary" style={{ fontSize: "1rem" }} /> in the bottom
+        right corner of the app will get things started.
+      </p>
+      <p>
+        First set your base WP and HP. <strong>Note:</strong> These values are
+        still meant to be derived from your character sheet, not calculated by
+        this app. Next select your spells on the left and then lastly mark your
+        prepared spells with the corresponding checkbox to the right. (The{" "}
+        <strong>Master Spellcaster</strong> Heroic Ability is assigned a slot in
+        the <strong>General Magic</strong> school).
+      </p>
+      <p>
+        Tapping <CloseIcon color="primary" style={{ fontSize: "1rem" }} /> in
+        the bottom right corner of the app will save your selections and bring
+        you back to the main screen that now displays your saved attribute
+        values and your list of spells. Tap{" "}
+        <RefreshIcon color="warning" style={{ fontSize: "1rem" }} /> next to
+        each attribute to fill/reset your current WP and HP. Tapping{" "}
+        <IsoIcon color="secondary" style={{ fontSize: "1rem" }} /> allows you to
+        add or subtract a customized amount from your current attribute values,
+        in case any forces outside of the app manager affects them, so that you
+        always have accurate current WP and HP.
+      </p>
+      <p>
+        Heroic Abilities, Tricks, and Spells can manipulate your WP and HP by
+        clicking Activate (for Heroic Abilities) or Cast (for Tricks and
+        Spells). Casting Spells will present you with the ability to modify the
+        WP cost based on Power Level, casting indoors for Lightning-based
+        spells, and if you don't have enough WP, setting the HP burned from
+        utilizing <strong>Power from the Body</strong>. If you do an Action in
+        error, you can undo the last Action you took by tapping{" "}
+        <UndoIcon color="primary" style={{ fontSize: "1rem" }} /> to regain any
+        lost WP or HP without having to remember the exact values.
+      </p>
+      <p>
+        Below, you will also see supplemental information concerning key rules
+        regarding spells. This is mainly explanatory topics from the Magic
+        section, but also pulling in information from other sections of the book
+        like Base Chance values. Spells on the main page will also have notes
+        about rules referenced in the spell (like Cold damage for Frost) or
+        Monster stats (for each of the Elementalism summons) directly under the
+        spell description. All of this is provided to reduce how often a player
+        has to open the actual book for these common, key rules.
+      </p>
+    </Section>
   );
 }
 
