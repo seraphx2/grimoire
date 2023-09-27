@@ -225,7 +225,7 @@ function SpellConfirmation(props) {
     saveLocalStorage("undoAction", undoAction);
   }
 
-  const hasPowerLevel = !["Animal Whisperer", "Charge"].includes(spellName);
+  const hasPowerLevel = !["Charge"].includes(spellName);
 
   const isLightningSpell = [
     "Lightning Flash",
