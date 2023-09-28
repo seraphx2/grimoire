@@ -20,6 +20,13 @@ export const AreaContainer = styled.div`
   padding: 8px;
 `;
 
+export const VisualGroupContainer = styled.div`
+  border-bottom-left-radius: 4px;
+  border-left: 2px solid gray;
+  border-top-left-radius: 4px;
+  padding-left: 4px;
+`;
+
 export const normalize = (value, min, max) =>
   ((value - min) * 100) / (max - min);
 
