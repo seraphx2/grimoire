@@ -9,7 +9,7 @@ import {
 
 import { ApplicationContext } from "../ApplicationContext";
 import SpellConfirmation from "./SpellConfirmation";
-import { FlexContainer } from "./utility";
+import { DarkTheme, FlexContainer } from "./utility";
 
 export default function SpellHeader(props) {
   const { inEditMode, preparedSpells } = useContext(ApplicationContext);
@@ -87,15 +87,17 @@ export default function SpellHeader(props) {
         </Button>
       </div>
 
-      <Dialog open={openModal}>
-        <SpellConfirmation
-          isAbility={isAbility}
-          isTrick={isTrick}
-          isSpell={isSpell}
-          spellName={spell.name}
-          toggleDialog={toggleDialog}
-        ></SpellConfirmation>
-      </Dialog>
+      <DarkTheme>
+        <Dialog open={openModal}>
+          <SpellConfirmation
+            isAbility={isAbility}
+            isTrick={isTrick}
+            isSpell={isSpell}
+            spellName={spell.name}
+            toggleDialog={toggleDialog}
+          ></SpellConfirmation>
+        </Dialog>
+      </DarkTheme>
     </FlexContainer>
   );
 }

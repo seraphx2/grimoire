@@ -1,84 +1,43 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  Box,
-  IconButton,
-  Fab,
-  Drawer,
-  Divider,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import MenuIcon from "@mui/icons-material/Menu";
 import Sizzle from "sizzle";
 import "./App.css";
 
 import { ApplicationContext } from "./ApplicationContext";
+import CharacterDrawer from "./components/CharacterDrawer";
 import Grimoire from "./components/Grimoire";
-import SupplementalInfo from "./components/SupplementalInfo";
+import SupplementalDrawer from "./components/SupplementalDrawer";
 import WillpowerTracker from "./components/WillpowerTracker";
-import {
-  AreaContainer,
-  DarkTheme,
-  FlexContainer,
-  saveLocalStorage,
-} from "./components/utility";
+import { AreaContainer, FlexContainer } from "./components/utility";
 
 export default function App() {
   const {
     inEditMode,
     setEditMode,
-    setSelectedSpells,
-    setPreparedSpells,
-    setBaseWP,
-    setCurrentWP,
-    setBaseHP,
-    setCurrentHP,
-    setUndoAction,
+    // setBaseWP,
+    // setCurrentWP,
+    // setBaseHP,
+    // setCurrentHP,
+    // setUndoAction,
+    getCharacter,
+    name,
+    isCharacterListEmpty,
+    loadCharacters,
+    saveEditScreenValues,
   } = useContext(ApplicationContext);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
+  const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
 
   useEffect(() => {
     const runEffect = async () => {
-      const selectedSpells = JSON.parse(
-        localStorage.getItem("selectedSpells") || JSON.stringify([])
-      );
-      setSelectedSpells(selectedSpells);
-
-      const preparedSpells = JSON.parse(
-        localStorage.getItem("preparedSpells") || JSON.stringify([])
-      );
-      setPreparedSpells(preparedSpells);
-
-      const baseWP = JSON.parse(parseInt(localStorage.getItem("baseWP")) || 0);
-      setBaseWP(baseWP);
-
-      const currentWP = JSON.parse(
-        parseInt(localStorage.getItem("currentWP")) || 0
-      );
-      setCurrentWP(currentWP);
-
-      const baseHP = JSON.parse(parseInt(localStorage.getItem("baseHP")) || 0);
-      setBaseHP(baseHP);
-
-      const currentHP = JSON.parse(
-        parseInt(localStorage.getItem("currentHP")) || 0
-      );
-      setCurrentHP(currentHP);
-
-      const undoAction = JSON.parse(localStorage.getItem("undoAction") || null);
-      setUndoAction(undoAction);
+      loadCharacters();
     };
     runEffect();
-  }, [
-    setSelectedSpells,
-    setPreparedSpells,
-    setBaseWP,
-    setCurrentWP,
-    setBaseHP,
-    setCurrentHP,
-    setUndoAction,
-  ]);
+  }, [loadCharacters]);
 
   function toggleEditMode() {
     window.scrollTo(0, 0);
@@ -87,23 +46,26 @@ export default function App() {
       const selectedSpells = Sizzle("[name=spell]:checked").map(
         (e, i) => e.value
       );
-      setSelectedSpells(selectedSpells);
-      saveLocalStorage("selectedSpells", selectedSpells);
+      // setSelectedSpells(selectedSpells);
+      // saveLocalStorage("selectedSpells", selectedSpells);
 
       const preparedSpells = Sizzle("[name=prepared]:checked").map(
         (e, i) => e.value
       );
-      setPreparedSpells(preparedSpells);
-      saveLocalStorage("preparedSpells", preparedSpells);
+      // setPreparedSpells(preparedSpells);
+      // saveLocalStorage("preparedSpells", preparedSpells);
 
       const baseWP = Sizzle("#baseWP-editor")[0].textContent;
-      setBaseWP(parseInt(baseWP));
-      saveLocalStorage("baseWP", baseWP);
+      // setBaseWP(parseInt(baseWP));
+      // saveLocalStorage("baseWP", baseWP);
 
       const baseHP = Sizzle("#baseHP-editor")[0].textContent;
-      setBaseHP(parseInt(baseHP));
-      saveLocalStorage("baseHP", baseHP);
+      // setBaseHP(parseInt(baseHP));
+      // saveLocalStorage("baseHP", baseHP);
+
+      saveEditScreenValues(baseHP, baseWP, preparedSpells, selectedSpells);
     }
+
     setEditMode(!inEditMode);
   }
 
@@ -111,59 +73,62 @@ export default function App() {
     <div className="App">
       <AreaContainer>
         <FlexContainer>
-          <div>Grimoire</div>
           <div>
-            <IconButton size="small" onClick={() => setOpenDrawer(true)}>
+            <IconButton
+              size="small"
+              onClick={() => setOpenCharacterDrawer(true)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <CharacterDrawer
+              open={openCharacterDrawer}
+              set={setOpenCharacterDrawer}
+            />
+          </div>
+          <div>{isCharacterListEmpty() ? "Grimoire" : name}</div>
+          <div>
+            <IconButton
+              size="small"
+              onClick={() => setOpenSupplementalDrawer(true)}
+            >
               <InfoIcon color="info" />
             </IconButton>
-
-            <DarkTheme>
-              <Drawer
-                anchor="right"
-                open={openDrawer}
-                style={{ fontSize: "0.9rem" }}
-              >
-                <FlexContainer>
-                  <Typography variant="h5" style={{ padding: 8 }}>
-                    Supplemental Info
-                  </Typography>
-                  <IconButton
-                    onClick={() => setOpenDrawer(false)}
-                    size="small"
-                    style={{ marginRight: 10 }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </FlexContainer>
-                <Divider />
-                <SupplementalInfo />
-              </Drawer>
-            </DarkTheme>
+            <SupplementalDrawer
+              open={openSupplementalDrawer}
+              set={setOpenSupplementalDrawer}
+            />
           </div>
         </FlexContainer>
       </AreaContainer>
 
-      <WillpowerTracker />
-      <Grimoire />
+      {isCharacterListEmpty() && <div>test</div>}
+      {!isCharacterListEmpty() && (
+        <div>
+          <WillpowerTracker />
+          <Grimoire />
+        </div>
+      )}
 
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          color="primary"
-          onClick={toggleEditMode}
-          size="small"
-          style={{
-            margin: 0,
-            top: "auto",
-            right: 16,
-            bottom: 16,
-            left: "auto",
-            position: "fixed",
-          }}
-        >
-          {!inEditMode && <EditIcon />}
-          {inEditMode && <CloseIcon />}
-        </Fab>
-      </Box>
+      {!isCharacterListEmpty() && (
+        <Box sx={{ "& > :not(style)": { m: 1 } }}>
+          <Fab
+            color="primary"
+            onClick={toggleEditMode}
+            size="small"
+            style={{
+              margin: 0,
+              top: "auto",
+              right: 16,
+              bottom: 16,
+              left: "auto",
+              position: "fixed",
+            }}
+          >
+            {!inEditMode && <EditIcon />}
+            {inEditMode && <CloseIcon />}
+          </Fab>
+        </Box>
+      )}
     </div>
   );
 }

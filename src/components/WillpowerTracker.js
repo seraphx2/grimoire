@@ -18,9 +18,9 @@ import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
 import {
   AreaContainer,
+  DarkTheme,
   FlexContainer,
   normalize,
-  saveLocalStorage,
 } from "./utility";
 
 export default function WillpowerTracker() {
@@ -29,11 +29,9 @@ export default function WillpowerTracker() {
     currentWP,
     baseHP,
     currentHP,
-    setCurrentWP,
-    setCurrentHP,
     inEditMode,
     undoAction,
-    setUndoAction,
+    updateCharacterValue,
   } = useContext(ApplicationContext);
   const [openUndoDialog, setOpenUndoDialog] = useState(false);
   const isUndoDisabled = undoAction === null;
@@ -43,12 +41,12 @@ export default function WillpowerTracker() {
   }
 
   function toggleUndoDialogAccept() {
-    setCurrentWP(currentWP + undoAction.wpSpent);
-    setCurrentHP(currentHP + undoAction.hpSpent);
-    saveLocalStorage("currentWP", currentWP + undoAction.wpSpent)
-    saveLocalStorage("currentHP", currentHP + undoAction.hpSpent)
-    localStorage.removeItem("undoAction");
-    setUndoAction(null);
+    updateCharacterValue("currentHP" + undoAction.hpSpent);
+    updateCharacterValue("currentWP" + undoAction.wpSpent);
+    //saveLocalStorage("currentWP", currentWP + undoAction.wpSpent);
+    //saveLocalStorage("currentHP", currentHP + undoAction.hpSpent);
+    //localStorage.removeItem("undoAction");
+    updateCharacterValue(undoAction, null);
     toggleUndoDialog();
   }
 
@@ -61,7 +59,7 @@ export default function WillpowerTracker() {
               attribute="WP"
               base={baseWP}
               current={currentWP}
-              setCurrent={setCurrentWP}
+              setCurrent={updateCharacterValue}
             ></AttributeManager>
           </AreaContainer>
           <AreaContainer>
@@ -69,7 +67,7 @@ export default function WillpowerTracker() {
               attribute="HP"
               base={baseHP}
               current={currentHP}
-              setCurrent={setCurrentHP}
+              setCurrent={updateCharacterValue}
             ></AttributeManager>
           </AreaContainer>
           <AreaContainer>
@@ -100,31 +98,33 @@ export default function WillpowerTracker() {
         </FlexContainer>
       )}
 
-      <Dialog open={openUndoDialog}>
-        <DialogTitle>Undo Action?</DialogTitle>
-        <DialogContent>
-          <div>
-            Do you wish to undo{" "}
-            {undoAction?.isAbility ? "activating" : "casting"}{" "}
-            <strong>{undoAction?.actionName}</strong>?
-          </div>
-          <div>
-            You will regain {undoAction?.wpSpent} WP
-            {undoAction?.hpSpent > 0 && (
-              <span> and {undoAction?.hpSpent} HP</span>
-            )}
-            .
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <IconButton onClick={toggleUndoDialog} size="small">
-            <CancelIcon color="error" />
-          </IconButton>
-          <IconButton onClick={toggleUndoDialogAccept} size="small">
-            <CheckCircleIcon color="success" />
-          </IconButton>
-        </DialogActions>
-      </Dialog>
+      <DarkTheme>
+        <Dialog open={openUndoDialog}>
+          <DialogTitle>Undo Action?</DialogTitle>
+          <DialogContent>
+            <div>
+              Do you wish to undo{" "}
+              {undoAction?.isAbility ? "activating" : "casting"}{" "}
+              <strong>{undoAction?.actionName}</strong>?
+            </div>
+            <div>
+              You will regain {undoAction?.wpSpent} WP
+              {undoAction?.hpSpent > 0 && (
+                <span> and {undoAction?.hpSpent} HP</span>
+              )}
+              .
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <IconButton onClick={toggleUndoDialog} size="small">
+              <CancelIcon color="error" />
+            </IconButton>
+            <IconButton onClick={toggleUndoDialogAccept} size="small">
+              <CheckCircleIcon color="success" />
+            </IconButton>
+          </DialogActions>
+        </Dialog>
+      </DarkTheme>
     </div>
   );
 }
@@ -141,8 +141,8 @@ function AttributeManager(props) {
   function toggleEditorDialogAccept() {
     const newCurrent =
       current + parseInt(Sizzle(`#modify${attribute}-editor`)[0].textContent);
-    setCurrent(newCurrent);
-    saveLocalStorage(`current${attribute}`, newCurrent);
+    setCurrent(`current${attribute}`, newCurrent);
+    //saveLocalStorage(`current${attribute}`, newCurrent);
     toggleEditorDialog();
   }
 
@@ -151,8 +151,8 @@ function AttributeManager(props) {
   }
 
   function toggleResetDialogAccept() {
-    setCurrent(base);
-    saveLocalStorage(`current${attribute}`, base);
+    setCurrent(`current${attribute}`, base);
+    //saveLocalStorage(`current${attribute}`, base);
     toggleResetDialog();
   }
 
@@ -184,39 +184,43 @@ function AttributeManager(props) {
         <span style={{ fontSize: 12 }}>{base}</span>
       </FlexContainer>
 
-      <Dialog open={openEditorModal}>
-        <DialogTitle>Modify {attribute}?</DialogTitle>
-        <DialogContent>
-          <ValueEditor
-            defaultValue={0}
-            id={`modify${attribute}-editor`}
-          ></ValueEditor>
-        </DialogContent>
-        <DialogActions>
-          <IconButton onClick={toggleEditorDialog} size="small">
-            <CancelIcon color="error" />
-          </IconButton>
-          <IconButton onClick={toggleEditorDialogAccept} size="small">
-            <CheckCircleIcon color="success" />
-          </IconButton>
-        </DialogActions>
-      </Dialog>
+      <DarkTheme>
+        <Dialog open={openEditorModal}>
+          <DialogTitle>Modify {attribute}?</DialogTitle>
+          <DialogContent>
+            <ValueEditor
+              defaultValue={0}
+              id={`modify${attribute}-editor`}
+            ></ValueEditor>
+          </DialogContent>
+          <DialogActions>
+            <IconButton onClick={toggleEditorDialog} size="small">
+              <CancelIcon color="error" />
+            </IconButton>
+            <IconButton onClick={toggleEditorDialogAccept} size="small">
+              <CheckCircleIcon color="success" />
+            </IconButton>
+          </DialogActions>
+        </Dialog>
+      </DarkTheme>
 
-      <Dialog open={openResetModal}>
-        <DialogTitle>Reset {attribute}?</DialogTitle>
-        <DialogContent>
-          This will reset your <strong>{attribute}</strong> to{" "}
-          <strong>{base}</strong>.
-        </DialogContent>
-        <DialogActions>
-          <IconButton onClick={toggleResetDialog} size="small">
-            <CancelIcon color="error" />
-          </IconButton>
-          <IconButton onClick={toggleResetDialogAccept} size="small">
-            <CheckCircleIcon color="success" />
-          </IconButton>
-        </DialogActions>
-      </Dialog>
+      <DarkTheme>
+        <Dialog open={openResetModal}>
+          <DialogTitle>Reset {attribute}?</DialogTitle>
+          <DialogContent>
+            This will reset your <strong>{attribute}</strong> to{" "}
+            <strong>{base}</strong>.
+          </DialogContent>
+          <DialogActions>
+            <IconButton onClick={toggleResetDialog} size="small">
+              <CancelIcon color="error" />
+            </IconButton>
+            <IconButton onClick={toggleResetDialogAccept} size="small">
+              <CheckCircleIcon color="success" />
+            </IconButton>
+          </DialogActions>
+        </Dialog>
+      </DarkTheme>
     </div>
   );
 }

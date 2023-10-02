@@ -27,10 +27,23 @@ export const VisualGroupContainer = styled.div`
   padding-left: 4px;
 `;
 
+export function sortByProperty(property) {
+  var sortOrder = 1;
+  if (property[0] === "-") {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+  return function (a, b) {
+    var result =
+      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
 export const normalize = (value, min, max) =>
   ((value - min) * 100) / (max - min);
 
-export const saveLocalStorage = (key: string, object: any) => {
+export const saveLocalStorage = (key, object) => {
   if (typeof object === "string") localStorage.setItem(key, object);
   if (typeof object === "number") localStorage.setItem(key, object.toString());
   if (typeof object === "object")
