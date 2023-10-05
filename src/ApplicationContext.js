@@ -47,8 +47,7 @@ const useApplicationContextStore = () => {
     isCharacterListEmpty,
     loadCharacter,
     loadCharacters,
-    saveEditScreenValues,
-    updateCharacterValue,
+    saveCharacter,
     updateSelectedCharacter,
   };
 
@@ -64,7 +63,7 @@ const useApplicationContextStore = () => {
       preparedSpells: [],
       selectedSpells: [],
       undoAction: null,
-    }
+    };
     characters.push(character);
 
     saveSelectedCharacterId(id);
@@ -74,33 +73,68 @@ const useApplicationContextStore = () => {
   }
 
   function getCharacter() {
-    return characters.filter((x) => x.id === selectedCharacterId)[0];
+    var character = characters.filter((x) => x.id === selectedCharacterId)[0];
+    var index = characters.indexOf(character);
+    return { index: index, character: character };
   }
 
   function isCharacterListEmpty() {
     return characters.length === 0;
   }
 
-  function saveCharacter() {
-    const index = characters.indexOf(getCharacter());
-    characters[index] = {
-      id: selectedCharacterId,
-      name: name,
-      baseHP: baseHP,
-      baseWP: baseWP,
-      currentHP: currentHP,
-      currentWP: currentWP,
-      preparedSpells: preparedSpells,
-      selectedSpells: selectedSpells,
-      undoAction: undoAction,
-    };
+  function saveCharacter(input) {
+    const { index, character } = getCharacter();
 
+    let properties = [];
+    if (Array.isArray(input)) properties = input;
+    else properties.push(input);
+
+    properties.forEach((property) => {
+      switch (property.name) {
+        case "name":
+          character.name = property.value;
+          setName(property.value);
+          break;
+        case "baseHP":
+          character.baseHP = property.value;
+          setBaseHP(property.value);
+          break;
+        case "baseWP":
+          character.baseWP = property.value;
+          setBaseWP(property.value);
+          break;
+        case "currentHP":
+          character.currentHP = property.value;
+          setCurrentHP(property.value);
+          break;
+        case "currentWP":
+          character.currentWP = property.value;
+          setCurrentWP(property.value);
+          break;
+        case "preparedSpells":
+          character.preparedSpells = property.value;
+          setPreparedSpells(property.value);
+          break;
+        case "selectedSpells":
+          character.selectedSpells = property.value;
+          setSelectedSpells(property.value);
+          break;
+        case "undoAction":
+          character.undoAction = property.value;
+          setUndoAction(property.value);
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    characters[index] = character;
+    setCharacters(characters);
     saveLocalStorage("characters", characters);
   }
 
   function loadCharacter(character) {
-    saveSelectedCharacterId(character.Id);
-
     setName(character.name);
     setBaseWP(character.baseWP);
     setCurrentWP(character.currentWP);
@@ -121,59 +155,17 @@ const useApplicationContextStore = () => {
       localStorage.getItem("selectedCharacterId") || JSON.stringify(null);
     setSelectedCharacterId(selectedCharacterId);
 
-    loadCharacter(getCharacter());
-  }
-
-  function saveEditScreenValues(
-    baseHP,
-    baseWP,
-    preparedSpells,
-    selectedSpells
-  ) {
-    setBaseHP(baseHP);
-    setBaseWP(baseWP);
-    setPreparedSpells(preparedSpells);
-    setSelectedSpells(selectedSpells);
-
-    saveCharacter();
+    if (selectedCharacterId !== null) {
+      const character = characters.filter(
+        (x) => x.id === selectedCharacterId
+      )[0];
+      loadCharacter(character);
+    }
   }
 
   function saveSelectedCharacterId(id) {
     setSelectedCharacterId(id);
     saveLocalStorage("selectedCharacterId", id);
-  }
-
-  function updateCharacterValue(property, value) {
-    switch (property) {
-      case "name":
-        setName(value);
-        break;
-      case "baseHP":
-        setBaseHP(value);
-        break;
-      case "baseWP":
-        setBaseWP(value);
-        break;
-      case "currentHP":
-        setCurrentHP(value);
-        break;
-      case "currentWP":
-        setCurrentWP(value);
-        break;
-      case "preparedSpells":
-        setPreparedSpells(value);
-        break;
-      case "selectedSpells":
-        setSelectedSpells(value);
-        break;
-      case "undoAction":
-        setUndoAction(value);
-        break;
-
-      default:
-        break;
-    }
-    saveCharacter();
   }
 
   function updateSelectedCharacter(id) {

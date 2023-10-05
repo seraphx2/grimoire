@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { Box, IconButton, Fab } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,21 +18,15 @@ export default function App() {
   const {
     inEditMode,
     setEditMode,
-    // setBaseWP,
-    // setCurrentWP,
-    // setBaseHP,
-    // setCurrentHP,
-    // setUndoAction,
-    getCharacter,
     name,
     isCharacterListEmpty,
     loadCharacters,
-    saveEditScreenValues,
+    saveCharacter,
   } = useContext(ApplicationContext);
   const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
   const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const runEffect = async () => {
       loadCharacters();
     };
@@ -43,27 +37,21 @@ export default function App() {
     window.scrollTo(0, 0);
 
     if (inEditMode) {
-      const selectedSpells = Sizzle("[name=spell]:checked").map(
-        (e, i) => e.value
-      );
-      // setSelectedSpells(selectedSpells);
-      // saveLocalStorage("selectedSpells", selectedSpells);
-
+      const baseHP = Sizzle("#baseHP-editor")[0].textContent;
+      const baseWP = Sizzle("#baseWP-editor")[0].textContent;
       const preparedSpells = Sizzle("[name=prepared]:checked").map(
         (e, i) => e.value
       );
-      // setPreparedSpells(preparedSpells);
-      // saveLocalStorage("preparedSpells", preparedSpells);
+      const selectedSpells = Sizzle("[name=spell]:checked").map(
+        (e, i) => e.value
+      );
 
-      const baseWP = Sizzle("#baseWP-editor")[0].textContent;
-      // setBaseWP(parseInt(baseWP));
-      // saveLocalStorage("baseWP", baseWP);
-
-      const baseHP = Sizzle("#baseHP-editor")[0].textContent;
-      // setBaseHP(parseInt(baseHP));
-      // saveLocalStorage("baseHP", baseHP);
-
-      saveEditScreenValues(baseHP, baseWP, preparedSpells, selectedSpells);
+      saveCharacter([
+        { name: "baseHp", value: baseHP },
+        { name: "baseWP", value: baseWP },
+        { name: "preparedSpells", value: preparedSpells },
+        { name: "selectedSpells", value: selectedSpells },
+      ]);
     }
 
     setEditMode(!inEditMode);
