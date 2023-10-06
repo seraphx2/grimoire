@@ -183,21 +183,23 @@ export default function App() {
 
       {!isCharacterListEmpty() && (
         <Box sx={{ "& > :not(style)": { m: 1 } }}>
-          {inEditMode && <Fab
-            color="error"
-            onClick={() => setEditMode(false)}
-            size="small"
-            style={{
-              margin: 0,
-              top: "auto",
-              right: 80,
-              bottom: 16,
-              left: "auto",
-              position: "fixed",
-            }}
-          >
-            <ClearIcon />
-          </Fab>}
+          {inEditMode && (
+            <Fab
+              color="error"
+              onClick={() => setEditMode(false)}
+              size="small"
+              style={{
+                margin: 0,
+                top: "auto",
+                right: 80,
+                bottom: 16,
+                left: "auto",
+                position: "fixed",
+              }}
+            >
+              <ClearIcon />
+            </Fab>
+          )}
           <Fab
             color="primary"
             onClick={toggleEditMode}
