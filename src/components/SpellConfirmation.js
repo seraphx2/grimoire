@@ -16,11 +16,10 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
-import { saveLocalStorage } from "./utility";
 
 export default function SpellConfirmation(props) {
   const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
-  const { currentWP, setCurrentWP, currentHP, setCurrentHP, setUndoAction } =
+  const { currentWP, currentHP, saveCharacter } =
     useContext(ApplicationContext);
   const [wpCost, setWpCost] = useState(0);
   const [hpCost, setHpCost] = useState(0);
@@ -47,11 +46,9 @@ export default function SpellConfirmation(props) {
       newCurrentWP = currentWP - actionCost;
     } else {
       let newCurrentHP = currentHP - hpCost;
-      setCurrentHP(newCurrentHP);
-      saveLocalStorage("currentHP", newCurrentHP);
+      saveCharacter({ name: "currentHP", value: newCurrentHP });
     }
-    setCurrentWP(newCurrentWP);
-    saveLocalStorage("currentWP", newCurrentWP);
+    saveCharacter({ name: "currentWP", value: newCurrentWP });
 
     const undoAction = {
       isAbility: isAbility,
@@ -59,8 +56,7 @@ export default function SpellConfirmation(props) {
       wpSpent: hasEnoughWP ? actionCost : currentWP,
       hpSpent: hpCost,
     };
-    setUndoAction(undoAction);
-    saveLocalStorage("undoAction", undoAction);
+    saveCharacter({ name: "undoAction", value: undoAction });
   }
 
   const hasPowerLevel = !["Charge"].includes(spellName);

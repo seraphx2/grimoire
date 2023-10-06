@@ -16,12 +16,7 @@ import Sizzle from "sizzle";
 
 import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
-import {
-  AreaContainer,
-  DarkTheme,
-  FlexContainer,
-  normalize,
-} from "./utility";
+import { AreaContainer, DarkTheme, FlexContainer, normalize } from "./utility";
 
 export default function WillpowerTracker() {
   const {
@@ -31,7 +26,7 @@ export default function WillpowerTracker() {
     currentHP,
     inEditMode,
     undoAction,
-    updateCharacterValue,
+    saveCharacter,
   } = useContext(ApplicationContext);
   const [openUndoDialog, setOpenUndoDialog] = useState(false);
   const isUndoDisabled = undoAction === null;
@@ -41,12 +36,11 @@ export default function WillpowerTracker() {
   }
 
   function toggleUndoDialogAccept() {
-    updateCharacterValue("currentHP" + undoAction.hpSpent);
-    updateCharacterValue("currentWP" + undoAction.wpSpent);
-    //saveLocalStorage("currentWP", currentWP + undoAction.wpSpent);
-    //saveLocalStorage("currentHP", currentHP + undoAction.hpSpent);
-    //localStorage.removeItem("undoAction");
-    updateCharacterValue(undoAction, null);
+    saveCharacter([
+      { name: "currentHP", value: currentHP + undoAction.hpSpent },
+      { name: "currentWP", value: currentWP + undoAction.wpSpent },
+      { name: "undoAction", value: null },
+    ]);
     toggleUndoDialog();
   }
 
@@ -59,7 +53,7 @@ export default function WillpowerTracker() {
               attribute="WP"
               base={baseWP}
               current={currentWP}
-              setCurrent={updateCharacterValue}
+              saveCharacter={saveCharacter}
             ></AttributeManager>
           </AreaContainer>
           <AreaContainer>
@@ -67,7 +61,7 @@ export default function WillpowerTracker() {
               attribute="HP"
               base={baseHP}
               current={currentHP}
-              setCurrent={updateCharacterValue}
+              saveCharacter={saveCharacter}
             ></AttributeManager>
           </AreaContainer>
           <AreaContainer>
@@ -130,7 +124,7 @@ export default function WillpowerTracker() {
 }
 
 function AttributeManager(props) {
-  const { attribute, base, current, setCurrent } = props;
+  const { attribute, base, current, saveCharacter } = props;
   const [openEditorModal, setOpenEditorModal] = useState(false);
   const [openResetModal, setOpenResetModal] = useState(false);
 
@@ -141,8 +135,7 @@ function AttributeManager(props) {
   function toggleEditorDialogAccept() {
     const newCurrent =
       current + parseInt(Sizzle(`#modify${attribute}-editor`)[0].textContent);
-    setCurrent(`current${attribute}`, newCurrent);
-    //saveLocalStorage(`current${attribute}`, newCurrent);
+    saveCharacter({ name: `current${attribute}`, value: newCurrent });
     toggleEditorDialog();
   }
 
@@ -151,8 +144,7 @@ function AttributeManager(props) {
   }
 
   function toggleResetDialogAccept() {
-    setCurrent(`current${attribute}`, base);
-    //saveLocalStorage(`current${attribute}`, base);
+    saveCharacter({ name: `current${attribute}`, value: base });
     toggleResetDialog();
   }
 

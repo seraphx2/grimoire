@@ -17,7 +17,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InfoIcon from "@mui/icons-material/Info";
 import IsoIcon from "@mui/icons-material/Iso";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 
 import { FlexContainer } from "./utility";
@@ -109,22 +111,31 @@ function About(props) {
       <p>
         This app is designed to be a WP/HP Tracker and Spell Manager for
         wizards. At first glance the app is bare, but tapping{" "}
-        <EditIcon color="primary" style={{ fontSize: "1rem" }} /> in the bottom
-        right corner of the app will get things started.
+        <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} /> in the top
+        left corner of the app will get things started. Once the drawer opens,
+        tap on <strong>Add Character</strong> and you will be prompted for a
+        character name. Anytime you want to switch Characters or Add a new one,
+        just tap <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} />.
       </p>
       <p>
-        First set your base WP and HP. <strong>Note:</strong> These values are
-        still meant to be derived from your character sheet, not calculated by
-        this app. Next select your spells on the left and then lastly mark your
-        prepared spells with the corresponding checkbox to the right. (The{" "}
+        Now that you have a Character added, you can begin editing your
+        Character details. Tap{" "}
+        <EditIcon color="primary" style={{ fontSize: "1rem" }} /> in the bottom
+        right corner of the screen to edit your selected Character. First, set
+        your base WP and HP. <strong>Note:</strong> These values are still meant
+        to be derived from your character sheet, not calculated by this app.
+        Next, select your spells on the left and then lastly mark your prepared
+        spells with the corresponding checkbox to the right. (The{" "}
         <strong>Master Spellcaster</strong> Heroic Ability is assigned a slot in
         the <strong>General Magic</strong> school).
       </p>
       <p>
-        Tapping <CloseIcon color="primary" style={{ fontSize: "1rem" }} /> in
-        the bottom right corner of the app will save your selections and bring
-        you back to the main screen that now displays your saved attribute
-        values and your list of spells. Tap{" "}
+        Tapping <SaveIcon color="primary" style={{ fontSize: "1rem" }} /> in the
+        bottom right corner of the app will save your selections and bring you
+        back to the main screen that now displays your saved attribute values
+        and your list of spells. (If you tap{" "}
+        <CloseIcon color="error" style={{ fontSize: "1rem" }} />, any changes
+        will be discarded.) Tap{" "}
         <RefreshIcon color="warning" style={{ fontSize: "1rem" }} /> next to
         each attribute to fill/reset your current WP and HP. Tapping{" "}
         <IsoIcon color="secondary" style={{ fontSize: "1rem" }} /> allows you to

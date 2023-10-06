@@ -33,6 +33,8 @@ const useApplicationContextStore = () => {
   return {
     inEditMode,
     setEditMode,
+    characters,
+
     name,
     baseHP,
     baseWP,
@@ -41,14 +43,13 @@ const useApplicationContextStore = () => {
     preparedSpells,
     selectedSpells,
     undoAction,
+
     addCharacter,
-    characters,
-    getCharacter,
+    deleteCharacter,
     isCharacterListEmpty,
     loadCharacter,
     loadCharacters,
     saveCharacter,
-    updateSelectedCharacter,
   };
 
   function addCharacter(name) {
@@ -70,6 +71,23 @@ const useApplicationContextStore = () => {
     saveLocalStorage("characters", characters);
 
     loadCharacter(character);
+  }
+
+  function deleteCharacter() {
+    const { index } = getCharacter();
+
+    characters.splice(index, 1);
+    saveCharacters(characters);
+
+    if (characters.length > 0) {
+      saveSelectedCharacterId(characters[0].id);
+      loadCharacter(characters[0]);
+    } else {
+      localStorage.removeItem("selectedCharacterId");
+      localStorage.removeItem("characters");
+    }
+
+    setEditMode(false);
   }
 
   function getCharacter() {
@@ -130,16 +148,16 @@ const useApplicationContextStore = () => {
     });
 
     characters[index] = character;
-    setCharacters(characters);
-    saveLocalStorage("characters", characters);
+    saveCharacters(characters);
   }
 
   function loadCharacter(character) {
+    saveSelectedCharacterId(character.id);
     setName(character.name);
-    setBaseWP(character.baseWP);
-    setCurrentWP(character.currentWP);
     setBaseHP(character.baseHP);
+    setBaseWP(character.baseWP);
     setCurrentHP(character.currentHP);
+    setCurrentWP(character.currentWP);
     setPreparedSpells(character.preparedSpells);
     setSelectedSpells(character.selectedSpells);
     setUndoAction(character.undoAction);
@@ -152,10 +170,10 @@ const useApplicationContextStore = () => {
     setCharacters(characters);
 
     const selectedCharacterId =
-      localStorage.getItem("selectedCharacterId") || JSON.stringify(null);
+      localStorage.getItem("selectedCharacterId") || "";
     setSelectedCharacterId(selectedCharacterId);
 
-    if (selectedCharacterId !== null) {
+    if (!!selectedCharacterId) {
       const character = characters.filter(
         (x) => x.id === selectedCharacterId
       )[0];
@@ -168,9 +186,9 @@ const useApplicationContextStore = () => {
     saveLocalStorage("selectedCharacterId", id);
   }
 
-  function updateSelectedCharacter(id) {
-    setSelectedCharacterId(id);
-    loadCharacter(id);
+  function saveCharacters(characters) {
+    setCharacters(characters);
+    saveLocalStorage("characters", characters);
   }
 };
 
