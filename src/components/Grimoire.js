@@ -5,7 +5,7 @@ export default function Grimoire(props) {
   return (
     <div>
       {spellsv12.map((x, i) => (
-        <School key={`${i}-${x.name}`} school={x}></School>
+        <School key={`${i}-${x.school}`} school={x}></School>
       ))}
     </div>
   );

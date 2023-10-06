@@ -1,109 +1,93 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Box,
   IconButton,
   Fab,
-  Drawer,
-  Divider,
-  Typography,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ClearIcon from "@mui/icons-material/Clear";
+import DeleteForever from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import SaveIcon from "@mui/icons-material/Save";
 import Sizzle from "sizzle";
 import "./App.css";
 
 import { ApplicationContext } from "./ApplicationContext";
+import CharacterDrawer from "./components/CharacterDrawer";
 import Grimoire from "./components/Grimoire";
-import SupplementalInfo from "./components/SupplementalInfo";
+import SupplementalDrawer from "./components/SupplementalDrawer";
 import WillpowerTracker from "./components/WillpowerTracker";
-import {
-  AreaContainer,
-  DarkTheme,
-  FlexContainer,
-  saveLocalStorage,
-} from "./components/utility";
+import { AreaContainer, DarkTheme, FlexContainer } from "./components/utility";
 
 export default function App() {
   const {
     inEditMode,
     setEditMode,
-    setSelectedSpells,
-    setPreparedSpells,
-    setBaseWP,
-    setCurrentWP,
-    setBaseHP,
-    setCurrentHP,
-    setUndoAction,
+    name,
+    isCharacterListEmpty,
+    deleteCharacter,
+    loadCharacters,
+    saveCharacter,
   } = useContext(ApplicationContext);
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
+  const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  useEffect(() => {
+  function toggleDeleteDialog() {
+    setOpenDeleteDialog(!openDeleteDialog);
+  }
+
+  function toggleDeleteDialogAccept() {
+    deleteCharacter();
+    toggleDeleteDialog();
+  }
+
+  useLayoutEffect(() => {
     const runEffect = async () => {
-      const selectedSpells = JSON.parse(
-        localStorage.getItem("selectedSpells") || JSON.stringify([])
-      );
-      setSelectedSpells(selectedSpells);
-
-      const preparedSpells = JSON.parse(
-        localStorage.getItem("preparedSpells") || JSON.stringify([])
-      );
-      setPreparedSpells(preparedSpells);
-
-      const baseWP = JSON.parse(parseInt(localStorage.getItem("baseWP")) || 0);
-      setBaseWP(baseWP);
-
-      const currentWP = JSON.parse(
-        parseInt(localStorage.getItem("currentWP")) || 0
-      );
-      setCurrentWP(currentWP);
-
-      const baseHP = JSON.parse(parseInt(localStorage.getItem("baseHP")) || 0);
-      setBaseHP(baseHP);
-
-      const currentHP = JSON.parse(
-        parseInt(localStorage.getItem("currentHP")) || 0
-      );
-      setCurrentHP(currentHP);
-
-      const undoAction = JSON.parse(localStorage.getItem("undoAction") || null);
-      setUndoAction(undoAction);
+      loadCharacters();
+      localStorage.removeItem("baseHP");
+      localStorage.removeItem("baseWP");
+      localStorage.removeItem("currentHP");
+      localStorage.removeItem("currentWP");
+      localStorage.removeItem("preparedSpells");
+      localStorage.removeItem("selectedSpells");
     };
     runEffect();
-  }, [
-    setSelectedSpells,
-    setPreparedSpells,
-    setBaseWP,
-    setCurrentWP,
-    setBaseHP,
-    setCurrentHP,
-    setUndoAction,
-  ]);
+    //eslint-disable-next-line
+  }, []);
 
   function toggleEditMode() {
     window.scrollTo(0, 0);
 
     if (inEditMode) {
-      const selectedSpells = Sizzle("[name=spell]:checked").map(
-        (e, i) => e.value
-      );
-      setSelectedSpells(selectedSpells);
-      saveLocalStorage("selectedSpells", selectedSpells);
-
+      const name = Sizzle("#name-editor")[0].value.trim();
+      const baseHP = parseInt(Sizzle("#baseHP-editor")[0].textContent);
+      const baseWP = parseInt(Sizzle("#baseWP-editor")[0].textContent);
       const preparedSpells = Sizzle("[name=prepared]:checked").map(
         (e, i) => e.value
       );
-      setPreparedSpells(preparedSpells);
-      saveLocalStorage("preparedSpells", preparedSpells);
+      const selectedSpells = Sizzle("[name=spell]:checked").map(
+        (e, i) => e.value
+      );
 
-      const baseWP = Sizzle("#baseWP-editor")[0].textContent;
-      setBaseWP(parseInt(baseWP));
-      saveLocalStorage("baseWP", baseWP);
-
-      const baseHP = Sizzle("#baseHP-editor")[0].textContent;
-      setBaseHP(parseInt(baseHP));
-      saveLocalStorage("baseHP", baseHP);
+      saveCharacter([
+        { name: "name", value: name },
+        { name: "baseHP", value: baseHP },
+        { name: "baseWP", value: baseWP },
+        { name: "preparedSpells", value: preparedSpells },
+        { name: "selectedSpells", value: selectedSpells },
+      ]);
     }
+
     setEditMode(!inEditMode);
   }
 
@@ -111,59 +95,127 @@ export default function App() {
     <div className="App">
       <AreaContainer>
         <FlexContainer>
-          <div>Grimoire</div>
-          <div>
-            <IconButton size="small" onClick={() => setOpenDrawer(true)}>
-              <InfoIcon color="info" />
-            </IconButton>
-
-            <DarkTheme>
-              <Drawer
-                anchor="right"
-                open={openDrawer}
-                style={{ fontSize: "0.9rem" }}
+          <FlexContainer>
+            {!inEditMode && (
+              <IconButton
+                size="small"
+                onClick={() => setOpenCharacterDrawer(true)}
               >
-                <FlexContainer>
-                  <Typography variant="h5" style={{ padding: 8 }}>
-                    Supplemental Info
-                  </Typography>
-                  <IconButton
-                    onClick={() => setOpenDrawer(false)}
-                    size="small"
-                    style={{ marginRight: 10 }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </FlexContainer>
-                <Divider />
-                <SupplementalInfo />
-              </Drawer>
-            </DarkTheme>
+                <MenuOpenIcon />
+              </IconButton>
+            )}
+            <CharacterDrawer
+              open={openCharacterDrawer}
+              set={setOpenCharacterDrawer}
+            />
+            {isCharacterListEmpty() ? (
+              "Create Character"
+            ) : (
+              <div>
+                {!inEditMode && <strong>{name}</strong>}
+                {inEditMode && (
+                  <div>
+                    <TextField
+                      id="name-editor"
+                      size="small"
+                      defaultValue={name}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </FlexContainer>
+          <div>
+            {!inEditMode && (
+              <IconButton
+                size="small"
+                onClick={() => setOpenSupplementalDrawer(true)}
+              >
+                <InfoIcon color="info" />
+              </IconButton>
+            )}
+            {inEditMode && (
+              <div>
+                <IconButton
+                  size="small"
+                  onClick={() => setOpenDeleteDialog(true)}
+                >
+                  <DeleteForever color="error" />
+                </IconButton>
+
+                <DarkTheme>
+                  <Dialog open={openDeleteDialog}>
+                    <DialogTitle>Undo Action?</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        Are you sure you want to delete <strong>{name}</strong>?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <IconButton onClick={toggleDeleteDialog} size="small">
+                        <CancelIcon color="error" />
+                      </IconButton>
+                      <IconButton
+                        onClick={toggleDeleteDialogAccept}
+                        size="small"
+                      >
+                        <CheckCircleIcon color="success" />
+                      </IconButton>
+                    </DialogActions>
+                  </Dialog>
+                </DarkTheme>
+              </div>
+            )}
+            <SupplementalDrawer
+              open={openSupplementalDrawer}
+              set={setOpenSupplementalDrawer}
+            />
           </div>
         </FlexContainer>
       </AreaContainer>
 
-      <WillpowerTracker />
-      <Grimoire />
+      {!isCharacterListEmpty() && (
+        <div>
+          <WillpowerTracker />
+          <Grimoire />
+        </div>
+      )}
 
-      <Box sx={{ "& > :not(style)": { m: 1 } }}>
-        <Fab
-          color="primary"
-          onClick={toggleEditMode}
-          size="small"
-          style={{
-            margin: 0,
-            top: "auto",
-            right: 16,
-            bottom: 16,
-            left: "auto",
-            position: "fixed",
-          }}
-        >
-          {!inEditMode && <EditIcon />}
-          {inEditMode && <CloseIcon />}
-        </Fab>
-      </Box>
+      {!isCharacterListEmpty() && (
+        <Box sx={{ "& > :not(style)": { m: 1 } }}>
+          {inEditMode && <Fab
+            color="error"
+            onClick={() => setEditMode(false)}
+            size="small"
+            style={{
+              margin: 0,
+              top: "auto",
+              right: 80,
+              bottom: 16,
+              left: "auto",
+              position: "fixed",
+            }}
+          >
+            <ClearIcon />
+          </Fab>}
+          <Fab
+            color="primary"
+            onClick={toggleEditMode}
+            size="small"
+            style={{
+              margin: 0,
+              top: "auto",
+              right: 16,
+              bottom: 16,
+              left: "auto",
+              position: "fixed",
+            }}
+          >
+            {!inEditMode && <EditIcon />}
+            {inEditMode && <SaveIcon />}
+          </Fab>
+        </Box>
+      )}
     </div>
   );
 }

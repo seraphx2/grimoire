@@ -34,7 +34,7 @@ export default function School(props) {
               color: "green",
               fontWeight: "bold",
               fontSize: "16pt",
-              "-webkit-text-stroke": "1px black",
+              WebkitTextStroke: "1px black",
             }}
           >
             {school.school}
