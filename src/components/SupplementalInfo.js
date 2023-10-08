@@ -11,6 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
@@ -108,6 +109,14 @@ function About(props) {
 
   return (
     <Section id={id} selected={selected} reset={reset} header="ABOUT THIS APP">
+      <Typography fontSize={14} color="info.main">
+        This app stores all saved data using the Local Storage provided by your
+        device. It runs exclusively on your device and never talks to the host
+        server except to retrieve and update the app. There are no external
+        connections made to any other service or tracking tools such as Google
+        Ads, Analytics, or Tag Manager (or similar services from any other
+        company).
+      </Typography>
       <p>
         This app is designed to be a WP/HP Tracker and Spell Manager for
         wizards. At first glance the app is bare, but tapping{" "}
