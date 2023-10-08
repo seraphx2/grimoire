@@ -37,6 +37,7 @@ export default function App() {
     deleteCharacter,
     loadCharacters,
     saveCharacter,
+    setVersion,
   } = useContext(ApplicationContext);
   const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
   const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
@@ -54,12 +55,9 @@ export default function App() {
   useLayoutEffect(() => {
     const runEffect = async () => {
       loadCharacters();
-      localStorage.removeItem("baseHP");
-      localStorage.removeItem("baseWP");
-      localStorage.removeItem("currentHP");
-      localStorage.removeItem("currentWP");
-      localStorage.removeItem("preparedSpells");
-      localStorage.removeItem("selectedSpells");
+      setVersion(
+        `${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`
+      );
     };
     runEffect();
     //eslint-disable-next-line
@@ -109,7 +107,7 @@ export default function App() {
               set={setOpenCharacterDrawer}
             />
             {isCharacterListEmpty() ? (
-              "Create Character"
+              <div>Create Character</div>
             ) : (
               <div>
                 {!inEditMode && <strong>{name}</strong>}

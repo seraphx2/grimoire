@@ -16,6 +16,8 @@ const ApplicationContextProvider = ({ children }) => {
 };
 
 const useApplicationContextStore = () => {
+  const [version, setVersion] = useState(false);
+
   const [inEditMode, setEditMode] = useState(false);
 
   const [characters, setCharacters] = useState([]);
@@ -31,6 +33,8 @@ const useApplicationContextStore = () => {
   const [undoAction, setUndoAction] = useState(null);
 
   return {
+    version,
+
     inEditMode,
     setEditMode,
     characters,
@@ -43,6 +47,7 @@ const useApplicationContextStore = () => {
     preparedSpells,
     selectedSpells,
     undoAction,
+    selectedCharacterId,
 
     addCharacter,
     deleteCharacter,
@@ -50,6 +55,8 @@ const useApplicationContextStore = () => {
     loadCharacter,
     loadCharacters,
     saveCharacter,
+    setImportedData,
+    setVersion,
   };
 
   function addCharacter(name) {
@@ -189,6 +196,13 @@ const useApplicationContextStore = () => {
   function saveCharacters(characters) {
     setCharacters(characters);
     saveLocalStorage("characters", characters);
+  }
+
+  function setImportedData(data) {
+    saveLocalStorage("selectedCharacterId", data.selectedCharacterId);
+    saveLocalStorage("characters", data.characters);
+
+    loadCharacters();
   }
 };
 
