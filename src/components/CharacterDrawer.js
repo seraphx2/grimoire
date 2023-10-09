@@ -31,7 +31,6 @@ export default function CharacterDrawer(props) {
   const { openDrawer, setDrawer, newCharacter } = props;
   const {
     version,
-    addCharacter,
     characters,
     isCharacterListEmpty,
     loadCharacter,
