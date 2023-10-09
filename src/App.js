@@ -10,6 +10,7 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -34,14 +35,36 @@ export default function App() {
     setEditMode,
     name,
     isCharacterListEmpty,
+    addCharacter,
     deleteCharacter,
     loadCharacters,
     saveCharacter,
     setVersion,
   } = useContext(ApplicationContext);
   const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
+  const [openCharacterDialog, setOpenCharacterDialog] = useState(false);
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
   const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  function toggleCharacterDialog() {
+    setOpenCharacterDialog(!openCharacterDialog);
+  }
+
+  function toggleCharacterDialogAccept() {
+    const characterName = Sizzle("#new-character-name")
+      .map((e, i) => e.value)[0]
+      .trim();
+
+    if (characterName === "") {
+      setIsNameEmpty(true);
+    } else {
+      setIsNameEmpty(false);
+      addCharacter(characterName);
+      setOpenCharacterDrawer(false);
+      toggleCharacterDialog();
+    }
+  }
 
   function toggleDeleteDialog() {
     setOpenDeleteDialog(!openDeleteDialog);
@@ -94,7 +117,7 @@ export default function App() {
       <AreaContainer>
         <FlexContainer>
           <FlexContainer>
-            {!inEditMode && (
+            {!inEditMode && !isCharacterListEmpty() && (
               <IconButton
                 size="small"
                 onClick={() => setOpenCharacterDrawer(true)}
@@ -102,13 +125,45 @@ export default function App() {
                 <MenuOpenIcon />
               </IconButton>
             )}
+            {!inEditMode && isCharacterListEmpty() && (
+              <IconButton
+                size="small"
+                onClick={() => setOpenCharacterDialog(true)}
+              >
+                <AddCircleIcon style={{ marginRight: 4 }} /> Create Character
+              </IconButton>
+            )}
             <CharacterDrawer
-              open={openCharacterDrawer}
-              set={setOpenCharacterDrawer}
+              openDrawer={openCharacterDrawer}
+              setDrawer={setOpenCharacterDrawer}
+              newCharacter={setOpenCharacterDialog}
             />
-            {isCharacterListEmpty() ? (
-              <div>Create Character</div>
-            ) : (
+            <DarkTheme>
+              <Dialog open={openCharacterDialog}>
+                <DialogTitle>Add Character</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    error={isNameEmpty}
+                    id="new-character-name"
+                    label="Character Name"
+                    size="small"
+                    style={{ marginTop: 16 }}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <IconButton onClick={toggleCharacterDialog} size="small">
+                    <CancelIcon color="error" />
+                  </IconButton>
+                  <IconButton
+                    onClick={toggleCharacterDialogAccept}
+                    size="small"
+                  >
+                    <CheckCircleIcon color="success" />
+                  </IconButton>
+                </DialogActions>
+              </Dialog>
+            </DarkTheme>
+            {!isCharacterListEmpty() && (
               <div>
                 {!inEditMode && <strong>{name}</strong>}
                 {inEditMode && (
