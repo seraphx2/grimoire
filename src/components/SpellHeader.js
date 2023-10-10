@@ -93,6 +93,7 @@ export default function SpellHeader(props) {
             isAbility={isAbility}
             isTrick={isTrick}
             isSpell={isSpell}
+            isUnprepared={!isPrepared}
             spellName={spell.name}
             toggleDialog={toggleDialog}
           ></SpellConfirmation>

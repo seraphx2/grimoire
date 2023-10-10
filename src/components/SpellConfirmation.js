@@ -18,7 +18,8 @@ import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
 
 export default function SpellConfirmation(props) {
-  const { isAbility, isTrick, isSpell, spellName, toggleDialog } = props;
+  const { isAbility, isTrick, isSpell, isUnprepared, spellName, toggleDialog } =
+    props;
   const { currentWP, currentHP, saveCharacter } =
     useContext(ApplicationContext);
   const [wpCost, setWpCost] = useState(0);
@@ -75,6 +76,11 @@ export default function SpellConfirmation(props) {
         {isSpell && "Cast Spell?"}
       </DialogTitle>
       <DialogContent>
+        {isUnprepared && (
+          <Typography color="info.main" fontSize={14} mb={1}>
+            This spell is unprepared and will require double the casting time.
+          </Typography>
+        )}
         <div>
           You currently have <strong>{currentWP} WP</strong>
           {!hasEnoughWP && !isAbility && (

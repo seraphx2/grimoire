@@ -152,7 +152,7 @@ function AttributeManager(props) {
     <div>
       <FlexContainer>
         <div style={{ marginRight: 16 }}>
-          {attribute}: {current}
+          <strong>{attribute}</strong> {current}
         </div>
         <div>
           <IconButton onClick={toggleEditorDialog} size="small">
@@ -226,6 +226,7 @@ function EditBaseAttribute(props) {
       <ValueEditor
         defaultValue={defaultValue}
         id={`base${attribute}-editor`}
+        min={0}
       ></ValueEditor>
     </FlexContainer>
   );
