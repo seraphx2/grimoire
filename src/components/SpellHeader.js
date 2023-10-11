@@ -6,17 +6,42 @@ import {
   FormControlLabel,
   Typography,
 } from "@mui/material";
+import Sizzle from "sizzle";
 
 import { ApplicationContext } from "../ApplicationContext";
 import SpellConfirmation from "./SpellConfirmation";
 import { DarkTheme, FlexContainer } from "./utility";
 
 export default function SpellHeader(props) {
-  const { inEditMode, preparedSpells } = useContext(ApplicationContext);
   const { isAbility, isTrick, isSpell, isSpellChecked, spell } = props;
+  const {
+    inEditMode,
+    spellPrereqs,
+    tempPreparedSpells,
+    tempSelectedSpells,
+    setTempPreparedSpells,
+    setTempSelectedSpells,
+  } = useContext(ApplicationContext);
   const [openModal, setOpenModal] = useState(false);
   const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
-  const isPrepared = preparedSpells.includes(spell.name);
+  const isPrepared = tempPreparedSpells.includes(spell.name);
+  const hasPrereq = checkPrereqs(spell.name, tempSelectedSpells, spellPrereqs);
+
+  if (!hasPrereq && isSpellSelected) setSpellSelected(false);
+
+  function selectSpell(e) {
+    if (e.target.name === "spell") setSpellSelected(!isSpellSelected);
+
+    const preparedSpells = Sizzle("[name=prepared]:checked").map(
+      (e, i) => e.value
+    );
+    setTempPreparedSpells(preparedSpells);
+
+    const selectedSpells = Sizzle("[name=spell]:checked").map(
+      (e, i) => e.value
+    );
+    setTempSelectedSpells(selectedSpells);
+  }
 
   function toggleDialog() {
     setOpenModal(!openModal);
@@ -29,15 +54,17 @@ export default function SpellHeader(props) {
           <FormControlLabel
             control={
               <Checkbox
-                defaultChecked={isSpellSelected}
+                //defaultChecked={isSpellSelected}
+                disabled={!hasPrereq}
                 name="spell"
                 size="small"
                 value={spell.name}
               />
             }
+            checked={isSpellSelected}
             label={spell.name}
             labelPlacement="end"
-            onChange={() => setSpellSelected(!isSpellSelected)}
+            onChange={(e) => selectSpell(e)}
             value="bottom"
           />
         </div>
@@ -46,7 +73,7 @@ export default function SpellHeader(props) {
             <FormControlLabel
               control={
                 <Checkbox
-                  defaultChecked={preparedSpells.includes(spell.name)}
+                  defaultChecked={isPrepared}
                   name="prepared"
                   size="small"
                   value={spell.name}
@@ -54,8 +81,14 @@ export default function SpellHeader(props) {
               }
               label="Prepare?"
               labelPlacement="start"
+              onChange={(e) => selectSpell(e)}
               value="bottom"
             />
+          </div>
+        )}
+        {isSpell && !isSpellSelected && (
+          <div>
+            {spell.prerequisites}
           </div>
         )}
       </FlexContainer>
@@ -101,4 +134,27 @@ export default function SpellHeader(props) {
       </DarkTheme>
     </FlexContainer>
   );
+}
+
+function checkPrereqs(spellName, selectedSpells, spellPrereqs) {
+  const prereqs = spellPrereqs[spellName];
+  if (prereqs === undefined) return true;
+
+  if (spellName === "Magic Shield") {
+    if (
+      selectedSpells.includes(prereqs[0] || selectedSpells.includes(prereqs[1]))
+    )
+      return true;
+  }
+
+  if (spellName === "Firestorm") {
+    if (
+      selectedSpells.includes(prereqs[0] && selectedSpells.includes(prereqs[1]))
+    )
+      return true;
+  }
+
+  if (selectedSpells.includes(prereqs[0])) return true;
+
+  return false;
 }

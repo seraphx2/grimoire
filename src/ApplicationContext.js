@@ -3,6 +3,8 @@ import { v4 as uuid } from "uuid";
 
 import { saveLocalStorage } from "./components/utility";
 
+import spellsv12 from "./data/spells-v1.2.json";
+
 const ApplicationContext = createContext();
 
 const ApplicationContextProvider = ({ children }) => {
@@ -20,6 +22,8 @@ const useApplicationContextStore = () => {
 
   const [inEditMode, setEditMode] = useState(false);
 
+  const [spells, setSpells] = useState([]);
+  const [spellPrereqs, setSpellPrereqs] = useState({});
   const [characters, setCharacters] = useState([]);
   const [selectedCharacterId, setSelectedCharacterId] = useState(null);
 
@@ -32,12 +36,19 @@ const useApplicationContextStore = () => {
   const [preparedSpells, setPreparedSpells] = useState([]);
   const [undoAction, setUndoAction] = useState(null);
 
+  const [tempPreparedSpells, setTempPreparedSpells] = useState([]);
+  const [tempSelectedSpells, setTempSelectedSpells] = useState([]);
+
   return {
     version,
 
     inEditMode,
     setEditMode,
+
+    spells,
+    spellPrereqs,
     characters,
+    selectedCharacterId,
 
     name,
     baseHP,
@@ -47,16 +58,22 @@ const useApplicationContextStore = () => {
     preparedSpells,
     selectedSpells,
     undoAction,
-    selectedCharacterId,
 
     addCharacter,
     deleteCharacter,
     isCharacterListEmpty,
     loadCharacter,
     loadCharacters,
+    loadSpells,
     saveCharacter,
     setImportedData,
     setVersion,
+
+    tempPreparedSpells,
+    tempSelectedSpells,
+    resetTempSpellBuckets,
+    setTempPreparedSpells,
+    setTempSelectedSpells,
   };
 
   function addCharacter(name) {
@@ -139,10 +156,12 @@ const useApplicationContextStore = () => {
         case "preparedSpells":
           character.preparedSpells = property.value;
           setPreparedSpells(property.value);
+          setTempPreparedSpells(property.value);
           break;
         case "selectedSpells":
           character.selectedSpells = property.value;
           setSelectedSpells(property.value);
+          setTempSelectedSpells(property.value);
           break;
         case "undoAction":
           character.undoAction = property.value;
@@ -168,6 +187,9 @@ const useApplicationContextStore = () => {
     setPreparedSpells(character.preparedSpells);
     setSelectedSpells(character.selectedSpells);
     setUndoAction(character.undoAction);
+
+    setTempPreparedSpells(character.preparedSpells);
+    setTempSelectedSpells(character.selectedSpells);
   }
 
   function loadCharacters() {
@@ -188,6 +210,11 @@ const useApplicationContextStore = () => {
     }
   }
 
+  function resetTempSpellBuckets() {
+    setTempPreparedSpells(preparedSpells);
+    setTempSelectedSpells(selectedSpells);
+  }
+
   function saveSelectedCharacterId(id) {
     setSelectedCharacterId(id);
     saveLocalStorage("selectedCharacterId", id);
@@ -203,6 +230,35 @@ const useApplicationContextStore = () => {
     saveLocalStorage("characters", data.characters);
 
     loadCharacters();
+  }
+
+  function loadSpells() {
+    setSpells(spellsv12);
+
+    let initializer = {};
+    const test = spellsv12
+      .map((school, i) =>
+        school.spells.map((s, i) => {
+          return {
+            n: s.name,
+            r: s.rank,
+            p: s.prerequisites,
+          };
+        })
+      )
+      .flat()
+      .filter((s) => s.r > 1)
+      .reduce((s, i) => {
+        let p = [];
+        if (Array.isArray(i.p)) p = i.p;
+        else p.push(i.p);
+
+        return {
+          ...s,
+          [`${i.n}`]: p,
+        };
+      }, initializer);
+    setSpellPrereqs(test);
   }
 };
 

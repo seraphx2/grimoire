@@ -6,8 +6,8 @@ import SpellHeader from "./SpellHeader";
 import SpellProperties from "./SpellProperties";
 
 export default function SpellFormatter(props) {
-  const { inEditMode } = useContext(ApplicationContext);
   const { isSpellChecked, spell, type } = props;
+  const { inEditMode } = useContext(ApplicationContext);
 
   const isAbility = type === "ability";
   const isTrick = type === "trick";
