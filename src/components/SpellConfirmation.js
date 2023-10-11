@@ -77,7 +77,7 @@ export default function SpellConfirmation(props) {
       </DialogTitle>
       <DialogContent>
         {isUnprepared && (
-          <Typography color="info.main" fontSize={14} mb={1}>
+          <Typography color="warning.main" fontSize={20} mb={1}>
             This spell is unprepared and will require double the casting time.
           </Typography>
         )}
@@ -141,9 +141,9 @@ export default function SpellConfirmation(props) {
         )}
         {!hasEnoughWP && !isAbility && (
           <div>
-            <Typography variant="body2" color="warning.main">
+            <Typography color="error.main">
               You need <strong>{actionCost} WP</strong> to cast this spell. Do
-              you want to use <strong>Life</strong> to help fuel the spell?
+              you want to use <strong>HP</strong> to help fuel the spell?
             </Typography>
             <ValueEditor
               callback={setHpCost}
@@ -153,7 +153,7 @@ export default function SpellConfirmation(props) {
             />
           </div>
         )}
-        <div>
+        <Typography color="info.main">
           Are you sure you want to {actionType} <strong>{spellName}</strong> for{" "}
           {(hasEnoughWP || isAbility) && <strong>{actionCost} WP</strong>}
           {!hasEnoughWP && !isAbility && (
@@ -162,7 +162,7 @@ export default function SpellConfirmation(props) {
             </span>
           )}
           ?
-        </div>
+        </Typography>
       </DialogContent>
       <DialogActions>
         <IconButton onClick={toggleDialog} size="small">
