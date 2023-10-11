@@ -12,12 +12,16 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import Sizzle from "sizzle";
 
 import { ApplicationContext } from "../ApplicationContext";
 import {
@@ -28,17 +32,39 @@ import {
 } from "./utility";
 
 export default function CharacterDrawer(props) {
-  const { openDrawer, setDrawer, newCharacter } = props;
+  const { openDrawer, setDrawer } = props;
   const {
     version,
     characters,
+    selectedCharacterId,
+    addCharacter,
     isCharacterListEmpty,
     loadCharacter,
-    selectedCharacterId,
     setImportedData,
   } = useContext(ApplicationContext);
 
+  const [openCharacterDialog, setOpenCharacterDialog] = useState(false);
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
   const [openFileErrorDialog, setOpenFileErrorDialog] = useState(false);
+
+  function toggleCharacterDialog() {
+    setOpenCharacterDialog(!openCharacterDialog);
+  }
+
+  function toggleCharacterDialogAccept() {
+    const characterName = Sizzle("#new-character-name")
+      .map((e, i) => e.value)[0]
+      .trim();
+
+    if (characterName === "") {
+      setIsNameEmpty(true);
+    } else {
+      setIsNameEmpty(false);
+      addCharacter(characterName);
+      setDrawer(false);
+      toggleCharacterDialog();
+    }
+  }
 
   function selectCharacter(character) {
     loadCharacter(character);
@@ -106,7 +132,7 @@ export default function CharacterDrawer(props) {
           </IconButton>
         </FlexContainer>
         <Divider />
-        <Button onClick={() => newCharacter(true)}>
+        <Button onClick={toggleCharacterDialog}>
           <AddCircleIcon style={{ marginRight: 4 }} /> Create Character
         </Button>
         <Divider />
@@ -160,6 +186,27 @@ export default function CharacterDrawer(props) {
             size="small"
           >
             <CancelIcon color="primary" />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={openCharacterDialog}>
+        <DialogTitle>Add Character</DialogTitle>
+        <DialogContent>
+          <TextField
+            error={isNameEmpty}
+            id="new-character-name"
+            label="Character Name"
+            size="small"
+            style={{ marginTop: 16 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <IconButton onClick={toggleCharacterDialog} size="small">
+            <CancelIcon color="error" />
+          </IconButton>
+          <IconButton onClick={toggleCharacterDialogAccept} size="small">
+            <CheckCircleIcon color="success" />
           </IconButton>
         </DialogActions>
       </Dialog>

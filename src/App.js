@@ -35,36 +35,14 @@ export default function App() {
     setEditMode,
     name,
     isCharacterListEmpty,
-    addCharacter,
     deleteCharacter,
     loadCharacters,
     saveCharacter,
     setVersion,
   } = useContext(ApplicationContext);
   const [openSupplementalDrawer, setOpenSupplementalDrawer] = useState(false);
-  const [openCharacterDialog, setOpenCharacterDialog] = useState(false);
-  const [isNameEmpty, setIsNameEmpty] = useState(false);
   const [openCharacterDrawer, setOpenCharacterDrawer] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-
-  function toggleCharacterDialog() {
-    setOpenCharacterDialog(!openCharacterDialog);
-  }
-
-  function toggleCharacterDialogAccept() {
-    const characterName = Sizzle("#new-character-name")
-      .map((e, i) => e.value)[0]
-      .trim();
-
-    if (characterName === "") {
-      setIsNameEmpty(true);
-    } else {
-      setIsNameEmpty(false);
-      addCharacter(characterName);
-      setOpenCharacterDrawer(false);
-      toggleCharacterDialog();
-    }
-  }
 
   function toggleDeleteDialog() {
     setOpenDeleteDialog(!openDeleteDialog);
@@ -128,7 +106,7 @@ export default function App() {
             {!inEditMode && isCharacterListEmpty() && (
               <IconButton
                 size="small"
-                onClick={() => setOpenCharacterDialog(true)}
+                onClick={() => setOpenCharacterDrawer(true)}
               >
                 <AddCircleIcon style={{ marginRight: 4 }} /> Create Character
               </IconButton>
@@ -136,33 +114,7 @@ export default function App() {
             <CharacterDrawer
               openDrawer={openCharacterDrawer}
               setDrawer={setOpenCharacterDrawer}
-              newCharacter={setOpenCharacterDialog}
             />
-            <DarkTheme>
-              <Dialog open={openCharacterDialog}>
-                <DialogTitle>Add Character</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    error={isNameEmpty}
-                    id="new-character-name"
-                    label="Character Name"
-                    size="small"
-                    style={{ marginTop: 16 }}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <IconButton onClick={toggleCharacterDialog} size="small">
-                    <CancelIcon color="error" />
-                  </IconButton>
-                  <IconButton
-                    onClick={toggleCharacterDialogAccept}
-                    size="small"
-                  >
-                    <CheckCircleIcon color="success" />
-                  </IconButton>
-                </DialogActions>
-              </Dialog>
-            </DarkTheme>
             {!isCharacterListEmpty() && (
               <div>
                 {!inEditMode && <strong>{name}</strong>}
