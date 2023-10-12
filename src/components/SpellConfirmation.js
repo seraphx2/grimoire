@@ -18,8 +18,14 @@ import { ApplicationContext } from "../ApplicationContext";
 import ValueEditor from "./ValueEditor";
 
 export default function SpellConfirmation(props) {
-  const { isAbility, isTrick, isSpell, isUnprepared, spellName, toggleDialog } =
-    props;
+  const {
+    isAbility,
+    isTrick,
+    isSpell,
+    isUnprepared,
+    spellName,
+    toggleConfirmationDialog,
+  } = props;
   const { currentWP, currentHP, saveCharacter } =
     useContext(ApplicationContext);
   const [wpCost, setWpCost] = useState(0);
@@ -40,7 +46,7 @@ export default function SpellConfirmation(props) {
   }, [setWpCost, isAbility, isTrick, isSpell, spellName]);
 
   function toggleDialogAccept() {
-    toggleDialog();
+    toggleConfirmationDialog();
 
     let newCurrentWP = 0;
     if (hasEnoughWP) {
@@ -165,7 +171,7 @@ export default function SpellConfirmation(props) {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <IconButton onClick={toggleDialog} size="small">
+        <IconButton onClick={toggleConfirmationDialog} size="small">
           <CancelIcon color="error" />
         </IconButton>
         <IconButton

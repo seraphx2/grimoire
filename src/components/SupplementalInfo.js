@@ -89,7 +89,7 @@ function Section(props) {
   }
 
   return (
-    <Accordion expanded={id === selected} onChange={toggle}>
+    <Accordion disableGutters expanded={id === selected} onChange={toggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         {id === "About" && (
           <FlexContainer>

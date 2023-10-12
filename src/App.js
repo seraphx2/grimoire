@@ -27,7 +27,12 @@ import CharacterDrawer from "./components/CharacterDrawer";
 import Grimoire from "./components/Grimoire";
 import SupplementalDrawer from "./components/SupplementalDrawer";
 import WillpowerTracker from "./components/WillpowerTracker";
-import { AreaContainer, DarkTheme, FlexContainer } from "./components/utility";
+import {
+  AreaContainer,
+  DarkTheme,
+  FlexContainer,
+  SquishedFlexContainer,
+} from "./components/utility";
 
 export default function App() {
   const {
@@ -94,7 +99,7 @@ export default function App() {
     <div className="App">
       <AreaContainer>
         <FlexContainer>
-          <FlexContainer>
+          <SquishedFlexContainer>
             {!inEditMode && !isCharacterListEmpty() && (
               <IconButton
                 size="small"
@@ -129,7 +134,7 @@ export default function App() {
                 )}
               </div>
             )}
-          </FlexContainer>
+          </SquishedFlexContainer>
           <div>
             {!inEditMode && (
               <IconButton

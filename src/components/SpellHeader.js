@@ -1,26 +1,26 @@
 import { useContext, useState } from "react";
-import {
-  Button,
-  Checkbox,
-  Dialog,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 
 import { ApplicationContext } from "../ApplicationContext";
-import SpellConfirmation from "./SpellConfirmation";
-import { DarkTheme, FlexContainer } from "./utility";
+import { FlexContainer, SquishedFlexContainer } from "./utility";
 
 export default function SpellHeader(props) {
   const { inEditMode, preparedSpells } = useContext(ApplicationContext);
-  const { isAbility, isTrick, isSpell, isSpellChecked, spell } = props;
-  const [openModal, setOpenModal] = useState(false);
-  const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
-  const isPrepared = preparedSpells.includes(spell.name);
+  const {
+    isAbility,
+    isSpell,
+    isPrepared,
+    isSpellChecked,
+    spell,
+    toggleConfirmationDialog,
+  } = props;
 
-  function toggleDialog() {
-    setOpenModal(!openModal);
+  function openConfirmationDialog(e) {
+    e.stopPropagation();
+    toggleConfirmationDialog();
   }
+
+  const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
 
   if (inEditMode)
     return (
@@ -63,7 +63,7 @@ export default function SpellHeader(props) {
 
   return (
     <FlexContainer>
-      <FlexContainer
+      <SquishedFlexContainer
         style={{
           fontSize: "12pt",
           fontWeight: "bold",
@@ -80,25 +80,12 @@ export default function SpellHeader(props) {
             {isPrepared ? " PREPARED" : "UNPREPARED"}
           </Typography>
         )}
-      </FlexContainer>
+      </SquishedFlexContainer>
       <div>
-        <Button onClick={toggleDialog} size="small">
+        <Button onClick={(e) => openConfirmationDialog(e)} size="small">
           {isAbility ? "Activate" : "Cast"}
         </Button>
       </div>
-
-      <DarkTheme>
-        <Dialog open={openModal}>
-          <SpellConfirmation
-            isAbility={isAbility}
-            isTrick={isTrick}
-            isSpell={isSpell}
-            isUnprepared={!isPrepared}
-            spellName={spell.name}
-            toggleDialog={toggleDialog}
-          ></SpellConfirmation>
-        </Dialog>
-      </DarkTheme>
     </FlexContainer>
   );
 }

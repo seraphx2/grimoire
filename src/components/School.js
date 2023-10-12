@@ -40,7 +40,7 @@ export default function School(props) {
             {school.school}
           </div>
           {hasAbilities && (
-            <div style={{ marginBottom: 32 }}>
+            <div>
               {abilities.map((x, i) => (
                 <SpellFormatter
                   key={`${i}-${x.name}`}
@@ -52,7 +52,7 @@ export default function School(props) {
             </div>
           )}
           {hasTricks && (
-            <div style={{ marginBottom: 32 }}>
+            <div>
               {tricks.map((x, i) => (
                 <SpellFormatter
                   key={`${i}-${x.name}`}

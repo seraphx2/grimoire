@@ -1,10 +1,12 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import styled from "@emotion/styled";
+import { Accordion } from "@mui/material";
 
 export const FlexContainer = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const SquishedFlexContainer = styled.div`
