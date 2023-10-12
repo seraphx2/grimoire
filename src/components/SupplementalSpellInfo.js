@@ -5,17 +5,35 @@ import { FlexContainer } from "./utility";
 
 export default function SupplementalSpellInfo(props) {
   const { spellName } = props;
-  const spellNames = [
-    "Frost",
-    "Gust Of Wind",
-    "Pillar",
-    "Gnome",
-    "Salamander",
-    "Sylph",
-    "Undine",
-  ];
+  let Content = null;
 
-  if (!spellNames.includes(spellName)) return null;
+  switch (spellName) {
+    case "Frost":
+      Content = <Frost />;
+      break;
+    case "Gust Of Wind":
+      Content = <GustOfWind />;
+      break;
+    case "Pillar":
+      Content = <Pillar />;
+      break;
+    case "Gnome":
+      Content = <Gnome />;
+      break;
+    case "Salamander":
+      Content = <Salamander />;
+      break;
+    case "Sylph":
+      Content = <Sylph />;
+      break;
+    case "Undine":
+      Content = <Undine />;
+      break;
+    default:
+      Content = null;
+  }
+
+  if (Content == null) return null;
 
   return (
     <Accordion style={{ backgroundColor: "transparent" }}>
@@ -23,33 +41,10 @@ export default function SupplementalSpellInfo(props) {
         <strong>Supplemental</strong>
       </AccordionSummary>
       <AccordionDetails>
-        <Content spellName={spellName}></Content>
+        {Content}
       </AccordionDetails>
     </Accordion>
   );
-}
-
-function Content(props) {
-  const { spellName } = props;
-
-  switch (spellName) {
-    case "Frost":
-      return <Frost />;
-    case "Gust Of Wind":
-      return <GustOfWind />;
-    case "Pillar":
-      return <Pillar />;
-    case "Gnome":
-      return <Gnome />;
-    case "Salamander":
-      return <Salamander />;
-    case "Sylph":
-      return <Sylph />;
-    case "Undine":
-      return <Undine />;
-    default:
-      return null;
-  }
 }
 
 function Section(props) {
