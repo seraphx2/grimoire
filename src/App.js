@@ -10,7 +10,6 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -112,9 +111,10 @@ export default function App() {
             {!inEditMode && isCharacterListEmpty() && (
               <IconButton
                 size="small"
+                style={{ color: "rgba(0, 0, 0, 0.87)" }}
                 onClick={() => setOpenCharacterDrawer(true)}
               >
-                <AddCircleIcon style={{ marginRight: 4 }} /> Create Character
+                <MenuOpenIcon style={{ marginRight: 4 }} /> Character Menu
               </IconButton>
             )}
             <CharacterDrawer
