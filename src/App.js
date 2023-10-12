@@ -33,6 +33,7 @@ import {
   FlexContainer,
   SquishedFlexContainer,
 } from "./components/utility";
+import { AboutContent } from "./components/SupplementalInfo";
 
 export default function App() {
   const {
@@ -189,6 +190,11 @@ export default function App() {
           <WillpowerTracker />
           <Grimoire />
         </div>
+      )}
+      {isCharacterListEmpty() && (
+        <AreaContainer>
+          <AboutContent />
+        </AreaContainer>
       )}
 
       {!isCharacterListEmpty() && (

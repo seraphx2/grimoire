@@ -23,7 +23,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import SaveIcon from "@mui/icons-material/Save";
 import UndoIcon from "@mui/icons-material/Undo";
 
-import { FlexContainer } from "./utility";
+import { SquishedFlexContainer } from "./utility";
 
 export default function SupplementalInfo() {
   const [selectedAccordion, setSelectedAccordion] = useState(null);
@@ -92,10 +92,10 @@ function Section(props) {
     <Accordion disableGutters expanded={id === selected} onChange={toggle}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         {id === "About" && (
-          <FlexContainer>
+          <SquishedFlexContainer>
             <InfoIcon color="info" style={{ marginRight: 8 }} />
             <strong>{header}</strong>
-          </FlexContainer>
+          </SquishedFlexContainer>
         )}
         {!(id === "About") && <strong>{header}</strong>}
       </AccordionSummary>
@@ -109,22 +109,31 @@ function About(props) {
 
   return (
     <Section id={id} selected={selected} reset={reset} header="ABOUT THIS APP">
+      <AboutContent />
+    </Section>
+  );
+}
+
+export function AboutContent() {
+  return (
+    <div>
       <Typography fontSize={14} color="info.main">
-        This app stores all saved data using the Local Storage provided by your
-        device. It runs exclusively on your device and never talks to the host
-        server except to retrieve and update the app. There are no external
-        connections made to any other service or tracking tools such as Google
-        Ads, Analytics, or Tag Manager (or similar services from any other
-        company).
+        <strong>Dragonbane Grimoire</strong> stores all saved data using the
+        Local Storage provided by your device. It runs exclusively on your
+        device and never talks to the host server except to retrieve and update
+        the app. There are no external connections made to any other service or
+        tracking tools such as Google Ads, Analytics, or Tag Manager (or similar
+        services from any other company).
       </Typography>
       <p>
-        This app is designed to be a WP/HP Tracker and Spell Manager for
-        wizards. At first glance the app is bare, but tapping{" "}
-        <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} /> in the top
-        left corner of the app will get things started. Once the drawer opens,
-        tap on <strong>Add Character</strong> and you will be prompted for a
-        character name. Anytime you want to switch Characters or Add a new one,
-        just tap <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} />.
+        <strong>Dragonbane Grimoire</strong> is designed to be a WP/HP Tracker
+        and Spell Manager for wizards. At first glance the app is bare, but
+        tapping <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} /> in
+        the top left corner of the app will get things started. Once the drawer
+        opens, tap on <strong>Add Character</strong> and you will be prompted
+        for a character name. Anytime you want to switch Characters or Add a new
+        one, just tap{" "}
+        <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} />.
       </p>
       <p>
         Now that you have a Character added, you can begin editing your
@@ -173,7 +182,7 @@ function About(props) {
         spell description. All of this is provided to reduce how often a player
         has to open the actual book for these common, key rules.
       </p>
-    </Section>
+    </div>
   );
 }
 
