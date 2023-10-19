@@ -82,7 +82,7 @@ export default function SpellConfirmation(props) {
         {isSpell && "Cast Spell?"}
       </DialogTitle>
       <DialogContent>
-        {isUnprepared && (
+        {isUnprepared && isSpell && (
           <Typography color="warning.main" fontSize={20} mb={1}>
             This spell is unprepared and will require double the casting time.
           </Typography>
