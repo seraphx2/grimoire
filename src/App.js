@@ -42,6 +42,8 @@ export default function App() {
     isCharacterListEmpty,
     deleteCharacter,
     loadCharacters,
+    loadSpells,
+    resetTempSpellBuckets,
     saveCharacter,
     setVersion,
   } = useContext(ApplicationContext);
@@ -60,6 +62,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     const runEffect = async () => {
+      loadSpells();
       loadCharacters();
       setVersion(
         `${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`
@@ -93,6 +96,11 @@ export default function App() {
     }
 
     setEditMode(!inEditMode);
+  }
+
+  function cancelEditMode() {
+    setEditMode(false);
+    resetTempSpellBuckets();
   }
 
   return (
@@ -202,7 +210,7 @@ export default function App() {
           {inEditMode && (
             <Fab
               color="error"
-              onClick={() => setEditMode(false)}
+              onClick={cancelEditMode}
               size="small"
               style={{
                 margin: 0,
