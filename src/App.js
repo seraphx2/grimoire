@@ -21,6 +21,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import Sizzle from "sizzle";
 import "./App.css";
 
+import { AboutContent } from "./components/SupplementalInfo";
 import { ApplicationContext } from "./ApplicationContext";
 import CharacterDrawer from "./components/CharacterDrawer";
 import Grimoire from "./components/Grimoire";
@@ -32,7 +33,6 @@ import {
   FlexContainer,
   SquishedFlexContainer,
 } from "./components/utility";
-import { AboutContent } from "./components/SupplementalInfo";
 
 export default function App() {
   const {

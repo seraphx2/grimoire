@@ -42,6 +42,7 @@ const useApplicationContextStore = () => {
 
   return {
     version,
+    setVersion,
 
     inEditMode,
     setEditMode,
@@ -68,13 +69,14 @@ const useApplicationContextStore = () => {
     loadSpells,
     saveCharacter,
     setImportedData,
-    setVersion,
 
     tempPreparedSpells,
     tempSelectedSpells,
     resetTempSpellBuckets,
     setTempPreparedSpells,
     setTempSelectedSpells,
+
+    pruneTempSelectedSpells,
   };
 
   function addCharacter(name) {
@@ -157,12 +159,12 @@ const useApplicationContextStore = () => {
         case "preparedSpells":
           character.preparedSpells = property.value;
           setPreparedSpells(property.value);
-          //setTempPreparedSpells(property.value);
+          setTempPreparedSpells(property.value);
           break;
         case "selectedSpells":
           character.selectedSpells = property.value;
           setSelectedSpells(property.value);
-          //setTempSelectedSpells(property.value);
+          setTempSelectedSpells(property.value);
           break;
         case "undoAction":
           character.undoAction = property.value;
@@ -237,7 +239,7 @@ const useApplicationContextStore = () => {
     setSpells(spellsv12);
 
     let initializer = {};
-    const test = spellsv12
+    const prereqs = spellsv12
       .map((school, i) =>
         school.spells.map((s, i) => {
           return {
@@ -259,8 +261,39 @@ const useApplicationContextStore = () => {
           [`${i.n}`]: p,
         };
       }, initializer);
-    setSpellPrereqs(test);
+    setSpellPrereqs(prereqs);
+  }
+
+  function pruneTempSelectedSpells(spellName, isChecked, selectedSpells) {
+    if (!isChecked) updatePrereqs(spellName, spellPrereqs, selectedSpells);
+    setTempSelectedSpells(selectedSpells);
+    setSelectedSpells(selectedSpells);
   }
 };
+
+Object.filter = (obj, predicate) =>
+  Object.fromEntries(Object.entries(obj).filter(predicate));
+
+function isEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function updatePrereqs(spellName, prereqs, selectedSpells, levelIndex = 0) {
+  var child = Object.filter(prereqs, (x) => x[1].includes(spellName));
+  if (isEmpty(child)) return;
+  var instanceIndex = levelIndex;
+  if (child)
+    updatePrereqs(Object.keys(child)[0], prereqs, selectedSpells, levelIndex++);
+  if (instanceIndex > 0) {
+    var index = selectedSpells.indexOf(spellName);
+    selectedSpells.splice(index, 1);
+  }
+}
 
 export { ApplicationContext, ApplicationContextProvider };

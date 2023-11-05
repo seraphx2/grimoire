@@ -5,8 +5,8 @@ import SpellFormatter from "./SpellFormatter";
 import { AreaContainer } from "./utility";
 
 export default function School(props) {
-  const { inEditMode, selectedSpells } = useContext(ApplicationContext);
   const { school } = props;
+  const { inEditMode, selectedSpells } = useContext(ApplicationContext);
 
   const abilities =
     school.abilities?.filter(

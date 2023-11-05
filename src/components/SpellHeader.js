@@ -11,15 +11,16 @@ export default function SpellHeader(props) {
     isSpell,
     isSpellChecked,
     spell,
+    tempPreparedSpells,
+    tempSelectedSpells,
     toggleConfirmationDialog,
   } = props;
   const {
     inEditMode,
     spellPrereqs,
-    tempPreparedSpells,
-    tempSelectedSpells,
     setTempPreparedSpells,
     setTempSelectedSpells,
+    pruneTempSelectedSpells,
   } = useContext(ApplicationContext);
   const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
   const isPrepared = tempPreparedSpells.includes(spell.name);
@@ -43,7 +44,10 @@ export default function SpellHeader(props) {
     const selectedSpells = Sizzle("[name=spell]:checked").map(
       (e, i) => e.value
     );
-    setTempSelectedSpells(selectedSpells);
+    console.log(selectedSpells);
+    //if (!e.checked) updatePrereqs(e.target.value, spellPrereqs, selectedSpells);
+    //setTempSelectedSpells(selectedSpells);
+    pruneTempSelectedSpells(e.target.value, e.target.checked, selectedSpells);
   }
 
   if (inEditMode)
@@ -64,7 +68,6 @@ export default function SpellHeader(props) {
             label={spell.name}
             labelPlacement="end"
             onChange={(e) => selectSpell(e)}
-            value="bottom"
           />
         </div>
         {isSpell && isSpellSelected && (
@@ -80,10 +83,12 @@ export default function SpellHeader(props) {
               }
               label="Prepare?"
               labelPlacement="start"
-              onChange={(e) => selectSpell(e)} // selectPrepared?
-              value="bottom"
+              onChange={(e) => selectSpell(e)}
             />
           </div>
+        )}
+        {isSpell && !isSpellSelected && spell.rank > 1 && (
+          <div>{spell.prerequisites}</div>
         )}
       </FlexContainer>
     );
@@ -123,16 +128,20 @@ function checkPrereqs(spellName, selectedSpells, spellPrereqs) {
 
   if (spellName === "Magic Shield") {
     if (
-      selectedSpells.includes(prereqs[0] || selectedSpells.includes(prereqs[1]))
+      selectedSpells.includes(prereqs[0]) ||
+      selectedSpells.includes(prereqs[1])
     )
       return true;
+    else return false;
   }
 
   if (spellName === "Firestorm") {
     if (
-      selectedSpells.includes(prereqs[0] && selectedSpells.includes(prereqs[1]))
+      selectedSpells.includes(prereqs[0]) &&
+      selectedSpells.includes(prereqs[1])
     )
       return true;
+    else return false;
   }
 
   if (selectedSpells.includes(prereqs[0])) return true;

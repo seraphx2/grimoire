@@ -35,10 +35,11 @@ const accordionDetails = css`
 `;
 
 export default function SpellFormatter(props) {
-  const { inEditMode, preparedSpells } = useContext(ApplicationContext);
   const { isSpellChecked, spell, type } = props;
+  const { inEditMode, preparedSpells, tempPreparedSpells, tempSelectedSpells } =
+    useContext(ApplicationContext);
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
-
+  //console.log(tempSelectedSpells);
   const isAbility = type === "ability";
   const isTrick = type === "trick";
   const isSpell = type === "spell";
@@ -55,9 +56,10 @@ export default function SpellFormatter(props) {
           isAbility={isAbility}
           isTrick={isTrick}
           isSpell={isSpell}
-          isPrepared={isPrepared}
           isSpellChecked={isSpellChecked}
           spell={spell}
+          tempPreparedSpells={tempPreparedSpells}
+          tempSelectedSpells={tempSelectedSpells}
           toggleConfirmationDialog={toggleConfirmationDialog}
         />
       )}
@@ -71,9 +73,10 @@ export default function SpellFormatter(props) {
               isAbility={isAbility}
               isTrick={isTrick}
               isSpell={isSpell}
-              isPrepared={isPrepared}
               isSpellChecked={isSpellChecked}
               spell={spell}
+              tempPreparedSpells={tempPreparedSpells}
+              tempSelectedSpells={tempSelectedSpells}
               toggleConfirmationDialog={toggleConfirmationDialog}
             />
           </AccordionSummary>
@@ -94,6 +97,8 @@ export default function SpellFormatter(props) {
             isSpell={isSpell}
             isUnprepared={!isPrepared}
             spellName={spell.name}
+            tempPreparedSpells={tempPreparedSpells}
+            tempSelectedSpells={tempSelectedSpells}
             toggleConfirmationDialog={toggleConfirmationDialog}
           ></SpellConfirmation>
         </Dialog>
