@@ -38,7 +38,6 @@ export default function SpellHeader(props) {
             label={spell.name}
             labelPlacement="end"
             onChange={() => setSpellSelected(!isSpellSelected)}
-            value="bottom"
           />
         </div>
         {isSpell && isSpellSelected && (
@@ -54,7 +53,6 @@ export default function SpellHeader(props) {
               }
               label="Prepare?"
               labelPlacement="start"
-              value="bottom"
             />
           </div>
         )}

@@ -75,7 +75,7 @@ export default function SpellConfirmation(props) {
   ].includes(spellName);
 
   return (
-    <Box sx={{}}>
+    <Box>
       <DialogTitle id="alert-dialog-title">
         {isAbility && "Activate Ability?"}
         {isTrick && "Cast Trick?"}
@@ -154,6 +154,7 @@ export default function SpellConfirmation(props) {
             <ValueEditor
               callback={setHpCost}
               defaultValue={0}
+              dieTypes={[4, 6, 8, 10, 12, 20]}
               min={0}
               max={currentHP}
             />

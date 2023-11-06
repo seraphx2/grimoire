@@ -22,8 +22,10 @@ import Sizzle from "sizzle";
 import "./App.css";
 
 import { ApplicationContext } from "./ApplicationContext";
+import { AboutContent } from "./components/SupplementalInfo";
 import CharacterDrawer from "./components/CharacterDrawer";
 import Grimoire from "./components/Grimoire";
+import RestTracker from "./components/RestTracker";
 import SupplementalDrawer from "./components/SupplementalDrawer";
 import WillpowerTracker from "./components/WillpowerTracker";
 import {
@@ -32,7 +34,6 @@ import {
   FlexContainer,
   SquishedFlexContainer,
 } from "./components/utility";
-import { AboutContent } from "./components/SupplementalInfo";
 
 export default function App() {
   const {
@@ -187,6 +188,7 @@ export default function App() {
 
       {!isCharacterListEmpty() && (
         <div>
+          {!inEditMode && <RestTracker />}
           <WillpowerTracker />
           <Grimoire />
         </div>

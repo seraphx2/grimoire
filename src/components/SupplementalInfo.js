@@ -36,6 +36,11 @@ export default function SupplementalInfo() {
   return (
     <div>
       <About id="About" selected={selectedAccordion} reset={resetAccordion} />
+      <CastingSpells
+        id="CastingSpells"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
       <PreparedSpells
         id="PreparedSpells"
         selected={selectedAccordion}
@@ -183,6 +188,23 @@ export function AboutContent() {
         has to open the actual book for these common, key rules.
       </p>
     </div>
+  );
+}
+
+function CastingSpells(props) {
+  const { id, selected, reset } = props;
+
+  return (
+    <Section id={id} selected={selected} reset={reset} header="CASTING SPELLS">
+      <p>
+        To cast a spell you must spend Willpower Points (WP) and roll against
+        your skill level in the relevant school. Any school can be used to cast
+        general spells. If the roll succeeds, the spell has the intended effect,
+        as per its description. Otherwise, it has no effect. You can push the
+        roll if this optional rule is used. Magic tricks succeed auto- matically
+        and always cost 1 WP.
+      </p>
+    </Section>
   );
 }
 

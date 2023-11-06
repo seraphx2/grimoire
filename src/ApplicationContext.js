@@ -28,6 +28,8 @@ const useApplicationContextStore = () => {
   const [baseWP, setBaseWP] = useState(0);
   const [currentHP, setCurrentHP] = useState(0);
   const [currentWP, setCurrentWP] = useState(0);
+  const [usedRoundRest, setUsedRoundRest] = useState(false);
+  const [usedStretchRest, setUsedStretchRest] = useState(false);
   const [selectedSpells, setSelectedSpells] = useState([]);
   const [preparedSpells, setPreparedSpells] = useState([]);
   const [undoAction, setUndoAction] = useState(null);
@@ -44,6 +46,8 @@ const useApplicationContextStore = () => {
     baseWP,
     currentHP,
     currentWP,
+    usedRoundRest,
+    usedStretchRest,
     preparedSpells,
     selectedSpells,
     undoAction,
@@ -68,6 +72,8 @@ const useApplicationContextStore = () => {
       currentHP: 0,
       baseWP: 0,
       currentWP: 0,
+      usedRoundRest: false,
+      usedStretchRest: false,
       preparedSpells: [],
       selectedSpells: [],
       undoAction: null,
@@ -136,6 +142,14 @@ const useApplicationContextStore = () => {
           character.currentWP = property.value;
           setCurrentWP(property.value);
           break;
+        case "usedRoundRest":
+          character.usedRoundRest = property.value;
+          setUsedRoundRest(property.value);
+          break;
+        case "usedStretchRest":
+          character.usedStretchRest = property.value;
+          setUsedStretchRest(property.value);
+          break;
         case "preparedSpells":
           character.preparedSpells = property.value;
           setPreparedSpells(property.value);
@@ -165,6 +179,8 @@ const useApplicationContextStore = () => {
     setBaseWP(character.baseWP);
     setCurrentHP(character.currentHP);
     setCurrentWP(character.currentWP);
+    setUsedRoundRest(character.usedRoundRest);
+    setUsedStretchRest(character.usedStretchRest);
     setPreparedSpells(character.preparedSpells);
     setSelectedSpells(character.selectedSpells);
     setUndoAction(character.undoAction);
