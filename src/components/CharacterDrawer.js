@@ -35,6 +35,7 @@ export default function CharacterDrawer(props) {
   const { openDrawer, setDrawer } = props;
   const {
     version,
+    acknowledgedVersion,
     characters,
     selectedCharacterId,
     addCharacter,
@@ -75,6 +76,7 @@ export default function CharacterDrawer(props) {
     const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
       JSON.stringify({
         version: version,
+        acknowledgedVersion: acknowledgedVersion,
         selectedCharacterId: selectedCharacterId,
         characters: characters,
       })
@@ -107,6 +109,7 @@ export default function CharacterDrawer(props) {
 
       if (
         data.version === undefined ||
+        data.acknowledgedVersion === undefined ||
         data.selectedCharacterId === undefined ||
         data.characters === undefined
       )

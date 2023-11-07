@@ -16,7 +16,8 @@ const ApplicationContextProvider = ({ children }) => {
 };
 
 const useApplicationContextStore = () => {
-  const [version, setVersion] = useState(false);
+  const [version, setVersion] = useState("");
+  const [acknowledgedVersion, setAcknowledgedVersion] = useState("");
 
   const [inEditMode, setEditMode] = useState(false);
 
@@ -36,6 +37,9 @@ const useApplicationContextStore = () => {
 
   return {
     version,
+    acknowledgedVersion,
+    saveAcknowledgedVersion,
+    loadGlobalMessagingStatus,
 
     inEditMode,
     setEditMode,
@@ -62,6 +66,11 @@ const useApplicationContextStore = () => {
     setImportedData,
     setVersion,
   };
+
+  function saveAcknowledgedVersion() {
+    setAcknowledgedVersion(version);
+    saveLocalStorage("acknowledgedVersion", version);
+  }
 
   function addCharacter(name) {
     var id = uuid().split("-")[0];
@@ -204,6 +213,12 @@ const useApplicationContextStore = () => {
     }
   }
 
+  function loadGlobalMessagingStatus() {
+    const acknowledgedVersion =
+      localStorage.getItem("acknowledgedVersion") || "";
+    setAcknowledgedVersion(acknowledgedVersion);
+  }
+
   function saveSelectedCharacterId(id) {
     setSelectedCharacterId(id);
     saveLocalStorage("selectedCharacterId", id);
@@ -215,6 +230,7 @@ const useApplicationContextStore = () => {
   }
 
   function setImportedData(data) {
+    saveLocalStorage("acknowledgedVersion", data.acknowledgedVersion);
     saveLocalStorage("selectedCharacterId", data.selectedCharacterId);
     saveLocalStorage("characters", data.characters);
 

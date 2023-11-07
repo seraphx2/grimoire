@@ -34,6 +34,7 @@ import {
   FlexContainer,
   SquishedFlexContainer,
 } from "./components/utility";
+import GlobalMessaging from "./components/GlobalMessaging";
 
 export default function App() {
   const {
@@ -43,6 +44,7 @@ export default function App() {
     isCharacterListEmpty,
     deleteCharacter,
     loadCharacters,
+    loadGlobalMessagingStatus,
     saveCharacter,
     setVersion,
   } = useContext(ApplicationContext);
@@ -65,6 +67,7 @@ export default function App() {
       setVersion(
         `${process.env.REACT_APP_NAME} ${process.env.REACT_APP_VERSION}`
       );
+      loadGlobalMessagingStatus();
     };
     runEffect();
     //eslint-disable-next-line
@@ -77,9 +80,12 @@ export default function App() {
       const name = Sizzle("#name-editor")[0].value.trim();
       const baseHP = parseInt(Sizzle("#baseHP-editor")[0].textContent);
       const baseWP = parseInt(Sizzle("#baseWP-editor")[0].textContent);
-      const preparedSpells = Sizzle("[name=prepared]:checked").map(
-        (e, i) => e.value
-      );
+      const preparedSpells = Sizzle("[name=prepared]").map((e, i) => {
+        return {
+          name: e.previousSibling.id,
+          status: e.value,
+        };
+      });
       const selectedSpells = Sizzle("[name=spell]:checked").map(
         (e, i) => e.value
       );
@@ -193,6 +199,8 @@ export default function App() {
           <Grimoire />
         </div>
       )}
+
+      <GlobalMessaging />
       {isCharacterListEmpty() && (
         <AreaContainer>
           <AboutContent />

@@ -42,7 +42,9 @@ export default function SpellFormatter(props) {
   const isAbility = type === "ability";
   const isTrick = type === "trick";
   const isSpell = type === "spell";
-  const isPrepared = preparedSpells.includes(spell.name);
+
+  const preparedSpell =
+    preparedSpells.filter((s) => s.name === spell.name)[0] || undefined;
 
   function toggleConfirmationDialog() {
     setOpenConfirmationDialog(!openConfirmationDialog);
@@ -55,8 +57,8 @@ export default function SpellFormatter(props) {
           isAbility={isAbility}
           isTrick={isTrick}
           isSpell={isSpell}
-          isPrepared={isPrepared}
           isSpellChecked={isSpellChecked}
+          preparedSpell={preparedSpell}
           spell={spell}
           toggleConfirmationDialog={toggleConfirmationDialog}
         />
@@ -71,8 +73,8 @@ export default function SpellFormatter(props) {
               isAbility={isAbility}
               isTrick={isTrick}
               isSpell={isSpell}
-              isPrepared={isPrepared}
               isSpellChecked={isSpellChecked}
+              preparedSpell={preparedSpell}
               spell={spell}
               toggleConfirmationDialog={toggleConfirmationDialog}
             />
@@ -92,8 +94,8 @@ export default function SpellFormatter(props) {
             isAbility={isAbility}
             isTrick={isTrick}
             isSpell={isSpell}
-            isUnprepared={!isPrepared}
             spellName={spell.name}
+            isUnprepared={preparedSpell?.status === "unprepared" || false}
             toggleConfirmationDialog={toggleConfirmationDialog}
           ></SpellConfirmation>
         </Dialog>
