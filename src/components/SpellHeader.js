@@ -61,14 +61,16 @@ export default function SpellHeader(props) {
             <Select
               id={spell.name}
               name="prepared"
-              value={selectedStatus}
-              size="small"
-              variant="standard"
               onChange={(e) => setSelectedStatus(e.target.value)}
+              size="small"
+              value={selectedStatus}
+              variant="standard"
             >
               <MenuItem value={"unprepared"}>Unprepared</MenuItem>
               <MenuItem value={"prepared"}>Prepared</MenuItem>
-              <MenuItem value={"magicitem"}>Magic Item</MenuItem>
+              <MenuItem value={"magicitem1"}>Magic Item (PL1)</MenuItem>
+              <MenuItem value={"magicitem2"}>Magic Item (PL2)</MenuItem>
+              <MenuItem value={"magicitem3"}>Magic Item (PL3)</MenuItem>
             </Select>
           </div>
         )}
@@ -82,9 +84,17 @@ export default function SpellHeader(props) {
       color = "success.main";
       status = "PREPARED";
     }
-    if (preparedSpell.status === "magicitem") {
+    if (preparedSpell.status === "magicitem1") {
       color = "secondary.main";
-      status = "MAGIC ITEM";
+      status = "MAGIC ITEM (PL1)";
+    }
+    if (preparedSpell.status === "magicitem2") {
+      color = "secondary.main";
+      status = "MAGIC ITEM (PL2)";
+    }
+    if (preparedSpell.status === "magicitem3") {
+      color = "secondary.main";
+      status = "MAGIC ITEM (PL3)";
     }
   }
 
