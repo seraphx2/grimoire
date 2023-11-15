@@ -126,9 +126,10 @@ export function AboutContent() {
         <strong>Dragonbane Grimoire</strong> stores all saved data using the
         Local Storage provided by your device. It runs exclusively on your
         device and never talks to the host server except to retrieve and update
-        the app. There are no external connections made to any other service or
-        tracking tools such as Google Ads, Analytics, or Tag Manager (or similar
-        services from any other company).
+        the app. This app only utilizes Google Analytics to track generic,
+        anonymous page visits to understand how often the app is used. Google
+        Ads or more complex tracking data is not stored utilizing Google or a
+        service from any other similar company.
       </Typography>
       <p>
         <strong>Dragonbane Grimoire</strong> is designed to be a WP/HP Tracker
