@@ -36,6 +36,16 @@ export default function SupplementalInfo() {
   return (
     <div>
       <About id="About" selected={selectedAccordion} reset={resetAccordion} />
+      <LearningMagic
+        id="LearningMagic"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <DragonsAndDemons
+        id="DragonsAndDemons"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
       <CastingSpells
         id="CastingSpells"
         selected={selectedAccordion}
@@ -48,11 +58,6 @@ export default function SupplementalInfo() {
       />
       <PowerLevel
         id="PowerLevel"
-        selected={selectedAccordion}
-        reset={resetAccordion}
-      />
-      <MagicAndMetal
-        id="MagicAndMetal"
         selected={selectedAccordion}
         reset={resetAccordion}
       />
@@ -72,13 +77,18 @@ export default function SupplementalInfo() {
         selected={selectedAccordion}
         reset={resetAccordion}
       />
-      <DragonsAndDemons
-        id="DragonsAndDemons"
+      <SpellFocuses
+        id="SpellFocuses"
         selected={selectedAccordion}
         reset={resetAccordion}
       />
-      <LearningMagic
-        id="LearningMagic"
+      <SpellTools
+        id="SpellTools"
+        selected={selectedAccordion}
+        reset={resetAccordion}
+      />
+      <MagicAndMetal
+        id="MagicAndMetal"
         selected={selectedAccordion}
         reset={resetAccordion}
       />
@@ -226,14 +236,14 @@ function PreparedSpells(props) {
       </p>
       <Table>
         <TableHead>
-          <QuickTableRow column1="Intelligence" column2="Base Chance" />
+          <TwoColumnRow column1="Intelligence" column2="Base Chance" />
         </TableHead>
         <TableBody>
-          <QuickTableRow column1="1-5" column2="3" />
-          <QuickTableRow column1="6-8" column2="4" />
-          <QuickTableRow column1="9-12" column2="5" />
-          <QuickTableRow column1="13-15" column2="6" />
-          <QuickTableRow column1="16-18" column2="7" />
+          <TwoColumnRow column1="1-5" column2="3" />
+          <TwoColumnRow column1="6-8" column2="4" />
+          <TwoColumnRow column1="9-12" column2="5" />
+          <TwoColumnRow column1="13-15" column2="6" />
+          <TwoColumnRow column1="16-18" column2="7" />
         </TableBody>
       </Table>
     </Section>
@@ -443,86 +453,86 @@ function DragonsAndDemons(props) {
       </p>
       <Table>
         <TableHead>
-          <QuickTableRow column1="D20" column2="Magical Mishap" />
+          <TwoColumnRow column1="D20" column2="Magical Mishap" />
         </TableHead>
         <TableBody>
-          <QuickTableRow
+          <TwoColumnRow
             column1="1"
             column2="The magical powers leave you Dazed."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="2"
             column2="The spellcasting suddenly makes you Exhausted."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="3"
             column2="The energies take a toll on your body and make you Sickly."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="4"
             column2="You lose control of the spell, which makes you very Angry."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="5"
             column2="The spell subjects you to demonic visions that leave you Scared."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="6"
             column2="You see the world beyond the veil and realize your own insignificance. You feel Disheartened."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="7"
             column2="The magic ravages your body, inflicting D6 damage per power level."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="8"
             column2="The spell drains your willpower and you lose D6 WP per power level."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="9"
             column2="The spell gives rise to a magical disease with virulence 3D6. You and everyone you come into contact with during the next shift are exposed to the disease."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="10"
             column2="Another random spell of yours is activated instead of the one you cast, with the same target and power level."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="11"
             column2="You vomit a frog the moment you tell a lie. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="12"
             column2="Any gold or silver you touch withers into dust. Roll D4 every morning. On a 1, the effect wears off. It can also be lifted with DISPEL."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="13"
             column2="The spell blinds you, and you act as if in total darkness (page 52). Roll D4 every morning. On a 1, you recover. The effect can also be lifted with DISPEL."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="14"
             column2="You are struck by amnesia and forget who you and the other player characters are. The effect must be roleplayed. Roll D4 every morning. On a 1, your memory returns"
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="15"
             column2="The spell also affects a friend or other unintended victim. A healing or helping spell affects an enemy."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="16"
             column2="The spell backfires. An offensive spell affects you instead of the intended target. A protecting or healing spell inflicts damage instead."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="17"
             column2="You turn into an animal. Roll D6. 1: cat, 2: fox, 3: goat, 4: wolf, 5: deer, 6: bear. You get stats according to the table on page 99 and cannot speak, but you retain your mental acuity. Roll a D4 every morning. On a 1, you revert back to your original form."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="18"
             column2="You become one category younger, for example from adult to young. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already young, you turn into a child with −2 STR and CON, to a minimum of 3. The effect is permanent and you age normally from your new age."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="19"
             column2="You become one category older, for example from adult to old. Your attributes and derived ratings change as per the table on page 24, but your skill levels do not. If you were already old, you become very frail and get −2 STR and CON. The effect is permanent and you age normally from your new age."
           />
-          <QuickTableRow
+          <TwoColumnRow
             column1="20"
             column2="Your magic attracts a demon (page 85) from another dimension. The demon shows up within the next shift and attacks or causes some kind of trouble. The details are up to the GM."
           />
@@ -580,13 +590,163 @@ function LearningMagic(props) {
   );
 }
 
-function QuickTableRow(props) {
+function SpellFocuses(props) {
+  const { id, selected, reset } = props;
+
+  return (
+    <Section id={id} selected={selected} reset={reset} header="SPELL FOCUSES">
+      <Table>
+        <TableHead>
+          <FourColumnRow
+            column1="Item"
+            column2="Cost"
+            column3="Supply"
+            column4="Weight"
+          />
+        </TableHead>
+        <TableBody>
+          <FourColumnRow
+            column1="Amulet"
+            column2="3g"
+            column3="Uncommon"
+            column4=""
+          />
+          <FourColumnRow
+            column1="Brooch"
+            column2="5g"
+            column3="Uncommon"
+            column4=""
+          />
+          <FourColumnRow
+            column1="Chalk"
+            column2="1c"
+            column3="Common"
+            column4=""
+          />
+          <FourColumnRow
+            column1="Hourglass"
+            column2="25g"
+            column3="Rare"
+            column4="1"
+          />
+          <FourColumnRow
+            column1="Orbuculum"
+            column2="18g"
+            column3="Uncommon"
+            column4="1"
+          />
+          <FourColumnRow
+            column1="Reliquary"
+            column2="5g"
+            column3="Uncommon"
+            column4="1"
+          />
+          <FourColumnRow
+            column1="Wand"
+            column2="10g"
+            column3="Uncommon"
+            column4="1"
+          />
+        </TableBody>
+      </Table>
+    </Section>
+  );
+}
+
+function SpellTools(props) {
+  const { id, selected, reset } = props;
+
+  return (
+    <Section id={id} selected={selected} reset={reset} header="SPELL TOOLS">
+      <Table>
+        <TableHead>
+          <FourColumnRow
+            column1="Item"
+            column2="Cost"
+            column3="Supply"
+            column4="Weight"
+          />
+        </TableHead>
+        <TableBody>
+          <FourColumnRow
+            column1="Book"
+            column2="25g"
+            column3="Uncommon"
+            column4="1"
+          />
+          <DescriptionRow column="Boon on skill rolls in a specific subject. The cost varies depending on the subject."></DescriptionRow>
+          <FourColumnRow
+            column1="Grimoire"
+            column2="50g"
+            column3="Unique"
+            column4="1"
+          />
+          <DescriptionRow column="The cost varies depending on the content and may be much higher."></DescriptionRow>
+          <FourColumnRow
+            column1="Notebook"
+            column2="5g"
+            column3="Common"
+            column4="1"
+          />
+          <DescriptionRow column="Empty, can be used as a grimoire."></DescriptionRow>
+          <FourColumnRow
+            column1="Paper (sheet)"
+            column2="2s"
+            column3="Uncommon"
+            column4=""
+          />
+          <DescriptionRow column="Can be used to write down spells."></DescriptionRow>
+          <FourColumnRow
+            column1="Parchment (sheet)"
+            column2="1s"
+            column3="Common"
+            column4=""
+          />
+          <DescriptionRow column="Can be used to write down spells."></DescriptionRow>
+          <FourColumnRow
+            column1="Quill & Ink"
+            column2="10g"
+            column3="Uncommon"
+            column4="1"
+          />
+          <DescriptionRow column="Can be used to write down spells."></DescriptionRow>
+        </TableBody>
+      </Table>
+    </Section>
+  );
+}
+
+function TwoColumnRow(props) {
   const { column1, column2 } = props;
 
   return (
     <TableRow>
       <TableCell>{column1}</TableCell>
       <TableCell>{column2}</TableCell>
+    </TableRow>
+  );
+}
+
+function FourColumnRow(props) {
+  const { column1, column2, column3, column4 } = props;
+
+  return (
+    <TableRow sx={{ "& td": { border: 0 } }}>
+      <TableCell>{column1}</TableCell>
+      <TableCell>{column2}</TableCell>
+      <TableCell>{column3}</TableCell>
+      <TableCell>{column4}</TableCell>
+    </TableRow>
+  );
+}
+
+function DescriptionRow(props) {
+  const { column } = props;
+
+  return (
+    <TableRow>
+      <TableCell></TableCell>
+      <TableCell colSpan={3}>{column}</TableCell>
     </TableRow>
   );
 }

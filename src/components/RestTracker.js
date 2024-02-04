@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import {
+  Box,
   Button,
+  ButtonGroup,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -19,8 +22,19 @@ import ValueEditor from "./ValueEditor";
 import Sizzle from "sizzle";
 
 export default function RestTracker() {
-  const { baseHP, baseWP, usedRoundRest, usedStretchRest, saveCharacter } =
-    useContext(ApplicationContext);
+  const {
+    baseHP,
+    baseWP,
+    hasStrCondition,
+    hasConCondition,
+    hasAglCondition,
+    hasIntCondition,
+    hasWilCondition,
+    hasChaCondition,
+    usedRoundRest,
+    usedStretchRest,
+    saveCharacter,
+  } = useContext(ApplicationContext);
   const [tempUsedRoundRest, setTempUsedRoundRest] = useState(usedRoundRest);
   const [tempUsedStretchRest, setTempUsedStretchRest] =
     useState(usedStretchRest);
@@ -50,11 +64,22 @@ export default function RestTracker() {
       { name: "currentWP", value: baseWP },
       { name: "usedRoundRest", value: false },
       { name: "usedStretchRest", value: false },
+      { name: "hasStrCondition", value: false },
+      { name: "hasConCondition", value: false },
+      { name: "hasAglCondition", value: false },
+      { name: "hasIntCondition", value: false },
+      { name: "hasWilCondition", value: false },
+      { name: "hasChaCondition", value: false },
       { name: "undoAction", value: null },
     ]);
     setTempUsedRoundRest(false);
     setTempUsedStretchRest(false);
     toggleLongRestDialog();
+  }
+
+  function toggleCondition(condition) {
+    // eslint-disable-next-line
+    saveCharacter([{ name: condition, value: !eval(condition) }]);
   }
 
   return (
@@ -92,6 +117,62 @@ export default function RestTracker() {
           variant="outlined"
         >
           Shift Rest
+        </Button>
+      </FlexContainer>
+      <Divider size="small" sx={{ marginTop: "10px" }} textAlign="left">
+        Conditions
+      </Divider>
+      <FlexContainer>
+        <Button
+          color={hasStrCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasStrCondition")}
+          size="small"
+          variant="text"
+        >
+          Exhausted (STR)
+        </Button>
+        <Button
+          color={hasConCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasConCondition")}
+          size="small"
+          variant="text"
+        >
+          Sickly (CON)
+        </Button>
+        <Button
+          color={hasAglCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasAglCondition")}
+          size="small"
+          variant="text"
+        >
+          Dazed (AGL)
+        </Button>
+      </FlexContainer>
+
+      <FlexContainer>
+        <Button
+          color={hasIntCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasIntCondition")}
+          size="small"
+          variant="text"
+        >
+          Angry (INT)
+        </Button>
+        <Button
+          color={hasWilCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasWilCondition")}
+          size="small"
+          variant="text"
+        >
+          Scared (WIL)
+        </Button>
+        <Button
+          color={hasChaCondition ? "error" : "success"}
+          onClick={() => toggleCondition("hasChaCondition")}
+          size="small"
+          variant="text"
+        >
+          Disheartened (CHA)
         </Button>
       </FlexContainer>
 
@@ -140,12 +221,36 @@ export default function RestTracker() {
 function OtherRestDialog(props) {
   const { saveCharacter, setOpenRestDialog, setTempUsedRest, type } = props;
 
-  const { baseHP, baseWP, currentHP, currentWP } =
-    useContext(ApplicationContext);
+  const {
+    baseHP,
+    baseWP,
+    currentHP,
+    currentWP,
+    hasStrCondition,
+    hasConCondition,
+    hasAglCondition,
+    hasIntCondition,
+    hasWilCondition,
+    hasChaCondition,
+  } = useContext(ApplicationContext);
+
+  const [healCondition, setHealCondition] = useState("");
+
+  const hasCondition =
+    hasStrCondition ||
+    hasConCondition ||
+    hasAglCondition ||
+    hasIntCondition ||
+    hasWilCondition ||
+    hasChaCondition;
 
   function closeCancel() {
     setTempUsedRest(false);
     setOpenRestDialog(false);
+  }
+
+  function highlightCondition(condition) {
+    return healCondition === condition ? "contained" : "outlined";
   }
 
   function closeAccept() {
@@ -165,12 +270,70 @@ function OtherRestDialog(props) {
       if (modifyHP >= deltaHP) modifyHP = deltaHP;
       saveArray.push({ name: "currentHP", value: currentHP + modifyHP });
       saveArray.push({ name: "usedStretchRest", value: true });
+      saveArray.push({ name: healCondition, value: false });
     }
 
     saveCharacter(saveArray);
     setTempUsedRest(true);
     setOpenRestDialog(false);
   }
+
+  let healButtons = [];
+  const healStrButton = (
+    <Button
+      onClick={() => setHealCondition("hasStrCondition")}
+      variant={highlightCondition("hasStrCondition")}
+    >
+      Exhausted (STR)
+    </Button>
+  );
+  const healConButton = (
+    <Button
+      onClick={() => setHealCondition("hasConCondition")}
+      variant={highlightCondition("hasConCondition")}
+    >
+      Sickly (CON)
+    </Button>
+  );
+  const healAglButton = (
+    <Button
+      onClick={() => setHealCondition("hasAglCondition")}
+      variant={highlightCondition("hasAglCondition")}
+    >
+      Dazed (AGL)
+    </Button>
+  );
+  const healIntButton = (
+    <Button
+      onClick={() => setHealCondition("hasIntCondition")}
+      variant={highlightCondition("hasIntCondition")}
+    >
+      Angry (INT)
+    </Button>
+  );
+  const healWilButton = (
+    <Button
+      onClick={() => setHealCondition("hasWilCondition")}
+      variant={highlightCondition("hasWilCondition")}
+    >
+      Scared (WIL)
+    </Button>
+  );
+  const healChaButton = (
+    <Button
+      onClick={() => setHealCondition("hasChaCondition")}
+      variant={highlightCondition("hasChaCondition")}
+    >
+      Disheartened (CHA)
+    </Button>
+  );
+
+  if (hasStrCondition) healButtons.push(healStrButton);
+  if (hasConCondition) healButtons.push(healConButton);
+  if (hasAglCondition) healButtons.push(healAglButton);
+  if (hasIntCondition) healButtons.push(healIntButton);
+  if (hasWilCondition) healButtons.push(healWilButton);
+  if (hasChaCondition) healButtons.push(healChaButton);
 
   return (
     <div>
@@ -197,6 +360,18 @@ function OtherRestDialog(props) {
               dieTypes={6}
             />
           </FlexContainer>
+        )}
+        {type === "Stretch" && hasCondition && (
+          <Box marginY={1}>
+            <Typography color="success.main">
+              Choose a Condition to Heal
+            </Typography>
+            <FlexContainer>
+              <ButtonGroup orientation="vertical" fullWidth>
+                {healButtons}
+              </ButtonGroup>
+            </FlexContainer>
+          </Box>
         )}
         <Typography color="warning.main" variant="body1">
           This action cannot be undone.

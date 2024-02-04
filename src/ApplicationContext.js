@@ -31,6 +31,14 @@ const useApplicationContextStore = () => {
   const [currentWP, setCurrentWP] = useState(0);
   const [usedRoundRest, setUsedRoundRest] = useState(false);
   const [usedStretchRest, setUsedStretchRest] = useState(false);
+
+  const [hasStrCondition, setHasStrCondition] = useState(false);
+  const [hasConCondition, setHasConCondition] = useState(false);
+  const [hasAglCondition, setHasAglCondition] = useState(false);
+  const [hasIntCondition, setHasIntCondition] = useState(false);
+  const [hasWilCondition, setHasWilCondition] = useState(false);
+  const [hasChaCondition, setHasChaCondition] = useState(false);
+
   const [selectedSpells, setSelectedSpells] = useState([]);
   const [preparedSpells, setPreparedSpells] = useState([]);
   const [undoAction, setUndoAction] = useState(null);
@@ -52,6 +60,12 @@ const useApplicationContextStore = () => {
     currentWP,
     usedRoundRest,
     usedStretchRest,
+    hasStrCondition,
+    hasConCondition,
+    hasAglCondition,
+    hasIntCondition,
+    hasWilCondition,
+    hasChaCondition,
     preparedSpells,
     selectedSpells,
     undoAction,
@@ -83,6 +97,12 @@ const useApplicationContextStore = () => {
       currentWP: 0,
       usedRoundRest: false,
       usedStretchRest: false,
+      hasStrCondition: false,
+      hasConCondition: false,
+      hasAglCondition: false,
+      hasIntCondition: false,
+      hasWilCondition: false,
+      hasChaCondition: false,
       preparedSpells: [],
       selectedSpells: [],
       undoAction: null,
@@ -159,6 +179,30 @@ const useApplicationContextStore = () => {
           character.usedStretchRest = property.value;
           setUsedStretchRest(property.value);
           break;
+        case "hasStrCondition":
+          character.hasStrCondition = property.value;
+          setHasStrCondition(property.value);
+          break;
+        case "hasConCondition":
+          character.hasConCondition = property.value;
+          setHasConCondition(property.value);
+          break;
+        case "hasAglCondition":
+          character.hasAglCondition = property.value;
+          setHasAglCondition(property.value);
+          break;
+        case "hasIntCondition":
+          character.hasIntCondition = property.value;
+          setHasIntCondition(property.value);
+          break;
+        case "hasWilCondition":
+          character.hasWilCondition = property.value;
+          setHasWilCondition(property.value);
+          break;
+        case "hasChaCondition":
+          character.hasChaCondition = property.value;
+          setHasChaCondition(property.value);
+          break;
         case "preparedSpells":
           character.preparedSpells = property.value;
           setPreparedSpells(property.value);
@@ -190,6 +234,12 @@ const useApplicationContextStore = () => {
     setCurrentWP(character.currentWP);
     setUsedRoundRest(character.usedRoundRest);
     setUsedStretchRest(character.usedStretchRest);
+    setHasStrCondition(character.hasStrCondition);
+    setHasConCondition(character.hasConCondition);
+    setHasAglCondition(character.hasAglCondition);
+    setHasIntCondition(character.hasIntCondition);
+    setHasWilCondition(character.hasWilCondition);
+    setHasChaCondition(character.hasChaCondition);
     setPreparedSpells(character.preparedSpells);
     setSelectedSpells(character.selectedSpells);
     setUndoAction(character.undoAction);
