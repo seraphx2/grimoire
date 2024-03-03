@@ -1,19 +1,20 @@
 import { useContext, useRef, useState } from "react";
 import {
-  IconButton,
-  Drawer,
-  Divider,
-  Typography,
+  Box,
   Button,
+  Divider,
+  Drawer,
   Dialog,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
   List,
   ListItem,
   ListItemText,
   ListItemButton,
-  DialogTitle,
   TextField,
+  Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -30,6 +31,7 @@ import {
   SquishedFlexContainer,
   sortByProperty,
 } from "./utility";
+import EditBaseAttribute from "./EditBaseAttribute";
 
 export default function CharacterDrawer(props) {
   const { openDrawer, setDrawer } = props;
@@ -61,7 +63,10 @@ export default function CharacterDrawer(props) {
       setIsNameEmpty(true);
     } else {
       setIsNameEmpty(false);
-      addCharacter(characterName);
+
+      const baseHP = parseInt(Sizzle("#baseHP-editor")[0].textContent);
+      const baseWP = parseInt(Sizzle("#baseWP-editor")[0].textContent);
+      addCharacter(characterName, baseHP, baseWP);
       setDrawer(false);
       toggleCharacterDialog();
     }
@@ -203,6 +208,24 @@ export default function CharacterDrawer(props) {
             size="small"
             style={{ marginTop: 16 }}
           />
+          <Box paddingTop={2} paddingX={1}>
+            <FlexContainer>
+              <EditBaseAttribute
+                attribute="WP"
+                defaultValue={1}
+                min={1}
+              ></EditBaseAttribute>
+            </FlexContainer>
+          </Box>
+          <Box paddingTop={1} paddingX={1}>
+            <FlexContainer>
+              <EditBaseAttribute
+                attribute="HP"
+                defaultValue={1}
+                min={1}
+              ></EditBaseAttribute>
+            </FlexContainer>
+          </Box>
         </DialogContent>
         <DialogActions>
           <IconButton onClick={toggleCharacterDialog} size="small">

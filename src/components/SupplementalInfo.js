@@ -147,19 +147,19 @@ export function AboutContent() {
         tapping <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} /> in
         the top left corner of the app will get things started. Once the drawer
         opens, tap on <strong>Add Character</strong> and you will be prompted
-        for a character name. Anytime you want to switch Characters or Add a new
-        one, just tap{" "}
+        for a character name and your current total WP and HP values.{" "}
+        <strong>Note:</strong> These values are still meant to be derived from
+        your character sheet, not calculated by this app. Anytime you want to
+        switch Characters or Add a new one, just tap{" "}
         <MenuOpenIcon color="primary" style={{ fontSize: "1rem" }} />.
       </p>
       <p>
         Now that you have a Character added, you can begin editing your
         Character details. Tap{" "}
         <EditIcon color="primary" style={{ fontSize: "1rem" }} /> in the bottom
-        right corner of the screen to edit your selected Character. First, set
-        your base WP and HP. <strong>Note:</strong> These values are still meant
-        to be derived from your character sheet, not calculated by this app.
-        Next, select your spells on the left and then lastly mark your prepared
-        spells with the corresponding checkbox to the right. (The{" "}
+        right corner of the screen to edit your selected Character. Select your
+        spells on the left and then mark your unprepared, prepared, or magic
+        item-supplied spells from the dropdown to the right of the spell. (The{" "}
         <strong>Master Spellcaster</strong> Heroic Ability is assigned a slot in
         the <strong>General Magic</strong> school).
       </p>
@@ -186,7 +186,10 @@ export function AboutContent() {
         utilizing <strong>Power from the Body</strong>. If you do an Action in
         error, you can undo the last Action you took by tapping{" "}
         <UndoIcon color="primary" style={{ fontSize: "1rem" }} /> to regain any
-        lost WP or HP without having to remember the exact values.
+        lost WP or HP without having to remember the exact values.{" "}
+        <strong>Note:</strong> The undo action only applies to activating your
+        Ability or Spells, and manually editing your WP or HP values; not to
+        Rest actions.
       </p>
       <p>
         Below, you will also see supplemental information concerning key rules

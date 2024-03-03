@@ -44,14 +44,18 @@ export default function RestTracker() {
 
   function toggleRoundRestStatus() {
     const isChecked = Sizzle("#roundStatus.checked").length > 0;
-    if (isChecked) setTempUsedRoundRest(false);
-    else setOpenRoundRestDialog(true);
+    if (isChecked) {
+      setTempUsedRoundRest(false);
+      saveCharacter([{ name: "usedRoundRest", value: false }]);
+    } else setOpenRoundRestDialog(true);
   }
 
   function toggleStretchRestStatus(e) {
     const isChecked = Sizzle("#stretchStatus.checked").length > 0;
-    if (isChecked) setTempUsedStretchRest(false);
-    else setOpenStretchRestDialog(true);
+    if (isChecked) {
+      setTempUsedStretchRest(false);
+      saveCharacter([{ name: "usedStretchRest", value: false }]);
+    } else setOpenStretchRestDialog(true);
   }
 
   function toggleLongRestDialog() {
@@ -198,7 +202,7 @@ export default function RestTracker() {
         <Dialog open={openLongRestDialog}>
           <DialogTitle>Take Shift Rest?</DialogTitle>
           <DialogContent>
-            This action will reset your WP, HP and available rests.
+            This action will reset your WP, HP, all Conditions, and both Rests.
             <Typography color="warning.main" variant="body1">
               Before finalizing this Shift Rest, be sure your DM has verified a
               successful rest period. This action cannot be undone.

@@ -86,15 +86,15 @@ const useApplicationContextStore = () => {
     saveLocalStorage("acknowledgedVersion", version);
   }
 
-  function addCharacter(name) {
+  function addCharacter(name, baseHP, baseWP) {
     var id = uuid().split("-")[0];
     var character = {
       id: id,
       name: name,
-      baseHP: 0,
-      currentHP: 0,
-      baseWP: 0,
-      currentWP: 0,
+      baseHP: baseHP,
+      currentHP: baseHP,
+      baseWP: baseWP,
+      currentWP: baseWP,
       usedRoundRest: false,
       usedStretchRest: false,
       hasStrCondition: false,

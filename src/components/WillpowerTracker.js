@@ -15,8 +15,9 @@ import UndoIcon from "@mui/icons-material/Undo";
 import Sizzle from "sizzle";
 
 import { ApplicationContext } from "../ApplicationContext";
-import ValueEditor from "./ValueEditor";
 import { AreaContainer, DarkTheme, FlexContainer, normalize } from "./utility";
+import ValueEditor from "./ValueEditor";
+import EditBaseAttribute from "./EditBaseAttribute";
 
 export default function WillpowerTracker() {
   const {
@@ -96,18 +97,48 @@ export default function WillpowerTracker() {
         <Dialog open={openUndoDialog}>
           <DialogTitle>Undo Action?</DialogTitle>
           <DialogContent>
-            <div>
-              Do you wish to undo{" "}
-              {undoAction?.isAbility ? "activating" : "casting"}{" "}
-              <strong>{undoAction?.actionName}</strong>?
-            </div>
-            <div>
-              You will regain {undoAction?.wpSpent} WP
-              {undoAction?.hpSpent > 0 && (
-                <span> and {undoAction?.hpSpent} HP</span>
-              )}
-              .
-            </div>
+            {undoAction?.actionName !== "manual" && (
+              <div>
+                <div>
+                  Do you wish to undo{" "}
+                  {undoAction?.isAbility ? "activating" : "casting"}{" "}
+                  <strong>{undoAction?.actionName}</strong>?
+                </div>
+                <div>
+                  You will regain {undoAction?.wpSpent} WP
+                  {undoAction?.hpSpent > 0 && (
+                    <span> and {undoAction?.hpSpent} HP</span>
+                  )}
+                  .
+                </div>
+              </div>
+            )}
+            {undoAction?.actionName === "manual" && (
+              <div>
+                <div>
+                  Do you wish to undo manually editing your{" "}
+                  <strong>
+                    {undoAction?.wpSpent !== 0 && "WP"}
+                    {undoAction?.hpSpent !== 0 && "HP"}
+                  </strong>
+                  ?
+                </div>
+                <div>
+                  {undoAction?.wpSpent !== 0 && (
+                    <span>
+                      You will {undoAction?.wpSpent > 0 ? "regain" : "lose"}{" "}
+                      <strong>{Math.abs(undoAction?.wpSpent)} WP</strong>.
+                    </span>
+                  )}
+                  {undoAction?.hpSpent !== 0 && (
+                    <span>
+                      You will {undoAction?.hpSpent > 0 ? "regain" : "lose"}{" "}
+                      <strong>{Math.abs(undoAction?.hpSpent)} HP</strong>.
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </DialogContent>
           <DialogActions>
             <IconButton onClick={toggleUndoDialog} size="small">
@@ -133,9 +164,20 @@ function AttributeManager(props) {
   }
 
   function toggleEditorDialogAccept() {
-    const newCurrent =
-      current + parseInt(Sizzle(`#modify${attribute}-editor`)[0].textContent);
-    saveCharacter({ name: `current${attribute}`, value: newCurrent });
+    const attributeModifier = parseInt(
+      Sizzle(`#modify${attribute}-editor`)[0].textContent
+    );
+    const newCurrent = current + attributeModifier;
+    const undoAction = {
+      isAbility: false,
+      actionName: "manual",
+      wpSpent: attribute === "WP" ? attributeModifier * -1 : 0,
+      hpSpent: attribute === "HP" ? attributeModifier * -1 : 0,
+    };
+    saveCharacter([
+      { name: `current${attribute}`, value: newCurrent },
+      { name: "undoAction", value: undoAction },
+    ]);
     toggleEditorDialog();
   }
 
@@ -214,20 +256,5 @@ function AttributeManager(props) {
         </Dialog>
       </DarkTheme>
     </div>
-  );
-}
-
-function EditBaseAttribute(props) {
-  const { attribute, defaultValue } = props;
-
-  return (
-    <FlexContainer>
-      <div style={{ marginRight: 8 }}>Base {attribute}</div>
-      <ValueEditor
-        defaultValue={defaultValue}
-        id={`base${attribute}-editor`}
-        min={0}
-      ></ValueEditor>
-    </FlexContainer>
   );
 }
