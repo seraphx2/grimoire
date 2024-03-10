@@ -126,7 +126,16 @@ export default function CharacterDrawer(props) {
 
   return (
     <DarkTheme>
-      <Drawer anchor="top" open={openDrawer} style={{ fontSize: "0.9rem" }}>
+      <Drawer
+        anchor="top"
+        BackdropProps={{
+          onClick: () => {
+            setDrawer(false);
+          },
+        }}
+        open={openDrawer}
+        style={{ fontSize: "0.9rem" }}
+      >
         <FlexContainer>
           <Typography variant="h5" style={{ padding: 8 }}>
             Characters

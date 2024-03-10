@@ -9,7 +9,16 @@ export default function SupplementalDrawer(props) {
 
   return (
     <DarkTheme>
-      <Drawer anchor="right" open={open} style={{ fontSize: "0.9rem" }}>
+      <Drawer
+        anchor="right"
+        BackdropProps={{
+          onClick: () => {
+            open(false);
+          },
+        }}
+        open={open}
+        style={{ fontSize: "0.9rem" }}
+      >
         <FlexContainer>
           <Typography variant="h5" style={{ padding: 8 }}>
             Supplemental Info
