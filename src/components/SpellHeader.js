@@ -74,6 +74,7 @@ export default function SpellHeader(props) {
             </Select>
           </div>
         )}
+        {isSpell && !isSpellSelected && <div>{spell.prerequisite}</div>}
       </FlexContainer>
     );
 

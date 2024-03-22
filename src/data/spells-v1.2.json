@@ -64,7 +64,7 @@
       {
         "name": "Magic Shield",
         "rank": 2,
-        "prerequisite": "PROTECTOR or DISPEL",
+        "prerequisite": "Protector or Dispel",
         "requirement": "Gesture",
         "castingTime": "Reaction",
         "range": "10m",
@@ -74,7 +74,7 @@
       {
         "name": "Transfer",
         "rank": 3,
-        "prerequisite": "MAGIC SHIELD",
+        "prerequisite": "Magic Shield",
         "requirement": "Gesture",
         "castingTime": "Action",
         "range": "Touch",
@@ -84,7 +84,7 @@
       {
         "name": "Magic Seal",
         "rank": 4,
-        "prerequisite": "TRANSFER",
+        "prerequisite": "Transfer",
         "requirement": "Word, gesture",
         "castingTime": "Shift",
         "range": "Touch",
@@ -94,7 +94,7 @@
       {
         "name": "Charge",
         "rank": 4,
-        "prerequisite": "TRANSFER",
+        "prerequisite": "Transfer",
         "requirement": "Word, gesture",
         "castingTime": "Stretch",
         "range": "Touch",
@@ -104,7 +104,7 @@
       {
         "name": "Permanence",
         "rank": 5,
-        "prerequisite": "MAGIC SEAL",
+        "prerequisite": "Magic Seal",
         "requirement": "Word, gesture",
         "castingTime": "Shift",
         "range": "Touch",
@@ -196,7 +196,7 @@
       {
         "name": "Engulfing Forest",
         "rank": 2,
-        "prerequisite": "ENSNARING ROOTS",
+        "prerequisite": "Ensnaring Roots",
         "requirement": "Gesture, ingredient (branches or roots nearby)",
         "castingTime": "Action",
         "range": "10m sphere",
@@ -206,7 +206,7 @@
       {
         "name": "Lightning Bolt",
         "rank": 2,
-        "prerequisite": "LIGHTNING FLASH",
+        "prerequisite": "Lightning Flash",
         "requirement": "Gesture",
         "castingTime": "Action",
         "range": "40m",
@@ -216,7 +216,7 @@
       {
         "name": "Heal Wound",
         "rank": 2,
-        "prerequisite": "TREAT WOUND",
+        "prerequisite": "Treat Wound",
         "requirement": "Word",
         "castingTime": "Action",
         "range": "Touch",
@@ -226,7 +226,7 @@
       {
         "name": "Purge",
         "rank": 2,
-        "prerequisite": "BANISH",
+        "prerequisite": "Banish",
         "requirement": "Word, gesture, focus (holy symbol)",
         "castingTime": "Action",
         "range": "10m",
@@ -236,7 +236,7 @@
       {
         "name": "Sleep",
         "rank": 2,
-        "prerequisite": "TREAT WOUND",
+        "prerequisite": "Treat Wound",
         "requirement": "Word",
         "castingTime": "Action",
         "range": "Touch",
@@ -246,7 +246,7 @@
       {
         "name": "Restoration",
         "rank": 3,
-        "prerequisite": "HEAL WOUND",
+        "prerequisite": "Heal Wound",
         "requirement": "Word",
         "castingTime": "Action",
         "range": "Touch",
@@ -256,7 +256,7 @@
       {
         "name": "Resurrection",
         "rank": 3,
-        "prerequisite": "HEAL WOUND",
+        "prerequisite": "Heal Wound",
         "requirement": "Word, gesture, ingredient (corpse)",
         "castingTime": "Shift",
         "range": "Touch",
@@ -266,7 +266,7 @@
       {
         "name": "Thunderbolt",
         "rank": 3,
-        "prerequisite": "LIGHTNING BOLT",
+        "prerequisite": "Lightning Bolt",
         "requirement": "Gesture",
         "castingTime": "Action",
         "range": "50m",
@@ -348,7 +348,7 @@
       {
         "name": "Fire Blast",
         "rank": 2,
-        "prerequisite": "FIREBALL",
+        "prerequisite": "Fireball",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "30m",
@@ -358,7 +358,7 @@
       {
         "name": "Stone Shield",
         "rank": 2,
-        "prerequisite": "PILLAR",
+        "prerequisite": "Pillar",
         "requirement": "Gesture, ingredient (pebbles)",
         "castingTime": "Reaction",
         "range": "Personal",
@@ -368,7 +368,7 @@
       {
         "name": "Stonewall",
         "rank": 2,
-        "prerequisite": "PILLAR",
+        "prerequisite": "Pillar",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "10m",
@@ -378,7 +378,7 @@
       {
         "name": "Tidal Wave",
         "rank": 2,
-        "prerequisite": "FROST",
+        "prerequisite": "Frost",
         "requirement": "Word, gesture, ingredient (water source)",
         "castingTime": "Action",
         "range": "20 meters (cone)",
@@ -388,7 +388,7 @@
       {
         "name": "Whirlwind",
         "rank": 2,
-        "prerequisite": "GUST OF WIND",
+        "prerequisite": "Gust Of Wind",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "4m sphere",
@@ -398,7 +398,7 @@
       {
         "name": "Firebird",
         "rank": 3,
-        "prerequisite": "FIRE BLAST",
+        "prerequisite": "Fire Blast",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "40m",
@@ -408,7 +408,7 @@
       {
         "name": "Firestorm",
         "rank": 3,
-        "prerequisite": "FIRE BLAST, WHIRLWIND",
+        "prerequisite": "Fire Blast, Whirlwind",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "4m sphere",
@@ -418,7 +418,7 @@
       {
         "name": "Gnome",
         "rank": 3,
-        "prerequisite": "STONEWALL",
+        "prerequisite": "Stonewall",
         "requirement": "Word, gesture, ingredient (stone or soil)",
         "castingTime": "Stretch",
         "range": "4m",
@@ -428,7 +428,7 @@
       {
         "name": "Salamander",
         "rank": 3,
-        "prerequisite": "FIRE BLAST",
+        "prerequisite": "Fire Blast",
         "requirement": "Word, gesture, ingredient (open fire)",
         "castingTime": "Stretch",
         "range": "4m",
@@ -438,7 +438,7 @@
       {
         "name": "Sylph",
         "rank": 3,
-        "prerequisite": "WHIRLWIND",
+        "prerequisite": "Whirlwind",
         "requirement": "Word, gesture",
         "castingTime": "Stretch",
         "range": "4m",
@@ -448,7 +448,7 @@
       {
         "name": "Undine",
         "rank": 3,
-        "prerequisite": "TIDAL WAVE",
+        "prerequisite": "Tidal Wave",
         "requirement": "Word, gesture, ingredient (water)",
         "castingTime": "Stretch",
         "range": "4m",
@@ -530,7 +530,7 @@
       {
         "name": "Divination",
         "rank": 2,
-        "prerequisite": "FARSIGHT",
+        "prerequisite": "Farsight",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "100m",
@@ -540,7 +540,7 @@
       {
         "name": "Enchant Weapon",
         "rank": 2,
-        "prerequisite": "POWER FIST",
+        "prerequisite": "Power Fist",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "Touch",
@@ -550,7 +550,7 @@
       {
         "name": "Mental Strike",
         "rank": 2,
-        "prerequisite": "POWER FIST",
+        "prerequisite": "Power Fist",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "10m",
@@ -560,7 +560,7 @@
       {
         "name": "Scrying",
         "rank": 2,
-        "prerequisite": "FARSIGHT",
+        "prerequisite": "Farsight",
         "requirement": "Gesture",
         "castingTime": "Action",
         "range": "10m",
@@ -570,7 +570,7 @@
       {
         "name": "Telepathy",
         "rank": 2,
-        "prerequisite": "FARSIGHT",
+        "prerequisite": "Farsight",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "10m",
@@ -580,7 +580,7 @@
       {
         "name": "Dominate",
         "rank": 3,
-        "prerequisite": "TELEPATHY",
+        "prerequisite": "Telepathy",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "10m",
@@ -590,7 +590,7 @@
       {
         "name": "Flight",
         "rank": 3,
-        "prerequisite": "LEVITATE",
+        "prerequisite": "Levitate",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "Touch",
@@ -600,7 +600,7 @@
       {
         "name": "Teleport",
         "rank": 3,
-        "prerequisite": "FARSIGHT",
+        "prerequisite": "Farsight",
         "requirement": "Word, gesture",
         "castingTime": "Action",
         "range": "Touch",

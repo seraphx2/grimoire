@@ -107,21 +107,13 @@ export default function App() {
       <AreaContainer>
         <FlexContainer>
           <SquishedFlexContainer>
-            {!inEditMode && !isCharacterListEmpty() && (
-              <IconButton
-                size="small"
-                onClick={() => setOpenCharacterDrawer(true)}
-              >
-                <MenuOpenIcon />
-              </IconButton>
-            )}
-            {!inEditMode && isCharacterListEmpty() && (
+            {!inEditMode && (
               <IconButton
                 size="small"
                 style={{ color: "rgba(0, 0, 0, 0.87)" }}
                 onClick={() => setOpenCharacterDrawer(true)}
               >
-                <MenuOpenIcon style={{ marginRight: 4 }} /> Character Menu
+                <MenuOpenIcon style={{ marginRight: 4 }} /> {isCharacterListEmpty() ? "Character Menu" : name}
               </IconButton>
             )}
             <CharacterDrawer
@@ -130,7 +122,6 @@ export default function App() {
             />
             {!isCharacterListEmpty() && (
               <div>
-                {!inEditMode && <strong>{name}</strong>}
                 {inEditMode && (
                   <div>
                     <TextField

@@ -22,7 +22,7 @@ export default function SpellConfirmation(props) {
     isAbility,
     isTrick,
     isSpell,
-    isUnprepared,
+    preparedSpellStatus,
     spellName,
     toggleConfirmationDialog,
   } = props;
@@ -31,7 +31,9 @@ export default function SpellConfirmation(props) {
   const [wpCost, setWpCost] = useState(0);
   const [hpCost, setHpCost] = useState(0);
   const [isInside, setInside] = useState(false);
+  const [isMagicItem, setisMagicItem] = useState(true);
 
+  const isUnprepared = preparedSpellStatus === "unprepared" || false;
   const actionType = isAbility ? "activate" : "cast";
   const actionCost = wpCost * (isInside ? 2 : 1);
   const hasEnoughWP = currentWP - wpCost * (isInside ? 2 : 1) >= 0;
@@ -41,9 +43,23 @@ export default function SpellConfirmation(props) {
       if (isAbility) setWpCost(3);
       if (isTrick) setWpCost(1);
       if (isSpell) setWpCost(spellName === "Charge" ? 1 : 2);
+
+      switch (preparedSpellStatus) {
+        case "magicitem1":
+          setWpCost(2);
+          break;
+        case "magicitem2":
+          setWpCost(4);
+          break;
+        case "magicitem3":
+          setWpCost(6);
+          break;
+        default:
+          setisMagicItem(false);
+      }
     };
     setBaseWp();
-  }, [setWpCost, isAbility, isTrick, isSpell, spellName]);
+  }, [setWpCost, isAbility, isTrick, isSpell, preparedSpellStatus, spellName]);
 
   function toggleDialogAccept() {
     toggleConfirmationDialog();
@@ -112,18 +128,21 @@ export default function SpellConfirmation(props) {
             Power Level{" "}
             <ButtonGroup size="small">
               <Button
+                disabled={isMagicItem && wpCost !== 2}
                 onClick={() => setWpCost(2)}
                 variant={wpCost / 2 === 1 ? "contained" : "outlined"}
               >
                 1
               </Button>
               <Button
+                disabled={isMagicItem && wpCost !== 4}
                 onClick={() => setWpCost(4)}
                 variant={wpCost / 2 === 2 ? "contained" : "outlined"}
               >
                 2
               </Button>
               <Button
+                disabled={isMagicItem && wpCost !== 6}
                 onClick={() => setWpCost(6)}
                 variant={wpCost / 2 === 3 ? "contained" : "outlined"}
               >

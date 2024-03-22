@@ -94,8 +94,9 @@ export default function SpellFormatter(props) {
             isAbility={isAbility}
             isTrick={isTrick}
             isSpell={isSpell}
+            // isUnprepared={preparedSpell?.status === "unprepared" || false}
+            preparedSpellStatus={preparedSpell?.status || undefined}
             spellName={spell.name}
-            isUnprepared={preparedSpell?.status === "unprepared" || false}
             toggleConfirmationDialog={toggleConfirmationDialog}
           ></SpellConfirmation>
         </Dialog>
