@@ -210,12 +210,8 @@ function AttributeManager(props) {
         </div>
       </FlexContainer>
       <FlexContainer>
-        <LinearProgress
-          style={{ width: "80%" }}
-          value={normalize(current, 0, base)}
-          variant="determinate"
-        />
-        <span style={{ fontSize: 12 }}>{base}</span>
+        <AttributeBar current={current} base={base} />
+        <span style={{ fontSize: 12, marginLeft: 4 }}>{base}</span>
       </FlexContainer>
 
       <DarkTheme>
@@ -255,6 +251,43 @@ function AttributeManager(props) {
           </DialogActions>
         </Dialog>
       </DarkTheme>
+    </div>
+  );
+}
+
+function AttributeBar(props) {
+  const { current, base } = props;
+
+  const value1 = current <= base ? 1 : base / current;
+  const value2 = 1 - base / current;
+
+  const width1 = `${value1 * 100}%`;
+  const width2 = `${value2 * 100}%`;
+
+  const bar1Value = normalize(current >= base ? base : current, 0, base);
+  let bar2Value = 0;
+  if (current > base) {
+    bar2Value = normalize(current, base, current);
+  }
+
+  return (
+    <div
+      style={{ display: "flex", justifyContent: "space-evenly", width: "100%" }}
+    >
+      <LinearProgress
+        color={current < 0 ? "error" : "primary"}
+        style={{ width: width1 }}
+        value={bar1Value}
+        variant="determinate"
+      />
+      {current > base && (
+        <LinearProgress
+          color="secondary"
+          style={{ width: width2 }}
+          value={bar2Value}
+          variant="determinate"
+        />
+      )}
     </div>
   );
 }
