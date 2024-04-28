@@ -13,13 +13,15 @@ export default function School(props) {
       (ability) => selectedSpells.includes(ability.name) || inEditMode
     ) ?? [];
 
-  const tricks = school.tricks.filter(
-    (spell) => selectedSpells.includes(spell.name) || inEditMode
-  );
+  const tricks =
+    school.tricks?.filter(
+      (spell) => selectedSpells.includes(spell.name) || inEditMode
+    ) ?? [];
 
-  const spells = school.spells.filter(
-    (spell) => selectedSpells.includes(spell.name) || inEditMode
-  );
+  const spells =
+    school.spells?.filter(
+      (spell) => selectedSpells.includes(spell.name) || inEditMode
+    ) ?? [];
 
   const hasAbilities = abilities.length > 0;
   const hasTricks = tricks.length > 0;

@@ -55,8 +55,8 @@ export default function SpellFormatter(props) {
       {inEditMode && (
         <SpellHeader
           isAbility={isAbility}
-          isTrick={isTrick}
           isSpell={isSpell}
+          isTrick={isTrick}
           isSpellChecked={isSpellChecked}
           preparedSpell={preparedSpell}
           spell={spell}
@@ -91,10 +91,10 @@ export default function SpellFormatter(props) {
       <DarkTheme>
         <Dialog open={openConfirmationDialog}>
           <SpellConfirmation
+            abilityCost={spell.cost ?? 0}
             isAbility={isAbility}
             isTrick={isTrick}
             isSpell={isSpell}
-            // isUnprepared={preparedSpell?.status === "unprepared" || false}
             preparedSpellStatus={preparedSpell?.status || undefined}
             spellName={spell.name}
             toggleConfirmationDialog={toggleConfirmationDialog}

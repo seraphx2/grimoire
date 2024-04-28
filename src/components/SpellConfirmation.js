@@ -19,6 +19,7 @@ import ValueEditor from "./ValueEditor";
 
 export default function SpellConfirmation(props) {
   const {
+    abilityCost,
     isAbility,
     isTrick,
     isSpell,
@@ -40,7 +41,7 @@ export default function SpellConfirmation(props) {
 
   useEffect(() => {
     const setBaseWp = async () => {
-      if (isAbility) setWpCost(3);
+      if (isAbility) setWpCost(abilityCost);
       if (isTrick) setWpCost(1);
       if (isSpell) setWpCost(spellName === "Charge" ? 1 : 2);
 
@@ -59,7 +60,15 @@ export default function SpellConfirmation(props) {
       }
     };
     setBaseWp();
-  }, [setWpCost, isAbility, isTrick, isSpell, preparedSpellStatus, spellName]);
+  }, [
+    setWpCost,
+    isAbility,
+    abilityCost,
+    isTrick,
+    isSpell,
+    preparedSpellStatus,
+    spellName,
+  ]);
 
   function toggleDialogAccept() {
     toggleConfirmationDialog();
@@ -90,6 +99,14 @@ export default function SpellConfirmation(props) {
     "Thunderbolt",
   ].includes(spellName);
 
+  const needsValueEditor = [
+    "Charge",
+    "Catlike",
+    "Master Blacksmith",
+    "Master Carpenter",
+    "Master Tanner",
+  ].includes(spellName);
+
   return (
     <Box>
       <DialogTitle id="alert-dialog-title">
@@ -113,13 +130,13 @@ export default function SpellConfirmation(props) {
           )}
           .
         </div>
-        {spellName === "Charge" && (
+        {needsValueEditor && (
           <div>
             <ValueEditor
               callback={setWpCost}
               defaultValue={1}
               min={1}
-              max={10}
+              max={spellName === "Charge" ? 10 : undefined}
             />
           </div>
         )}

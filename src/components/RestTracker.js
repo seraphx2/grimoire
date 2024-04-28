@@ -31,6 +31,7 @@ export default function RestTracker() {
     hasIntCondition,
     hasWilCondition,
     hasChaCondition,
+    selectedSpells,
     usedRoundRest,
     usedStretchRest,
     saveCharacter,
@@ -41,6 +42,11 @@ export default function RestTracker() {
   const [openRoundRestDialog, setOpenRoundRestDialog] = useState(false);
   const [openStretchRestDialog, setOpenStretchRestDialog] = useState(false);
   const [openLongRestDialog, setOpenLongRestDialog] = useState(false);
+
+  const hasFastHealer =
+    selectedSpells.filter((s) => s === "Fast Healer").length > 0 ? true : false;
+
+  console.log(selectedSpells);
 
   function toggleRoundRestStatus() {
     const isChecked = Sizzle("#roundStatus.checked").length > 0;
@@ -192,6 +198,7 @@ export default function RestTracker() {
 
         <Dialog open={openStretchRestDialog}>
           <OtherRestDialog
+            hasFastHealer={hasFastHealer}
             saveCharacter={saveCharacter}
             setOpenRestDialog={setOpenStretchRestDialog}
             setTempUsedRest={setTempUsedStretchRest}
@@ -223,7 +230,13 @@ export default function RestTracker() {
 }
 
 function OtherRestDialog(props) {
-  const { saveCharacter, setOpenRestDialog, setTempUsedRest, type } = props;
+  const {
+    hasFastHealer,
+    saveCharacter,
+    setOpenRestDialog,
+    setTempUsedRest,
+    type,
+  } = props;
 
   const {
     baseHP,
@@ -263,19 +276,25 @@ function OtherRestDialog(props) {
     let modifyWP = parseInt(Sizzle("#modifyWP-editor")[0].textContent);
     const deltaWP = baseWP - currentWP;
     if (modifyWP >= deltaWP) modifyWP = deltaWP;
-    saveArray.push({ name: "currentWP", value: currentWP + modifyWP });
 
     if (type === "Round")
       saveArray.push({ name: "usedRoundRest", value: true });
 
     if (type === "Stretch") {
       let modifyHP = parseInt(Sizzle("#modifyHP-editor")[0].textContent);
+      let modifyHP2 = parseInt(Sizzle("#modifyHP2-editor")[0].textContent);
+      if (modifyHP2 > 0) {
+        modifyWP -= 2;
+        modifyHP -= modifyHP2;
+      }
       const deltaHP = baseHP - currentHP;
       if (modifyHP >= deltaHP) modifyHP = deltaHP;
       saveArray.push({ name: "currentHP", value: currentHP + modifyHP });
       saveArray.push({ name: "usedStretchRest", value: true });
       saveArray.push({ name: healCondition, value: false });
     }
+
+    saveArray.push({ name: "currentWP", value: currentWP + modifyWP });
 
     saveCharacter(saveArray);
     setTempUsedRest(true);
@@ -349,21 +368,42 @@ function OtherRestDialog(props) {
             defaultValue={0}
             id={`modifyWP-editor`}
             min={0}
-            max={20}
+            max={6}
             dieTypes={6}
           />
         </FlexContainer>
         {type === "Stretch" && (
-          <FlexContainer>
-            <strong>HP</strong>
-            <ValueEditor
-              defaultValue={0}
-              id={`modifyHP-editor`}
-              min={0}
-              max={20}
-              dieTypes={6}
-            />
-          </FlexContainer>
+          <>
+            <FlexContainer>
+              <strong>HP</strong>
+              <ValueEditor
+                defaultValue={0}
+                id={`modifyHP-editor`}
+                min={0}
+                max={6}
+                dieTypes={6}
+              />
+            </FlexContainer>
+            {hasFastHealer && currentWP >= 2 && (
+              <>
+                <Box color="success.main">Fast Healer</Box>
+                <FlexContainer>
+                  <strong>HP</strong>
+                  <ValueEditor
+                    defaultValue={0}
+                    id={`modifyHP2-editor`}
+                    min={0}
+                    max={6}
+                    dieTypes={6}
+                  />
+                </FlexContainer>
+                <Box color="info.main">
+                  Selecting a value for <strong>Fast Healer</strong> will reduce
+                  your current <strong>WP</strong> by <strong>2</strong>.
+                </Box>
+              </>
+            )}
+          </>
         )}
         {type === "Stretch" && hasCondition && (
           <Box marginY={1}>

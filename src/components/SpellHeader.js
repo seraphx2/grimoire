@@ -16,6 +16,7 @@ export default function SpellHeader(props) {
   const {
     isAbility,
     isSpell,
+    isTrick,
     isSpellChecked,
     spell,
     preparedSpell,
@@ -28,7 +29,15 @@ export default function SpellHeader(props) {
   }
 
   const [isSpellSelected, setSpellSelected] = useState(isSpellChecked);
-  const [selectedStatus, setSelectedStatus] = useState("unprepared");
+  const [selectedStatus, setSelectedStatus] = useState(
+    isSpell ? "unprepared" : "1"
+  );
+  const showButton = isTrick || isSpell || (isAbility && spell.cost > 0);
+  const abilityNeedsDropdown = ["Focused", "Robust"].includes(spell.name);
+  const abilityMenuItems = [];
+  for (let index = 1; index <= 10; index++) {
+    abilityMenuItems.push(<MenuItem value={index}>{index}</MenuItem>);
+  }
 
   useLayoutEffect(() => {
     const runEffect = async () => {
@@ -71,6 +80,20 @@ export default function SpellHeader(props) {
               <MenuItem value={"magicitem1"}>Magic Item (PL1)</MenuItem>
               <MenuItem value={"magicitem2"}>Magic Item (PL2)</MenuItem>
               <MenuItem value={"magicitem3"}>Magic Item (PL3)</MenuItem>
+            </Select>
+          </div>
+        )}
+        {isAbility && isSpellSelected && abilityNeedsDropdown && (
+          <div>
+            <Select
+              id={spell.name}
+              name="prepared"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              size="small"
+              value={selectedStatus}
+              variant="standard"
+            >
+              {abilityMenuItems}
             </Select>
           </div>
         )}
@@ -120,9 +143,20 @@ export default function SpellHeader(props) {
         )}
       </SquishedFlexContainer>
       <div>
-        <Button onClick={(e) => openConfirmationDialog(e)} size="small">
-          {isAbility ? "Activate" : "Cast"}
-        </Button>
+        {showButton && (
+          <Button onClick={(e) => openConfirmationDialog(e)} size="small">
+            {isAbility ? `Activate (${spell.cost} WP)` : "Cast"}
+          </Button>
+        )}
+        {abilityNeedsDropdown && (
+          <Typography
+            fontWeight={500}
+            style={{ marginLeft: 8 }}
+            variant="body2"
+          >
+            Selected: x{selectedStatus}
+          </Typography>
+        )}
       </div>
     </FlexContainer>
   );
