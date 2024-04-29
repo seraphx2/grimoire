@@ -8,6 +8,15 @@ export default function SupplementalSpellInfo(props) {
   let Content = null;
 
   switch (spellName) {
+    case "Assassin":
+      Content = <Assassin />;
+      break;
+    case "Defensive":
+      Content = <Defensive />;
+      break;
+    case "Fast Footwork":
+      Content = <FastFootwork />;
+      break;
     case "Frost":
       Content = <Frost />;
       break;
@@ -40,9 +49,7 @@ export default function SupplementalSpellInfo(props) {
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <strong>Supplemental</strong>
       </AccordionSummary>
-      <AccordionDetails>
-        {Content}
-      </AccordionDetails>
+      <AccordionDetails>{Content}</AccordionDetails>
     </Accordion>
   );
 }
@@ -57,6 +64,100 @@ function Section(props) {
       </div>
       <div style={{ padding: 8 }}>{children}</div>
     </div>
+  );
+}
+
+function Assassin() {
+  return (
+    <Section header={"SNEAK ATTACK (page 43)"}>
+      <div>
+        When you sneak up on someone unde- tected and perform an attack, it is
+        called a sneak attack. First you make a SNEAKING roll. Moving close
+        enough to attack in melee combat (within 2 meters for most weapons)
+        gives you a bane. If you fail, the enemy notices you – draw initiative.
+      </div>
+      <div>
+        If you succeed your attack counts as surprising, which means that you
+        can choose any initiative card you want. You also get a boon on the
+        attack, and the target can nei- ther dodge nor parry. Using a subtle
+        weapon increases the damage by one die (for example 2D8 instead of D8).
+        Sneak attacks are always performed individually, by one attacker against
+        one target.
+      </div>
+    </Section>
+  );
+}
+
+function Defensive() {
+  return (
+    <Section header={"Parry (page 46)"}>
+      <div>
+        When hit by an attack in close combat, you can choose to parry the
+        attack with a drawn weapon or shield. Note that you cannot draw a weapon
+        to parry, as free actions can only be performed on your own turn. You
+        must declare that you are going to parry before the attacker rolls for
+        damage. You cannot parry unarmed. It is also impossible to both parry
+        and dodge the same attack. You can parry while prone. When parrying, you
+        roll against your skill level for the weapon.
+      </div>
+      <div>
+        <strong>Reaction</strong>: Parrying is a reaction, as it breaks the
+        initiative order. It replaces your regular action, and you must imme-
+        diately flip your initiative card. This means that you cannot parry if
+        you have already performed your action in the round (but see the heroic
+        ability Defensive).
+      </div>
+      <div>
+        <strong>Durability</strong>: If your parry succeeds, the enemy's attack
+        hits your weapon or shield, and you suffer no damage. How- ever, if the
+        damage exceeds your weapon's durability, the weapon is damaged and
+        cannot be used until it is repaired with a CRAFTING roll.
+      </div>
+      <div>
+        <strong>Shield</strong>: If you have a shield drawn, you can parry with
+        it instead of your weapon. There is no skill for shields - instead you
+        can use any STR-based melee skill (i.e. any of them except KNIVES and
+        STAVES) to parry with a shield.
+      </div>
+      <div>
+        <strong>Piercing Damage</strong>: Piercing attacks can never damage a
+        parrying weapon or shield.
+      </div>
+      <div>
+        <strong>Monsters</strong>: As a rule, monster attacks (page 83) cannot
+        be parried, unless otherwise specified.
+      </div>
+    </Section>
+  );
+}
+
+function FastFootwork() {
+  return (
+    <Section header={"Dodging (page 47)"}>
+      <div>
+        As an alternative to parrying, you can try to dodge when hit by an
+        attack. You cannot parry and dodge the same attack – you must choose one
+        or the other. You can dodge while prone. You must declare that you are
+        dodging before your opponent rolls for damage. Roll for EVADE – on
+        success you evade the attack and take no damage. On a failure, you are
+        hit by the attack.
+      </div>
+      <div>
+        <strong>Reaction</strong>: Dodging is a reaction and, like parrying,
+        requires that you have not already performed your action in the round.
+        Once you have dodged, your action in the round is spent and you must
+        flip your initiative card.
+      </div>
+      <div>
+        <strong>Movement</strong>: On a successful dodge you may, if you want,
+        move up to 2 meters in any direction. This movement does not trigger
+        free attacks from anyone.
+      </div>
+      <div>
+        <strong>Monsters</strong>: As a rule, monster attacks (page 83) cann be
+        dodged, unless otherwise specified.
+      </div>
+    </Section>
   );
 }
 
