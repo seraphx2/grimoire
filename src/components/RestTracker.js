@@ -48,7 +48,6 @@ export default function RestTracker() {
       setTempUsedStretchRest(usedStretchRest);
     };
     runEffect();
-    //eslint-disable-next-line
   }, [usedRoundRest, usedStretchRest]);
 
   const hasFastHealer =
