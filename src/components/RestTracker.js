@@ -285,7 +285,7 @@ function OtherRestDialog(props) {
       let modifyHP2 = parseInt(Sizzle("#modifyHP2-editor")[0].textContent);
       if (modifyHP2 > 0) {
         modifyWP -= 2;
-        modifyHP -= modifyHP2;
+        modifyHP += modifyHP2;
       }
       const deltaHP = baseHP - currentHP;
       if (modifyHP >= deltaHP) modifyHP = deltaHP;
