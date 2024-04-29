@@ -82,12 +82,14 @@ export default function WillpowerTracker() {
             <EditBaseAttribute
               attribute="WP"
               defaultValue={baseWP}
+              min={0}
             ></EditBaseAttribute>
           </AreaContainer>
           <AreaContainer>
             <EditBaseAttribute
               attribute="HP"
               defaultValue={baseHP}
+              min={0}
             ></EditBaseAttribute>
           </AreaContainer>
         </FlexContainer>

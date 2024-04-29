@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -36,12 +36,20 @@ export default function RestTracker() {
     usedStretchRest,
     saveCharacter,
   } = useContext(ApplicationContext);
-  const [tempUsedRoundRest, setTempUsedRoundRest] = useState(usedRoundRest);
-  const [tempUsedStretchRest, setTempUsedStretchRest] =
-    useState(usedStretchRest);
+  const [tempUsedRoundRest, setTempUsedRoundRest] = useState(false);
+  const [tempUsedStretchRest, setTempUsedStretchRest] = useState(false);
   const [openRoundRestDialog, setOpenRoundRestDialog] = useState(false);
   const [openStretchRestDialog, setOpenStretchRestDialog] = useState(false);
   const [openLongRestDialog, setOpenLongRestDialog] = useState(false);
+
+  useLayoutEffect(() => {
+    const runEffect = async () => {
+      setTempUsedRoundRest(usedRoundRest);
+      setTempUsedStretchRest(usedStretchRest);
+    };
+    runEffect();
+    //eslint-disable-next-line
+  }, [usedRoundRest, usedStretchRest]);
 
   const hasFastHealer =
     selectedSpells.filter((s) => s === "Fast Healer").length > 0 ? true : false;
@@ -282,7 +290,9 @@ function OtherRestDialog(props) {
 
     if (type === "Stretch") {
       let modifyHP = parseInt(Sizzle("#modifyHP-editor")[0].textContent);
-      let modifyHP2 = parseInt(Sizzle("#modifyHP2-editor")[0].textContent);
+      let modifyHP2 = 0;
+      if (hasFastHealer && currentWP >= 2)
+        modifyHP2 = parseInt(Sizzle("#modifyHP2-editor")[0].textContent);
       if (modifyHP2 > 0) {
         modifyWP -= 2;
         modifyHP += modifyHP2;
