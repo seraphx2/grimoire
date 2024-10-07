@@ -1,4 +1,4 @@
-$www  = 'A:\grimoire\config\www'
+$www  = 'Z:\grimoire\config\www'
 $old = $www+'_old'
 $build = (Get-Location).path+'\build\*'
 
